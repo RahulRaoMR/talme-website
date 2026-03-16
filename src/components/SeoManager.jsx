@@ -267,8 +267,53 @@ function setLinkTag(selector, rel, href) {
   element.setAttribute("href", href);
 }
 
+function setJsonLd(id, payload) {
+  let element = document.head.querySelector(`script[data-seo-jsonld="${id}"]`);
+  if (!element) {
+    element = document.createElement("script");
+    element.setAttribute("type", "application/ld+json");
+    element.setAttribute("data-seo-jsonld", id);
+    document.head.appendChild(element);
+  }
+  element.textContent = JSON.stringify(payload);
+}
+
 function getCanonicalPath(pathname) {
   return canonicalRouteMap[pathname] || pathname;
+}
+
+function getPathLabel(segment) {
+  return segment
+    .split("-")
+    .filter(Boolean)
+    .map((part) => part.charAt(0).toUpperCase() + part.slice(1))
+    .join(" ");
+}
+
+function getBreadcrumbItems(pathname, title) {
+  const segments = pathname.split("/").filter(Boolean);
+  const items = [
+    {
+      "@type": "ListItem",
+      position: 1,
+      name: "Talme Technologies",
+      item: SITE_URL,
+    },
+  ];
+
+  let currentPath = "";
+  segments.forEach((segment, index) => {
+    currentPath += `/${segment}`;
+    const isLast = index === segments.length - 1;
+    items.push({
+      "@type": "ListItem",
+      position: items.length + 1,
+      name: isLast ? title.replace(/\s+\|\s+Talme Technologies$/, "") : getPathLabel(segment),
+      item: `${SITE_URL}${currentPath}`,
+    });
+  });
+
+  return items;
 }
 
 function getDynamicRouteMeta(pathname) {
@@ -387,6 +432,66 @@ function SeoManager() {
     setMetaAttribute('meta[name="twitter:image"]', "content", image);
 
     setLinkTag('link[rel="canonical"]', "canonical", canonicalUrl);
+
+    setJsonLd("website", {
+      "@context": "https://schema.org",
+      "@type": "WebSite",
+      name: "Talme Technologies",
+      alternateName: ["TALME", "talme.in"],
+      url: SITE_URL,
+      publisher: {
+        "@type": "Organization",
+        name: "Talme Technologies Pvt Ltd",
+        url: SITE_URL,
+        logo: {
+          "@type": "ImageObject",
+          url: DEFAULT_IMAGE,
+          width: 229,
+          height: 281,
+        },
+      },
+    });
+
+    setJsonLd("organization", {
+      "@context": "https://schema.org",
+      "@type": "Organization",
+      name: "Talme Technologies Pvt Ltd",
+      alternateName: ["Talme Technologies", "TALME"],
+      url: SITE_URL,
+      logo: {
+        "@type": "ImageObject",
+        url: DEFAULT_IMAGE,
+        width: 229,
+        height: 281,
+      },
+      image: DEFAULT_IMAGE,
+      sameAs: [
+        "https://www.linkedin.com/company/talme-technologies",
+        "https://www.instagram.com/talme_tech",
+      ],
+    });
+
+    setJsonLd("webpage", {
+      "@context": "https://schema.org",
+      "@type": "WebPage",
+      name: title,
+      description,
+      url: canonicalUrl,
+      isPartOf: {
+        "@type": "WebSite",
+        name: "Talme Technologies",
+        url: SITE_URL,
+      },
+      about: {
+        "@type": "Organization",
+        name: "Talme Technologies Pvt Ltd",
+        url: SITE_URL,
+      },
+      breadcrumb: {
+        "@type": "BreadcrumbList",
+        itemListElement: getBreadcrumbItems(canonicalPath === "/" ? "/" : canonicalPath, title),
+      },
+    });
   }, [location.pathname]);
 
   return null;

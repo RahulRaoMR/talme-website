@@ -2,7 +2,7 @@
 <html lang="en">
   <head>
     <meta charset="UTF-8" />
-    <link rel="icon" href="/favicon.ico" sizes="any" />
+    <link rel="icon" type="image/x-icon" href="/favicon.ico" />
     <link rel="shortcut icon" href="/favicon.ico" />
     <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
     <link rel="icon" type="image/png" sizes="48x48" href="/favicon-48.png" />
@@ -13,8 +13,8 @@
     <meta name="theme-color" content="#0f172a" />
     <meta name="apple-mobile-web-app-capable" content="yes" />
     <meta name="apple-mobile-web-app-status-bar-style" content="default" />
-    <meta name="application-name" content="Talme" />
-    <meta name="apple-mobile-web-app-title" content="Talme" />
+    <meta name="application-name" content="Talme Technologies" />
+    <meta name="apple-mobile-web-app-title" content="Talme Technologies" />
     <meta name="mobile-web-app-capable" content="yes" />
     <title>Talme | Engineering Services</title>
     <meta
@@ -31,7 +31,7 @@
       content="Talme Technologies provides engineering services, IT consulting, and staffing solutions for global enterprises."
     />
     <meta property="og:url" content="https://talme.in" />
-    <meta property="og:site_name" content="Talme" />
+    <meta property="og:site_name" content="Talme Technologies" />
     <meta property="og:type" content="website" />
     <meta property="og:image" content="https://talme.in/logo.png" />
     <meta property="og:image:alt" content="Talme Technologies logo" />
@@ -51,9 +51,18 @@
         "@context": "https://schema.org",
         "@type": "Organization",
         "name": "Talme Technologies Pvt Ltd",
-        "alternateName": "Talme",
+        "alternateName": [
+          "Talme Technologies",
+          "TALME"
+        ],
         "url": "https://talme.in",
-        "logo": "https://talme.in/logo.png",
+        "logo": {
+          "@type": "ImageObject",
+          "url": "https://talme.in/logo.png",
+          "width": 229,
+          "height": 281
+        },
+        "image": "https://talme.in/logo.png",
         "sameAs": [
           "https://www.linkedin.com/company/talme-technologies",
           "https://www.instagram.com/talme_tech"
@@ -65,8 +74,22 @@
         "@context": "https://schema.org",
         "@type": "WebSite",
         "name": "Talme Technologies",
-        "alternateName": "TALME",
-        "url": "https://talme.in"
+        "alternateName": [
+          "TALME",
+          "talme.in"
+        ],
+        "url": "https://talme.in",
+        "publisher": {
+          "@type": "Organization",
+          "name": "Talme Technologies Pvt Ltd",
+          "url": "https://talme.in",
+          "logo": {
+            "@type": "ImageObject",
+            "url": "https://talme.in/logo.png",
+            "width": 229,
+            "height": 281
+          }
+        }
       }
     </script>
   </head>

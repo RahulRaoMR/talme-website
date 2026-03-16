@@ -1,6 +1,9 @@
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" role="img" aria-label="Talme Technologies favicon">
-  <rect width="64" height="64" rx="14" fill="#ffffff" />
-  <circle cx="32" cy="32" r="24" fill="#f3f6fb" stroke="#d8e2f0" stroke-width="2" />
-  <path d="M19 23h26v6H35v20h-6V29H19z" fill="#5f7696" />
-  <path d="M24 18h16v5H24z" fill="#7f95b3" />
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 256 256" role="img" aria-label="Talme Technologies favicon">
+  <rect width="256" height="256" rx="44" fill="#ffffff" />
+  <g fill="#233d96">
+    <path d="M98 18h60v34h-12v144h-28V52H98z" />
+    <path d="M40 40h58v26H66v30h32v26H40z" />
+    <path d="M158 40h58v82h-58V96h32V66h-32z" />
+    <path d="M90 180h56v58H90v-26h30v-6H90z" />
+  </g>
 </svg>
