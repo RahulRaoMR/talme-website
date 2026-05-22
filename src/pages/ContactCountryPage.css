@@ -34,6 +34,11 @@
   color: var(--muted);
 }
 
+.country-contact-list {
+  display: grid;
+  gap: 14px;
+}
+
 .country-contact-card {
   display: grid;
   grid-template-columns: 1fr 1.2fr;

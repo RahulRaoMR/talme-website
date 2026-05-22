@@ -12,6 +12,12 @@ const officeLocations = [
           "No.24, Vital Mallya Road, Level 14, Concorde Towers, UB City, Bangalore, Karnataka 560001, India.",
         directions: "https://maps.google.com/?q=UB+City+Bangalore",
       },
+      {
+        label: "Ahmedabad Office",
+        address:
+          "Regus - Ahmedabad, Ratnakar 9 Square 11th Floor, A Wing, Ratnakar Nine Square, 1107, opp. ITC Narmada, Keshavbaug, Vastrapur, Ahmedabad, Gujarat 380015.",
+        directions: "https://maps.app.goo.gl/9MdAKfGyHyTxQZcp6",
+      },
     ],
   },
   {
