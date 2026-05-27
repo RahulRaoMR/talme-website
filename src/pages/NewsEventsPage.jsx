@@ -15,7 +15,7 @@ const MAX_NEWS_IMAGE_SIDE = 1200;
 const NEWS_IMAGE_QUALITY = 0.82;
 
 function getNewsItemApiUrl(id) {
-  return `/api/news/${encodeURIComponent(id)}`;
+  return `/api/news?id=${encodeURIComponent(id)}`;
 }
 
 async function readJsonResponse(response, fallbackMessage) {
