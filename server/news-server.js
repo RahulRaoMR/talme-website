@@ -79,6 +79,24 @@
     return `news-${Date.now()}`;
   }
 
+  function getNewsItemId(url) {
+    const queryId = url.searchParams.get("id");
+
+    if (queryId) {
+      return queryId;
+    }
+
+    if (url.pathname.startsWith("/api/news/")) {
+      return decodeURIComponent(url.pathname.replace("/api/news/", ""));
+    }
+
+    return "";
+  }
+
+  function isNewsItemRoute(url) {
+    return url.pathname === "/api/news" || url.pathname.startsWith("/api/news/");
+  }
+
   function sortByDateDescending(items) {
     return [...items].sort((left, right) => {
       return new Date(right.isoDate).getTime() - new Date(left.isoDate).getTime();
@@ -445,8 +463,14 @@
         return;
       }
 
-      if (url.pathname.startsWith("/api/news/") && method === "PUT") {
+      if (isNewsItemRoute(url) && method === "PUT") {
         if (!requireNewsAdmin(request, response)) {
+          return;
+        }
+
+        const itemId = getNewsItemId(url);
+        if (!itemId) {
+          sendJson(response, 400, { error: "News item id is required." });
           return;
         }
 
@@ -460,7 +484,6 @@
           return;
         }
 
-        const itemId = decodeURIComponent(url.pathname.replace("/api/news/", ""));
         const items = await readNews();
         const itemIndex = items.findIndex((item) => item.id === itemId);
 
@@ -487,12 +510,17 @@
         return;
       }
 
-      if (url.pathname.startsWith("/api/news/") && method === "DELETE") {
+      if (isNewsItemRoute(url) && method === "DELETE") {
         if (!requireNewsAdmin(request, response)) {
           return;
         }
 
-        const itemId = decodeURIComponent(url.pathname.replace("/api/news/", ""));
+        const itemId = getNewsItemId(url);
+        if (!itemId) {
+          sendJson(response, 400, { error: "News item id is required." });
+          return;
+        }
+
         const items = await readNews();
         const nextItems = items.filter((item) => item.id !== itemId);
 
