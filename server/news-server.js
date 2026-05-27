@@ -1,3 +1,4 @@
+import { Buffer } from "node:buffer";
 import { createServer } from "node:http";
 import { readFile, writeFile } from "node:fs/promises";
 import path from "node:path";
@@ -13,6 +14,9 @@ dotenv.config({ path: path.resolve(__dirname, "../.env") });
 const storagePath = path.join(__dirname, "news-storage.json");
 const port = process.env.NEWS_API_PORT || 3001;
 const MAX_RESUME_SIZE = 5 * 1024 * 1024;
+const MAX_NEWS_IMAGE_SIZE = 8 * 1024 * 1024;
+
+class BadRequestError extends Error {}
 
 const transporter = nodemailer.createTransport({
   host: process.env.SMTP_HOST,
@@ -134,6 +138,10 @@ function parseMultipartForm(bodyBuffer, boundary) {
     const typeMatch = headerText.match(/Content-Type:\s*([^\r\n]+)/i);
 
     if (filenameMatch) {
+      if (!filenameMatch[1]) {
+        continue;
+      }
+
       file = {
         fieldName,
         filename: path.basename(filenameMatch[1]),
@@ -158,7 +166,7 @@ async function readRequestBody(request, maxSize) {
     size += bufferChunk.length;
 
     if (size > maxSize) {
-      throw new Error("Payload too large.");
+      throw new BadRequestError("Uploaded file is too large.");
     }
 
     chunks.push(bufferChunk);
@@ -167,17 +175,71 @@ async function readRequestBody(request, maxSize) {
   return Buffer.concat(chunks);
 }
 
+function getMultipartBoundary(contentType) {
+  const boundaryMatch = contentType.match(/boundary=(?:"([^"]+)"|([^;]+))/i);
+  return boundaryMatch ? boundaryMatch[1] || boundaryMatch[2] : "";
+}
+
+async function readJsonBody(request) {
+  let body = "";
+
+  for await (const chunk of request) {
+    body += chunk;
+  }
+
+  return JSON.parse(body || "{}");
+}
+
+async function readNewsPayload(request) {
+  const contentType = request.headers["content-type"] || "";
+
+  if (!contentType.toLowerCase().startsWith("multipart/form-data")) {
+    return readJsonBody(request);
+  }
+
+  const boundary = getMultipartBoundary(contentType);
+  if (!boundary) {
+    throw new BadRequestError("Invalid news upload request.");
+  }
+
+  const bodyBuffer = await readRequestBody(request, MAX_NEWS_IMAGE_SIZE + 1024 * 1024);
+  const { fields, file } = parseMultipartForm(bodyBuffer, boundary);
+  const payload = {
+    title: fields.title,
+    summary: fields.summary,
+    isoDate: fields.isoDate,
+    removeImage: fields.removeImage === "true",
+  };
+
+  if (file) {
+    const isImage =
+      file.mimeType.startsWith("image/") ||
+      /\.(jpe?g|png|gif|webp)$/i.test(file.filename);
+
+    if (!isImage) {
+      throw new BadRequestError("News image must be an image file.");
+    }
+
+    if (file.content.length > MAX_NEWS_IMAGE_SIZE) {
+      throw new BadRequestError("News image must be smaller than 8 MB.");
+    }
+
+    payload.imageUrl = `data:${file.mimeType};base64,${file.content.toString("base64")}`;
+  }
+
+  return payload;
+}
+
 async function handleCareersSubmission(request, response) {
   const contentType = request.headers["content-type"] || "";
-  const boundaryMatch = contentType.match(/boundary=(?:"([^"]+)"|([^;]+))/i);
+  const boundary = getMultipartBoundary(contentType);
 
-  if (!boundaryMatch) {
+  if (!boundary) {
     sendJson(response, 400, { error: "Invalid form upload request." });
     return;
   }
 
   const bodyBuffer = await readRequestBody(request, MAX_RESUME_SIZE + 1024 * 1024);
-  const boundary = boundaryMatch[1] || boundaryMatch[2];
   const { fields, file } = parseMultipartForm(bodyBuffer, boundary);
 
   if (!fields.fullName || !fields.email || !fields.phone || !fields.role) {
@@ -343,6 +405,10 @@ const server = createServer(async (request, response) => {
     }
 
     if (url.pathname === "/api/news" && method === "GET") {
+      if (request.headers["x-admin-key"] && !requireNewsAdmin(request, response)) {
+        return;
+      }
+
       const items = await readNews();
       sendJson(response, 200, sortByDateDescending(items));
       return;
@@ -353,12 +419,7 @@ const server = createServer(async (request, response) => {
         return;
       }
 
-      let body = "";
-      for await (const chunk of request) {
-        body += chunk;
-      }
-
-      const payload = JSON.parse(body || "{}");
+      const payload = await readNewsPayload(request);
       const title = payload.title?.trim();
       const summary = payload.summary?.trim();
       const isoDate = payload.isoDate?.trim();
@@ -375,6 +436,7 @@ const server = createServer(async (request, response) => {
         summary,
         isoDate,
         date: formatDisplayDate(isoDate),
+        imageUrl: payload.imageUrl || "",
       };
 
       const updatedItems = sortByDateDescending([newItem, ...items]);
@@ -388,12 +450,7 @@ const server = createServer(async (request, response) => {
         return;
       }
 
-      let body = "";
-      for await (const chunk of request) {
-        body += chunk;
-      }
-
-      const payload = JSON.parse(body || "{}");
+      const payload = await readNewsPayload(request);
       const title = payload.title?.trim();
       const summary = payload.summary?.trim();
       const isoDate = payload.isoDate?.trim();
@@ -418,6 +475,9 @@ const server = createServer(async (request, response) => {
         summary,
         isoDate,
         date: formatDisplayDate(isoDate),
+        imageUrl: payload.removeImage
+          ? ""
+          : payload.imageUrl || items[itemIndex].imageUrl || "",
       };
 
       const nextItems = [...items];
@@ -448,6 +508,11 @@ const server = createServer(async (request, response) => {
 
     sendJson(response, 405, { error: "Method not allowed." });
   } catch (error) {
+    if (error instanceof BadRequestError) {
+      sendJson(response, 400, { error: error.message });
+      return;
+    }
+
     sendJson(response, 500, {
       error:
         url.pathname === "/api/careers"

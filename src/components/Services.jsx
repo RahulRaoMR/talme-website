@@ -1,3 +1,4 @@
+import { createElement } from "react";
 import CountUp from "react-countup";
 import "./Services.css";
 import {
@@ -53,7 +54,7 @@ function Services() {
         {serviceItems.map(({ label, Icon }) => (
           <article className="service-card" key={label}>
             <span className="icon-wrap">
-              <Icon className="icon" />
+              {createElement(Icon, { className: "icon" })}
             </span>
             <p>{label}</p>
           </article>

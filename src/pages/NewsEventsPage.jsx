@@ -3,6 +3,16 @@ import { newsData } from "../data/newsData";
 import "./NewsEventsPage.css";
 
 const ADMIN_STORAGE_KEY = "talme-news-admin-key";
+const EMPTY_FORM_DATA = {
+  title: "",
+  summary: "",
+  isoDate: "",
+  imageFile: null,
+  imagePreview: "",
+  removeImage: false,
+};
+const MAX_NEWS_IMAGE_SIDE = 1200;
+const NEWS_IMAGE_QUALITY = 0.82;
 
 async function readJsonResponse(response, fallbackMessage) {
   const rawResponse = await response.text();
@@ -16,6 +26,71 @@ async function readJsonResponse(response, fallbackMessage) {
   } catch {
     return { error: fallbackMessage };
   }
+}
+
+function isAdminAuthError(error) {
+  if (!(error instanceof Error)) {
+    return false;
+  }
+
+  return (
+    error.message === "Invalid admin key." ||
+    error.message === "News admin key is not configured."
+  );
+}
+
+function readFileAsDataUrl(file) {
+  return new Promise((resolve, reject) => {
+    const reader = new FileReader();
+    reader.onload = () => resolve(typeof reader.result === "string" ? reader.result : "");
+    reader.onerror = () => reject(reader.error);
+    reader.readAsDataURL(file);
+  });
+}
+
+function loadImage(source) {
+  return new Promise((resolve, reject) => {
+    const image = new Image();
+    image.onload = () => resolve(image);
+    image.onerror = reject;
+    image.src = source;
+  });
+}
+
+async function prepareNewsImage(file) {
+  const dataUrl = await readFileAsDataUrl(file);
+  const image = await loadImage(dataUrl);
+  const scale = Math.min(1, MAX_NEWS_IMAGE_SIDE / Math.max(image.width, image.height));
+  const width = Math.max(1, Math.round(image.width * scale));
+  const height = Math.max(1, Math.round(image.height * scale));
+  const canvas = document.createElement("canvas");
+  canvas.width = width;
+  canvas.height = height;
+
+  const context = canvas.getContext("2d");
+  context.fillStyle = "#ffffff";
+  context.fillRect(0, 0, width, height);
+  context.drawImage(image, 0, 0, width, height);
+
+  return new Promise((resolve) => {
+    canvas.toBlob(
+      (blob) => {
+        if (!blob) {
+          resolve({ file, preview: dataUrl });
+          return;
+        }
+
+        const preparedFile = new File(
+          [blob],
+          file.name.replace(/\.[^.]+$/, "") + ".jpg",
+          { type: "image/jpeg" }
+        );
+        resolve({ file: preparedFile, preview: URL.createObjectURL(blob) });
+      },
+      "image/jpeg",
+      NEWS_IMAGE_QUALITY
+    );
+  });
 }
 
 function NewsEventsPage({ adminMode = false }) {
@@ -32,10 +107,10 @@ function NewsEventsPage({ adminMode = false }) {
   const [isDeletingId, setIsDeletingId] = useState("");
   const [editingId, setEditingId] = useState("");
   const [formData, setFormData] = useState({
-    title: "",
-    summary: "",
+    ...EMPTY_FORM_DATA,
     isoDate: today,
   });
+  const [imageInputKey, setImageInputKey] = useState(0);
 
   useEffect(() => {
     const loadNews = async () => {
@@ -87,6 +162,52 @@ function NewsEventsPage({ adminMode = false }) {
     setFormData((prev) => ({ ...prev, [name]: value }));
   };
 
+  const resetForm = () => {
+    setFormData({
+      ...EMPTY_FORM_DATA,
+      isoDate: today,
+    });
+    setImageInputKey((prev) => prev + 1);
+  };
+
+  const handleImageChange = async (event) => {
+    const file = event.target.files?.[0];
+
+    if (!file) {
+      setFormData((prev) => ({
+        ...prev,
+        imageFile: null,
+        imagePreview: prev.removeImage ? "" : prev.imagePreview,
+      }));
+      return;
+    }
+
+    setErrorMessage("");
+
+    try {
+      const preparedImage = await prepareNewsImage(file);
+      setFormData((prev) => ({
+        ...prev,
+        imageFile: preparedImage.file,
+        imagePreview: preparedImage.preview,
+        removeImage: false,
+      }));
+    } catch {
+      setErrorMessage("Unable to prepare this image. Please choose another image file.");
+      setImageInputKey((prev) => prev + 1);
+    }
+  };
+
+  const removeSelectedImage = () => {
+    setFormData((prev) => ({
+      ...prev,
+      imageFile: null,
+      imagePreview: "",
+      removeImage: true,
+    }));
+    setImageInputKey((prev) => prev + 1);
+  };
+
   const handleAdminLogin = async (event) => {
     event.preventDefault();
     const key = adminPassword.trim();
@@ -113,6 +234,12 @@ function NewsEventsPage({ adminMode = false }) {
       setErrorMessage("");
       setNoticeMessage("");
     } catch (error) {
+      if (isAdminAuthError(error)) {
+        window.localStorage.removeItem(ADMIN_STORAGE_KEY);
+        setAdminKey("");
+        setIsAdminPanelOpen(true);
+      }
+
       window.localStorage.removeItem(ADMIN_STORAGE_KEY);
       setAdminKey("");
       setErrorMessage(
@@ -127,11 +254,7 @@ function NewsEventsPage({ adminMode = false }) {
     setAdminPassword("");
     setIsAdminPanelOpen(adminMode);
     setEditingId("");
-    setFormData({
-      title: "",
-      summary: "",
-      isoDate: today,
-    });
+    resetForm();
     setErrorMessage("");
     setNoticeMessage("");
   };
@@ -139,13 +262,21 @@ function NewsEventsPage({ adminMode = false }) {
   const submitNews = async (event) => {
     event.preventDefault();
 
-    const payload = {
-      title: formData.title.trim(),
-      summary: formData.summary.trim(),
-      isoDate: formData.isoDate,
-    };
+    const title = formData.title.trim();
+    const summary = formData.summary.trim();
+    const isoDate = formData.isoDate;
 
-    if (!payload.title || !payload.summary || !payload.isoDate) return;
+    if (!title || !summary || !isoDate) return;
+
+    const payload = new FormData();
+    payload.append("title", title);
+    payload.append("summary", summary);
+    payload.append("isoDate", isoDate);
+    payload.append("removeImage", formData.removeImage ? "true" : "false");
+
+    if (formData.imageFile) {
+      payload.append("image", formData.imageFile);
+    }
 
     setStatus("submitting");
     setErrorMessage("");
@@ -155,10 +286,9 @@ function NewsEventsPage({ adminMode = false }) {
       const response = await fetch(isEditing ? `/api/news/${editingId}` : "/api/news", {
         method: isEditing ? "PUT" : "POST",
         headers: {
-          "Content-Type": "application/json",
           "x-admin-key": adminKey,
         },
-        body: JSON.stringify(payload),
+        body: payload,
       });
 
       const result = await readJsonResponse(
@@ -177,14 +307,16 @@ function NewsEventsPage({ adminMode = false }) {
           ? prev.map((item) => (item.id === result.id ? result : item))
           : [result, ...prev]
       );
-      setFormData({
-        title: "",
-        summary: "",
-        isoDate: today,
-      });
+      resetForm();
       setEditingId("");
       setStatus("ready");
     } catch (error) {
+      if (isAdminAuthError(error)) {
+        window.localStorage.removeItem(ADMIN_STORAGE_KEY);
+        setAdminKey("");
+        setIsAdminPanelOpen(true);
+      }
+
       setStatus("error");
       setErrorMessage(
         error instanceof Error
@@ -200,17 +332,17 @@ function NewsEventsPage({ adminMode = false }) {
       title: item.title,
       summary: item.summary,
       isoDate: item.isoDate,
+      imageFile: null,
+      imagePreview: item.imageUrl || "",
+      removeImage: false,
     });
+    setImageInputKey((prev) => prev + 1);
     setIsAdminPanelOpen(true);
   };
 
   const cancelEditing = () => {
     setEditingId("");
-    setFormData({
-      title: "",
-      summary: "",
-      isoDate: today,
-    });
+    resetForm();
   };
 
   const deleteNews = async (id) => {
@@ -235,6 +367,12 @@ function NewsEventsPage({ adminMode = false }) {
 
       setNewsItems((prev) => prev.filter((item) => item.id !== id));
     } catch (error) {
+      if (isAdminAuthError(error)) {
+        window.localStorage.removeItem(ADMIN_STORAGE_KEY);
+        setAdminKey("");
+        setIsAdminPanelOpen(true);
+      }
+
       setErrorMessage(
         error instanceof Error
           ? error.message
@@ -343,6 +481,24 @@ function NewsEventsPage({ adminMode = false }) {
                     rows="4"
                     required
                   />
+                  <div className="news-events-image-field">
+                    <label htmlFor="news-image">Image upload</label>
+                    <input
+                      key={imageInputKey}
+                      id="news-image"
+                      type="file"
+                      accept="image/*"
+                      onChange={handleImageChange}
+                    />
+                    {formData.imagePreview ? (
+                      <div className="news-events-image-preview">
+                        <img src={formData.imagePreview} alt="" />
+                        <button type="button" onClick={removeSelectedImage}>
+                          Remove image
+                        </button>
+                      </div>
+                    ) : null}
+                  </div>
                   <button type="submit" className="news-events-button">
                     {status === "submitting"
                       ? editingId
@@ -376,7 +532,10 @@ function NewsEventsPage({ adminMode = false }) {
           ) : null}
 
           {newsItems.map((item) => (
-            <article className="news-events-card" key={item.id}>
+            <article
+              className={`news-events-card${item.imageUrl ? " news-events-card-with-image" : ""}`}
+              key={item.id}
+            >
               <div className="news-events-card-head">
                 <span className="news-events-card-label">News Brief</span>
                 <time className="news-events-date" dateTime={item.isoDate}>
@@ -402,8 +561,19 @@ function NewsEventsPage({ adminMode = false }) {
                   </div>
                 ) : null}
               </div>
-              <h2>{item.title}</h2>
-              <p>{item.summary}</p>
+              <div className="news-events-card-body">
+                {item.imageUrl ? (
+                  <img
+                    className="news-events-card-image"
+                    src={item.imageUrl}
+                    alt={item.title}
+                  />
+                ) : null}
+                <div className="news-events-card-copy">
+                  <h2>{item.title}</h2>
+                  <p>{item.summary}</p>
+                </div>
+              </div>
             </article>
           ))}
         </section>
