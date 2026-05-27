@@ -1,4 +1,12 @@
 ```js
+export const config = {
+  api: {
+    bodyParser: {
+      sizeLimit: "10mb",
+    },
+  },
+};
+
 let news = [];
 
 export default async function handler(req, res) {
@@ -26,7 +34,23 @@ export default async function handler(req, res) {
   // ADD NEWS
   if (req.method === "POST") {
     try {
-      const { title, summary, isoDate, imageUrl } = req.body;
+      let title = "";
+      let summary = "";
+      let isoDate = "";
+      let imageUrl = "";
+
+      // Handle JSON request
+      if (req.headers["content-type"]?.includes("application/json")) {
+        title = req.body.title;
+        summary = req.body.summary;
+        isoDate = req.body.isoDate;
+        imageUrl = req.body.imageUrl || "";
+      } else {
+        // Handle multipart/form-data fallback
+        title = req.body?.title || "";
+        summary = req.body?.summary || "";
+        isoDate = req.body?.isoDate || "";
+      }
 
       if (!title || !summary || !isoDate) {
         return res.status(400).json({
@@ -39,7 +63,7 @@ export default async function handler(req, res) {
         title,
         summary,
         isoDate,
-        imageUrl: imageUrl || "",
+        imageUrl,
       };
 
       news.unshift(newItem);
@@ -49,6 +73,8 @@ export default async function handler(req, res) {
         item: newItem,
       });
     } catch (error) {
+      console.error(error);
+
       return res.status(500).json({
         error: error.message || "Internal Server Error",
       });
