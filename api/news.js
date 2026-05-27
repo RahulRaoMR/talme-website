@@ -1,1 +1,453 @@
-let news = []; export default async function handler(req, res) { // CORS res.setHeader("Access-Control-Allow-Origin", "*"); res.setHeader( "Access-Control-Allow-Methods", "GET,POST,DELETE,OPTIONS" ); res.setHeader( "Access-Control-Allow-Headers", "Content-Type,x-admin-key" ); // OPTIONS if (req.method === "OPTIONS") { return res.status(200).end(); } // GET NEWS if (req.method === "GET") { return res.status(200).json(news); } // ADD NEWS if (req.method === "POST") { try { const body = req.body || {}; const title = body.title || ""; const summary = body.summary || ""; const isoDate = body.isoDate || ""; const imageUrl = body.imageUrl || ""; if (!title || !summary || !isoDate) { return res.status(400).json({ error: "Title, summary and date are required", }); } const newItem = { id: `news-${Date.now()}`, title, summary, isoDate, imageUrl, }; news.unshift(newItem); return res.status(201).json({ success: true, item: newItem, }); } catch (error) { console.error(error); return res.status(500).json({ error: error.message || "Internal Server Error", }); } } // DELETE NEWS if (req.method === "DELETE") { try { const { id } = req.query; news = news.filter((item) => item.id !== id); return res.status(200).json({ success: true, }); } catch (error) { return res.status(500).json({ error: error.message || "Internal Server Error", }); } } return res.status(405).json({ error: "Method not allowed", }); }
+import { Buffer } from "node:buffer";
+import { existsSync } from "node:fs";
+import { mkdir, readFile, writeFile } from "node:fs/promises";
+import os from "node:os";
+import path from "node:path";
+import process from "node:process";
+import { fileURLToPath } from "node:url";
+
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = path.dirname(__filename);
+
+const bundledStoragePath = path.resolve(__dirname, "../server/news-storage.json");
+const writableStoragePath =
+  process.env.NEWS_STORAGE_PATH ||
+  (existsSync(bundledStoragePath)
+    ? bundledStoragePath
+    : path.join(os.tmpdir(), "talme-news-storage.json"));
+const tmpStoragePath = path.join(os.tmpdir(), "talme-news-storage.json");
+const MAX_NEWS_IMAGE_SIZE = 8 * 1024 * 1024;
+
+export const config = {
+  api: {
+    bodyParser: false,
+  },
+};
+
+class BadRequestError extends Error {}
+
+function sendJson(res, statusCode, payload) {
+  const body = JSON.stringify(payload);
+
+  if (typeof res.status === "function") {
+    return res.status(statusCode).json(payload);
+  }
+
+  res.statusCode = statusCode;
+  res.setHeader("Content-Type", "application/json");
+  res.setHeader("Access-Control-Allow-Origin", "*");
+  res.setHeader("Access-Control-Allow-Methods", "GET,POST,PUT,DELETE,OPTIONS");
+  res.setHeader("Access-Control-Allow-Headers", "Content-Type,x-admin-key");
+  return res.end(body);
+}
+
+function setCorsHeaders(res) {
+  res.setHeader("Access-Control-Allow-Origin", "*");
+  res.setHeader("Access-Control-Allow-Methods", "GET,POST,PUT,DELETE,OPTIONS");
+  res.setHeader("Access-Control-Allow-Headers", "Content-Type,x-admin-key");
+}
+
+function getHeader(req, name) {
+  const headers = req.headers || {};
+  return headers[name] || headers[name.toLowerCase()] || "";
+}
+
+function requireNewsAdmin(req, res) {
+  const configuredKey = process.env.NEWS_ADMIN_KEY;
+  const requestKey = getHeader(req, "x-admin-key");
+
+  if (!configuredKey) {
+    sendJson(res, 500, { error: "News admin key is not configured." });
+    return false;
+  }
+
+  if (requestKey !== configuredKey) {
+    sendJson(res, 401, { error: "Invalid admin key." });
+    return false;
+  }
+
+  return true;
+}
+
+function formatDisplayDate(isoDate) {
+  return new Date(`${isoDate}T00:00:00`).toLocaleDateString("en-US", {
+    month: "long",
+    day: "numeric",
+    year: "numeric",
+  });
+}
+
+function createNewsId() {
+  return `news-${Date.now()}`;
+}
+
+function sortByDateDescending(items) {
+  return [...items].sort((left, right) => {
+    return new Date(right.isoDate).getTime() - new Date(left.isoDate).getTime();
+  });
+}
+
+async function ensureStorageFile(storagePath) {
+  try {
+    await readFile(storagePath, "utf8");
+    return storagePath;
+  } catch {
+    await mkdir(path.dirname(storagePath), { recursive: true });
+
+    try {
+      const bundledNews = await readFile(bundledStoragePath, "utf8");
+      await writeFile(storagePath, bundledNews);
+    } catch {
+      await writeFile(storagePath, "[]");
+    }
+
+    return storagePath;
+  }
+}
+
+async function readNews() {
+  try {
+    const storagePath = await ensureStorageFile(writableStoragePath);
+    const raw = await readFile(storagePath, "utf8");
+    const items = JSON.parse(raw);
+    return Array.isArray(items) ? items : [];
+  } catch {
+    const storagePath = await ensureStorageFile(tmpStoragePath);
+    const raw = await readFile(storagePath, "utf8");
+    const items = JSON.parse(raw);
+    return Array.isArray(items) ? items : [];
+  }
+}
+
+async function writeNews(items) {
+  const serializedItems = JSON.stringify(items, null, 2);
+
+  try {
+    const storagePath = await ensureStorageFile(writableStoragePath);
+    await writeFile(storagePath, serializedItems);
+  } catch {
+    const storagePath = await ensureStorageFile(tmpStoragePath);
+    await writeFile(storagePath, serializedItems);
+  }
+}
+
+function splitBuffer(buffer, separator) {
+  const segments = [];
+  let searchStart = 0;
+  let index = buffer.indexOf(separator, searchStart);
+
+  while (index !== -1) {
+    segments.push(buffer.subarray(searchStart, index));
+    searchStart = index + separator.length;
+    index = buffer.indexOf(separator, searchStart);
+  }
+
+  segments.push(buffer.subarray(searchStart));
+  return segments;
+}
+
+function parseMultipartForm(bodyBuffer, boundary) {
+  const boundaryBuffer = Buffer.from(`--${boundary}`);
+  const parts = splitBuffer(bodyBuffer, boundaryBuffer);
+  const fields = {};
+  let file = null;
+
+  for (const rawPart of parts) {
+    if (!rawPart.length) {
+      continue;
+    }
+
+    let part = rawPart;
+    if (part.subarray(0, 2).equals(Buffer.from("\r\n"))) {
+      part = part.subarray(2);
+    }
+
+    if (part.equals(Buffer.from("--\r\n")) || part.equals(Buffer.from("--"))) {
+      continue;
+    }
+
+    const headerEnd = part.indexOf(Buffer.from("\r\n\r\n"));
+    if (headerEnd === -1) {
+      continue;
+    }
+
+    const headerText = part.subarray(0, headerEnd).toString("utf8");
+    const content = part.subarray(headerEnd + 4, part.length - 2);
+    const nameMatch = headerText.match(/name="([^"]+)"/i);
+
+    if (!nameMatch) {
+      continue;
+    }
+
+    const fieldName = nameMatch[1];
+    const filenameMatch = headerText.match(/filename="([^"]*)"/i);
+    const typeMatch = headerText.match(/Content-Type:\s*([^\r\n]+)/i);
+
+    if (filenameMatch) {
+      if (!filenameMatch[1]) {
+        continue;
+      }
+
+      file = {
+        filename: path.basename(filenameMatch[1]),
+        mimeType: typeMatch ? typeMatch[1].trim() : "application/octet-stream",
+        content,
+      };
+      continue;
+    }
+
+    fields[fieldName] = content.toString("utf8").trim();
+  }
+
+  return { fields, file };
+}
+
+async function readRequestBody(req, maxSize) {
+  if (Buffer.isBuffer(req.body)) {
+    if (req.body.length > maxSize) {
+      throw new BadRequestError("Uploaded file is too large.");
+    }
+
+    return req.body;
+  }
+
+  if (typeof req.body === "string") {
+    const bodyBuffer = Buffer.from(req.body);
+    if (bodyBuffer.length > maxSize) {
+      throw new BadRequestError("Uploaded file is too large.");
+    }
+
+    return bodyBuffer;
+  }
+
+  const chunks = [];
+  let size = 0;
+
+  for await (const chunk of req) {
+    const bufferChunk = Buffer.isBuffer(chunk) ? chunk : Buffer.from(chunk);
+    size += bufferChunk.length;
+
+    if (size > maxSize) {
+      throw new BadRequestError("Uploaded file is too large.");
+    }
+
+    chunks.push(bufferChunk);
+  }
+
+  return Buffer.concat(chunks);
+}
+
+function getMultipartBoundary(contentType) {
+  const boundaryMatch = contentType.match(/boundary=(?:"([^"]+)"|([^;]+))/i);
+  return boundaryMatch ? boundaryMatch[1] || boundaryMatch[2] : "";
+}
+
+async function readJsonPayload(req) {
+  if (req.body && !Buffer.isBuffer(req.body) && typeof req.body === "object") {
+    return req.body;
+  }
+
+  const bodyBuffer = await readRequestBody(req, 1024 * 1024);
+  const bodyText = bodyBuffer.toString("utf8");
+  return bodyText ? JSON.parse(bodyText) : {};
+}
+
+async function readNewsPayload(req) {
+  const contentType = getHeader(req, "content-type");
+
+  if (!contentType.toLowerCase().startsWith("multipart/form-data")) {
+    return readJsonPayload(req);
+  }
+
+  const boundary = getMultipartBoundary(contentType);
+  if (!boundary) {
+    throw new BadRequestError("Invalid news upload request.");
+  }
+
+  const bodyBuffer = await readRequestBody(req, MAX_NEWS_IMAGE_SIZE + 1024 * 1024);
+  const { fields, file } = parseMultipartForm(bodyBuffer, boundary);
+  const payload = {
+    title: fields.title,
+    summary: fields.summary,
+    isoDate: fields.isoDate,
+    removeImage: fields.removeImage === "true",
+  };
+
+  if (file) {
+    const isImage =
+      file.mimeType.startsWith("image/") ||
+      /\.(jpe?g|png|gif|webp)$/i.test(file.filename);
+
+    if (!isImage) {
+      throw new BadRequestError("News image must be an image file.");
+    }
+
+    if (file.content.length > MAX_NEWS_IMAGE_SIZE) {
+      throw new BadRequestError("News image must be smaller than 8 MB.");
+    }
+
+    payload.imageUrl = `data:${file.mimeType};base64,${file.content.toString("base64")}`;
+  }
+
+  return payload;
+}
+
+function getItemId(req) {
+  if (req.query?.id) {
+    return Array.isArray(req.query.id) ? req.query.id[0] : req.query.id;
+  }
+
+  const url = new URL(req.url || "/api/news", "http://localhost");
+  const [, itemId] = url.pathname.match(/^\/api\/news\/([^/]+)$/) || [];
+  return itemId ? decodeURIComponent(itemId) : "";
+}
+
+async function handleGetNews(req, res) {
+  if (getHeader(req, "x-admin-key") && !requireNewsAdmin(req, res)) {
+    return;
+  }
+
+  const items = await readNews();
+  sendJson(res, 200, sortByDateDescending(items));
+}
+
+async function handleCreateNews(req, res) {
+  if (!requireNewsAdmin(req, res)) {
+    return;
+  }
+
+  const payload = await readNewsPayload(req);
+  const title = payload.title?.trim();
+  const summary = payload.summary?.trim();
+  const isoDate = payload.isoDate?.trim();
+
+  if (!title || !summary || !isoDate) {
+    sendJson(res, 400, { error: "Title, summary, and date are required." });
+    return;
+  }
+
+  const items = await readNews();
+  const newItem = {
+    id: createNewsId(),
+    title,
+    summary,
+    isoDate,
+    date: formatDisplayDate(isoDate),
+    imageUrl: payload.imageUrl || "",
+  };
+
+  await writeNews(sortByDateDescending([newItem, ...items]));
+  sendJson(res, 201, newItem);
+}
+
+async function handleUpdateNews(req, res) {
+  if (!requireNewsAdmin(req, res)) {
+    return;
+  }
+
+  const itemId = getItemId(req);
+  if (!itemId) {
+    sendJson(res, 400, { error: "News item id is required." });
+    return;
+  }
+
+  const payload = await readNewsPayload(req);
+  const title = payload.title?.trim();
+  const summary = payload.summary?.trim();
+  const isoDate = payload.isoDate?.trim();
+
+  if (!title || !summary || !isoDate) {
+    sendJson(res, 400, { error: "Title, summary, and date are required." });
+    return;
+  }
+
+  const items = await readNews();
+  const itemIndex = items.findIndex((item) => item.id === itemId);
+
+  if (itemIndex === -1) {
+    sendJson(res, 404, { error: "News item not found." });
+    return;
+  }
+
+  const updatedItem = {
+    ...items[itemIndex],
+    title,
+    summary,
+    isoDate,
+    date: formatDisplayDate(isoDate),
+    imageUrl: payload.removeImage ? "" : payload.imageUrl || items[itemIndex].imageUrl || "",
+  };
+  const nextItems = [...items];
+  nextItems[itemIndex] = updatedItem;
+
+  await writeNews(sortByDateDescending(nextItems));
+  sendJson(res, 200, updatedItem);
+}
+
+async function handleDeleteNews(req, res) {
+  if (!requireNewsAdmin(req, res)) {
+    return;
+  }
+
+  const itemId = getItemId(req);
+  if (!itemId) {
+    sendJson(res, 400, { error: "News item id is required." });
+    return;
+  }
+
+  const items = await readNews();
+  const nextItems = items.filter((item) => item.id !== itemId);
+
+  if (nextItems.length === items.length) {
+    sendJson(res, 404, { error: "News item not found." });
+    return;
+  }
+
+  await writeNews(nextItems);
+  sendJson(res, 200, { message: "News item deleted successfully." });
+}
+
+export async function newsHandler(req, res) {
+  setCorsHeaders(res);
+
+  if (req.method === "OPTIONS") {
+    res.statusCode = 204;
+    return res.end();
+  }
+
+  try {
+    if (req.method === "GET") {
+      await handleGetNews(req, res);
+      return;
+    }
+
+    if (req.method === "POST") {
+      await handleCreateNews(req, res);
+      return;
+    }
+
+    if (req.method === "PUT") {
+      await handleUpdateNews(req, res);
+      return;
+    }
+
+    if (req.method === "DELETE") {
+      await handleDeleteNews(req, res);
+      return;
+    }
+
+    sendJson(res, 405, { error: "Method not allowed." });
+  } catch (error) {
+    if (error instanceof BadRequestError) {
+      sendJson(res, 400, { error: error.message });
+      return;
+    }
+
+    sendJson(res, 500, {
+      error: "Failed to process news request.",
+      details: error instanceof Error ? error.message : "Unknown error",
+    });
+  }
+}
+
+export default newsHandler;
