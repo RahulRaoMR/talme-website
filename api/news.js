@@ -10,12 +10,30 @@ const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 
 const bundledStoragePath = path.resolve(__dirname, "../server/news-storage.json");
+const tmpStoragePath = path.join(os.tmpdir(), "talme-news-storage.json");
+const isServerlessRuntime = Boolean(
+  process.env.VERCEL ||
+    process.env.AWS_LAMBDA_FUNCTION_NAME ||
+    process.env.LAMBDA_TASK_ROOT
+);
 const writableStoragePath =
   process.env.NEWS_STORAGE_PATH ||
-  (existsSync(bundledStoragePath)
+  (isServerlessRuntime
+    ? tmpStoragePath
+    : existsSync(bundledStoragePath)
     ? bundledStoragePath
     : path.join(os.tmpdir(), "talme-news-storage.json"));
-const tmpStoragePath = path.join(os.tmpdir(), "talme-news-storage.json");
+const remoteStorageUrl =
+  process.env.NEWS_REDIS_REST_URL ||
+  process.env.KV_REST_API_URL ||
+  process.env.UPSTASH_REDIS_REST_URL ||
+  "";
+const remoteStorageToken =
+  process.env.NEWS_REDIS_REST_TOKEN ||
+  process.env.KV_REST_API_TOKEN ||
+  process.env.UPSTASH_REDIS_REST_TOKEN ||
+  "";
+const remoteStorageKey = process.env.NEWS_STORAGE_KEY || "talme:news";
 const MAX_NEWS_IMAGE_SIZE = 8 * 1024 * 1024;
 
 export const config = {
@@ -38,6 +56,7 @@ function sendJson(res, statusCode, payload) {
   res.setHeader("Access-Control-Allow-Origin", "*");
   res.setHeader("Access-Control-Allow-Methods", "GET,POST,PUT,DELETE,OPTIONS");
   res.setHeader("Access-Control-Allow-Headers", "Content-Type,x-admin-key");
+  res.setHeader("Cache-Control", "no-store, max-age=0");
   return res.end(body);
 }
 
@@ -45,6 +64,7 @@ function setCorsHeaders(res) {
   res.setHeader("Access-Control-Allow-Origin", "*");
   res.setHeader("Access-Control-Allow-Methods", "GET,POST,PUT,DELETE,OPTIONS");
   res.setHeader("Access-Control-Allow-Headers", "Content-Type,x-admin-key");
+  res.setHeader("Cache-Control", "no-store, max-age=0");
 }
 
 function getHeader(req, name) {
@@ -105,7 +125,29 @@ async function ensureStorageFile(storagePath) {
   }
 }
 
-async function readNews() {
+function hasRemoteStorage() {
+  return Boolean(remoteStorageUrl && remoteStorageToken);
+}
+
+async function runRemoteStorageCommand(command) {
+  const response = await fetch(remoteStorageUrl, {
+    method: "POST",
+    headers: {
+      Authorization: `Bearer ${remoteStorageToken}`,
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify(command),
+  });
+  const result = await response.json().catch(() => ({}));
+
+  if (!response.ok || result.error) {
+    throw new Error(result.error || "Unable to access remote news storage.");
+  }
+
+  return result.result;
+}
+
+async function readFileNews() {
   try {
     const storagePath = await ensureStorageFile(writableStoragePath);
     const raw = await readFile(storagePath, "utf8");
@@ -119,7 +161,7 @@ async function readNews() {
   }
 }
 
-async function writeNews(items) {
+async function writeFileNews(items) {
   const serializedItems = JSON.stringify(items, null, 2);
 
   try {
@@ -129,6 +171,40 @@ async function writeNews(items) {
     const storagePath = await ensureStorageFile(tmpStoragePath);
     await writeFile(storagePath, serializedItems);
   }
+}
+
+async function readRemoteNews() {
+  const raw = await runRemoteStorageCommand(["GET", remoteStorageKey]);
+
+  if (!raw) {
+    const seedItems = await readFileNews();
+    await writeRemoteNews(seedItems);
+    return seedItems;
+  }
+
+  const items = JSON.parse(raw);
+  return Array.isArray(items) ? items : [];
+}
+
+async function writeRemoteNews(items) {
+  await runRemoteStorageCommand(["SET", remoteStorageKey, JSON.stringify(items)]);
+}
+
+async function readNews() {
+  if (hasRemoteStorage()) {
+    return readRemoteNews();
+  }
+
+  return readFileNews();
+}
+
+async function writeNews(items) {
+  if (hasRemoteStorage()) {
+    await writeRemoteNews(items);
+    return;
+  }
+
+  await writeFileNews(items);
 }
 
 function splitBuffer(buffer, separator) {
