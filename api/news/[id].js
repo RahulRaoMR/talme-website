@@ -1,2 +1,1 @@
-export { default, newsHandler } from "../news.js";
-
+export { config, default, newsHandler } from "../news.js";

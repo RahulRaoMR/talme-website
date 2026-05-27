@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { newsData } from "../data/newsData";
 import "./NewsEventsPage.css";
 
@@ -13,6 +13,10 @@ const EMPTY_FORM_DATA = {
 };
 const MAX_NEWS_IMAGE_SIDE = 1200;
 const NEWS_IMAGE_QUALITY = 0.82;
+
+function getNewsItemApiUrl(id) {
+  return `/api/news?id=${encodeURIComponent(id)}`;
+}
 
 async function readJsonResponse(response, fallbackMessage) {
   const rawResponse = await response.text();
@@ -111,6 +115,7 @@ function NewsEventsPage({ adminMode = false }) {
     isoDate: today,
   });
   const [imageInputKey, setImageInputKey] = useState(0);
+  const formWrapRef = useRef(null);
 
   useEffect(() => {
     const loadNews = async () => {
@@ -283,7 +288,7 @@ function NewsEventsPage({ adminMode = false }) {
 
     try {
       const isEditing = Boolean(editingId);
-      const response = await fetch(isEditing ? `/api/news/${editingId}` : "/api/news", {
+      const response = await fetch(isEditing ? getNewsItemApiUrl(editingId) : "/api/news", {
         method: isEditing ? "PUT" : "POST",
         headers: {
           "x-admin-key": adminKey,
@@ -338,6 +343,10 @@ function NewsEventsPage({ adminMode = false }) {
     });
     setImageInputKey((prev) => prev + 1);
     setIsAdminPanelOpen(true);
+    setErrorMessage("");
+    window.requestAnimationFrame(() => {
+      formWrapRef.current?.scrollIntoView({ behavior: "smooth", block: "start" });
+    });
   };
 
   const cancelEditing = () => {
@@ -350,7 +359,7 @@ function NewsEventsPage({ adminMode = false }) {
     setErrorMessage("");
 
     try {
-      const response = await fetch(`/api/news/${id}`, {
+      const response = await fetch(getNewsItemApiUrl(id), {
         method: "DELETE",
         headers: {
           "x-admin-key": adminKey,
@@ -414,7 +423,11 @@ function NewsEventsPage({ adminMode = false }) {
         </header>
 
         {adminMode || isAdminPanelOpen ? (
-          <section className="news-events-form-wrap" aria-label="Manage daily news">
+          <section
+            className="news-events-form-wrap"
+            aria-label="Manage daily news"
+            ref={formWrapRef}
+          >
             {!isAdmin ? (
               <form className="news-events-admin-panel" onSubmit={handleAdminLogin}>
                 <label htmlFor="news-admin-key">Admin key</label>

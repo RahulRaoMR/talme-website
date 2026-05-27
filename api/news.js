@@ -298,6 +298,12 @@ function getItemId(req) {
   }
 
   const url = new URL(req.url || "/api/news", "http://localhost");
+  const queryId = url.searchParams.get("id");
+
+  if (queryId) {
+    return queryId;
+  }
+
   const [, itemId] = url.pathname.match(/^\/api\/news\/([^/]+)$/) || [];
   return itemId ? decodeURIComponent(itemId) : "";
 }
