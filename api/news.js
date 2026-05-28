@@ -216,7 +216,11 @@ async function writeRemoteNews(items) {
 
 async function readNews() {
   if (hasRemoteStorage()) {
-    return readRemoteNews();
+    try {
+      return await readRemoteNews();
+    } catch {
+      return readFileNews();
+    }
   }
 
   return readFileNews();
@@ -224,7 +228,11 @@ async function readNews() {
 
 async function writeNews(items) {
   if (hasRemoteStorage()) {
-    await writeRemoteNews(items);
+    try {
+      await writeRemoteNews(items);
+    } catch {
+      throw new StorageConfigError(getStorageSetupMessage());
+    }
     return;
   }
 
