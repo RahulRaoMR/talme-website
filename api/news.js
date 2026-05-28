@@ -19,7 +19,7 @@ const isServerlessRuntime = Boolean(
 const writableStoragePath =
   process.env.NEWS_STORAGE_PATH ||
   (isServerlessRuntime
-    ? tmpStoragePath
+    ? bundledStoragePath
     : existsSync(bundledStoragePath)
     ? bundledStoragePath
     : path.join(os.tmpdir(), "talme-news-storage.json"));
@@ -129,6 +129,10 @@ function hasRemoteStorage() {
   return Boolean(remoteStorageUrl && remoteStorageToken);
 }
 
+function hasDurableFileStorage() {
+  return !isServerlessRuntime;
+}
+
 async function runRemoteStorageCommand(command) {
   const response = await fetch(remoteStorageUrl, {
     method: "POST",
@@ -202,6 +206,12 @@ async function writeNews(items) {
   if (hasRemoteStorage()) {
     await writeRemoteNews(items);
     return;
+  }
+
+  if (!hasDurableFileStorage()) {
+    throw new Error(
+      "Persistent news storage is not configured. Add Upstash/Vercel KV REST credentials to save news in production."
+    );
   }
 
   await writeFileNews(items);
