@@ -1,16 +1,43 @@
-# React + Vite
+# TALME Website
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+React/Vite frontend with a small Node/Vercel backend for contact forms, career applications, chat messages, and news updates.
 
-Currently, two official plugins are available:
+## Development
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Babel](https://babeljs.io/) (or [oxc](https://oxc.rs) when used in [rolldown-vite](https://vite.dev/guide/rolldown)) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+```bash
+npm install
+npm run dev
+```
 
-## React Compiler
+`npm run dev` starts:
 
-The React Compiler is currently not compatible with SWC. See [this issue](https://github.com/vitejs/vite-plugin-react/issues/428) for tracking the progress.
+- Vite on `http://localhost:5173`
+- Backend API on `http://localhost:3001`
 
-## Expanding the ESLint configuration
+The Vite dev server proxies `/api/*` to the backend.
 
-If you are developing a production application, we recommend using TypeScript with type-aware lint rules enabled. Check out the [TS template](https://github.com/vitejs/vite/tree/main/packages/create-vite/template-react-ts) for information on how to integrate TypeScript and [`typescript-eslint`](https://typescript-eslint.io) in your project.
+## Backend Routes
+
+- `POST /api/contact` stores and/or emails contact form submissions.
+- `POST /api/careers` stores and/or emails career applications with PDF resumes.
+- `POST /api/chat` stores chat widget messages.
+- `GET /api/site-data` returns stored contact, career, and chat submissions. Requires `x-admin-key`.
+- `GET /api/news` returns news items.
+- `POST /api/news` creates a news item. Requires `x-admin-key`.
+- `PUT /api/news?id=<id>` updates a news item. Requires `x-admin-key`.
+- `DELETE /api/news?id=<id>` deletes a news item. Requires `x-admin-key`.
+
+## Environment
+
+Copy `.env.example` to `.env` for local development and set the values you need.
+
+Important variables:
+
+- `BACKEND_PORT`: local backend port, default `3001`.
+- `SITE_ADMIN_KEY`: admin key for reading `/api/site-data`.
+- `NEWS_ADMIN_KEY`: admin key for managing news.
+- `SMTP_HOST`, `SMTP_PORT`, `SMTP_USER`, `SMTP_PASS`: SMTP email delivery.
+- `CONTACT_EMAIL_TO`, `CAREERS_EMAIL_TO`: recipients for website submissions.
+- `UPSTASH_REDIS_REST_URL`, `UPSTASH_REDIS_REST_TOKEN`: persistent storage for production/serverless deployments.
+
+Without Redis/KV, local development stores data in `server/website-storage.json` and `server/news-storage.json`. On serverless hosting, configure Redis/KV so submissions and news edits persist.

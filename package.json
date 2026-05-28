@@ -9,6 +9,7 @@
     "build": "vite build",
     "lint": "eslint .",
     "preview": "vite preview",
+    "backend": "node server/news-server.js",
     "news-api": "node server/news-server.js"
   },
   "dependencies": {

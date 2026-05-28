@@ -199,6 +199,11 @@ function Navbar() {
                 </ul>
               )}
             </li>
+            <li>
+              <a href="https://hrms.talme.in/" target="_blank" rel="noreferrer">
+                TALME INTERNET
+              </a>
+            </li>
           </ul>
         </nav>
       </div>

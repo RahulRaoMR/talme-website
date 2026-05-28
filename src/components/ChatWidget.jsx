@@ -36,18 +36,14 @@ function ChatWidget() {
     setSubmitState({ status: "sending", message: "Sending your message..." });
 
     try {
-      const response = await fetch("https://formsubmit.co/ajax/hr@talme.in", {
+      const response = await fetch("/api/chat", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
-          Accept: "application/json",
         },
         body: JSON.stringify({
-          name: formData.name,
-          message: formData.message,
-          _subject: `Website Chat Message from ${formData.name}`,
-          _captcha: "false",
-          _template: "table",
+          name: formData.name.trim(),
+          message: formData.message.trim(),
         }),
       });
 

@@ -11,7 +11,7 @@ const projectRoot = path.resolve(__dirname, "..");
 
 dotenv.config({ path: path.join(projectRoot, ".env") });
 
-const newsApiPort = Number(process.env.NEWS_API_PORT || 3001);
+const backendPort = Number(process.env.BACKEND_PORT || process.env.NEWS_API_PORT || 3001);
 const npmCommand = process.platform === "win32" ? "npm.cmd" : "npm";
 const children = new Set();
 let shuttingDown = false;
@@ -39,6 +39,7 @@ function startScript(scriptName) {
   const child = spawn(npmCommand, ["run", scriptName], {
     cwd: projectRoot,
     env: process.env,
+    shell: process.platform === "win32",
     stdio: "inherit",
   });
 
@@ -72,10 +73,10 @@ function shutdown(exitCode = 0) {
   setTimeout(() => process.exit(exitCode), 200);
 }
 
-if (await isPortOpen(newsApiPort)) {
-  console.log(`News API already running on http://localhost:${newsApiPort}`);
+if (await isPortOpen(backendPort)) {
+  console.log(`Talme backend already running on http://localhost:${backendPort}`);
 } else {
-  startScript("news-api");
+  startScript("backend");
 }
 
 startScript("dev:client");
