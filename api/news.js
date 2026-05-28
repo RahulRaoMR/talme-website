@@ -43,9 +43,34 @@ export const config = {
 };
 
 class BadRequestError extends Error {}
+class StorageConfigError extends Error {}
+
+function hasRemoteStorage() {
+  return Boolean(remoteStorageUrl && remoteStorageToken);
+}
+
+function hasDurableFileStorage() {
+  return !isServerlessRuntime;
+}
+
+function getStorageMode() {
+  if (hasRemoteStorage()) {
+    return "remote";
+  }
+
+  return hasDurableFileStorage() ? "local" : "readonly";
+}
+
+function getStorageSetupMessage() {
+  return "Live news editing needs persistent storage. Add Vercel KV or Upstash REST credentials, then redeploy.";
+}
 
 function sendJson(res, statusCode, payload) {
   const body = JSON.stringify(payload);
+
+  if (typeof res.setHeader === "function") {
+    res.setHeader("X-News-Storage-Mode", getStorageMode());
+  }
 
   if (typeof res.status === "function") {
     return res.status(statusCode).json(payload);
@@ -56,6 +81,7 @@ function sendJson(res, statusCode, payload) {
   res.setHeader("Access-Control-Allow-Origin", "*");
   res.setHeader("Access-Control-Allow-Methods", "GET,POST,PUT,DELETE,OPTIONS");
   res.setHeader("Access-Control-Allow-Headers", "Content-Type,x-admin-key");
+  res.setHeader("Access-Control-Expose-Headers", "X-News-Storage-Mode");
   res.setHeader("Cache-Control", "no-store, max-age=0");
   return res.end(body);
 }
@@ -64,6 +90,8 @@ function setCorsHeaders(res) {
   res.setHeader("Access-Control-Allow-Origin", "*");
   res.setHeader("Access-Control-Allow-Methods", "GET,POST,PUT,DELETE,OPTIONS");
   res.setHeader("Access-Control-Allow-Headers", "Content-Type,x-admin-key");
+  res.setHeader("Access-Control-Expose-Headers", "X-News-Storage-Mode");
+  res.setHeader("X-News-Storage-Mode", getStorageMode());
   res.setHeader("Cache-Control", "no-store, max-age=0");
 }
 
@@ -123,14 +151,6 @@ async function ensureStorageFile(storagePath) {
 
     return storagePath;
   }
-}
-
-function hasRemoteStorage() {
-  return Boolean(remoteStorageUrl && remoteStorageToken);
-}
-
-function hasDurableFileStorage() {
-  return !isServerlessRuntime;
 }
 
 async function runRemoteStorageCommand(command) {
@@ -209,9 +229,7 @@ async function writeNews(items) {
   }
 
   if (!hasDurableFileStorage()) {
-    throw new Error(
-      "Persistent news storage is not configured. Add Upstash/Vercel KV REST credentials to save news in production."
-    );
+    throw new StorageConfigError(getStorageSetupMessage());
   }
 
   await writeFileNews(items);
@@ -532,6 +550,11 @@ export async function newsHandler(req, res) {
   } catch (error) {
     if (error instanceof BadRequestError) {
       sendJson(res, 400, { error: error.message });
+      return;
+    }
+
+    if (error instanceof StorageConfigError) {
+      sendJson(res, 503, { error: error.message });
       return;
     }
 

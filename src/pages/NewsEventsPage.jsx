@@ -13,6 +13,8 @@ const EMPTY_FORM_DATA = {
 };
 const MAX_NEWS_IMAGE_SIDE = 1200;
 const NEWS_IMAGE_QUALITY = 0.82;
+const NEWS_STORAGE_SETUP_MESSAGE =
+  "Live news editing needs persistent storage. Add Vercel KV or Upstash REST credentials, then redeploy.";
 
 function getNewsItemApiUrl(id) {
   return `/api/news?id=${encodeURIComponent(id)}`;
@@ -41,6 +43,10 @@ function isAdminAuthError(error) {
     error.message === "Invalid admin key." ||
     error.message === "News admin key is not configured."
   );
+}
+
+function getStorageMode(response) {
+  return response.headers.get("x-news-storage-mode") || "";
 }
 
 function readFileAsDataUrl(file) {
@@ -110,6 +116,7 @@ function NewsEventsPage({ adminMode = false }) {
   const [isAdminPanelOpen, setIsAdminPanelOpen] = useState(adminMode);
   const [isDeletingId, setIsDeletingId] = useState("");
   const [editingId, setEditingId] = useState("");
+  const [canSaveNews, setCanSaveNews] = useState(true);
   const [formData, setFormData] = useState({
     ...EMPTY_FORM_DATA,
     isoDate: today,
@@ -138,6 +145,14 @@ function NewsEventsPage({ adminMode = false }) {
           throw new Error("Unable to load shared news.");
         }
 
+        const storageMode = getStorageMode(response);
+        setCanSaveNews(storageMode !== "readonly");
+        const hasStoredAdminKey = Boolean(
+          window.localStorage.getItem(ADMIN_STORAGE_KEY)
+        );
+        if (storageMode === "readonly" && (adminMode || hasStoredAdminKey)) {
+          setNoticeMessage(NEWS_STORAGE_SETUP_MESSAGE);
+        }
         setNewsItems(items);
         setStatus("ready");
       } catch (error) {
@@ -160,7 +175,7 @@ function NewsEventsPage({ adminMode = false }) {
     };
 
     loadNews();
-  }, []);
+  }, [adminMode]);
 
   const handleChange = (event) => {
     const { name, value } = event.target;
@@ -230,14 +245,16 @@ function NewsEventsPage({ adminMode = false }) {
         throw new Error(result.error || "Invalid admin key.");
       }
 
+      const storageMode = getStorageMode(response);
       window.localStorage.setItem(ADMIN_STORAGE_KEY, key);
       setAdminKey(key);
       setAdminPassword("");
       setIsAdminPanelOpen(true);
       setNewsItems(result);
+      setCanSaveNews(storageMode !== "readonly");
       setStatus("ready");
       setErrorMessage("");
-      setNoticeMessage("");
+      setNoticeMessage(storageMode === "readonly" ? NEWS_STORAGE_SETUP_MESSAGE : "");
     } catch (error) {
       if (isAdminAuthError(error)) {
         window.localStorage.removeItem(ADMIN_STORAGE_KEY);
@@ -272,6 +289,12 @@ function NewsEventsPage({ adminMode = false }) {
     const isoDate = formData.isoDate;
 
     if (!title || !summary || !isoDate) return;
+
+    if (!canSaveNews) {
+      setStatus("error");
+      setErrorMessage(NEWS_STORAGE_SETUP_MESSAGE);
+      return;
+    }
 
     const payload = new FormData();
     payload.append("title", title);
@@ -355,6 +378,11 @@ function NewsEventsPage({ adminMode = false }) {
   };
 
   const deleteNews = async (id) => {
+    if (!canSaveNews) {
+      setErrorMessage(NEWS_STORAGE_SETUP_MESSAGE);
+      return;
+    }
+
     setIsDeletingId(id);
     setErrorMessage("");
 
@@ -512,7 +540,11 @@ function NewsEventsPage({ adminMode = false }) {
                       </div>
                     ) : null}
                   </div>
-                  <button type="submit" className="news-events-button">
+                  <button
+                    type="submit"
+                    className="news-events-button"
+                    disabled={!canSaveNews || status === "submitting"}
+                  >
                     {status === "submitting"
                       ? editingId
                         ? "Updating..."
@@ -567,7 +599,7 @@ function NewsEventsPage({ adminMode = false }) {
                       type="button"
                       className="news-events-delete"
                       onClick={() => deleteNews(item.id)}
-                      disabled={isDeletingId === item.id}
+                      disabled={!canSaveNews || isDeletingId === item.id}
                     >
                       {isDeletingId === item.id ? "Deleting..." : "Delete"}
                     </button>
