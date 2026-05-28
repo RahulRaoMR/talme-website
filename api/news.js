@@ -100,16 +100,20 @@ function getHeader(req, name) {
   return headers[name] || headers[name.toLowerCase()] || "";
 }
 
+function getConfiguredAdminKeys() {
+  return [process.env.NEWS_ADMIN_KEY, process.env.SITE_ADMIN_KEY].filter(Boolean);
+}
+
 function requireNewsAdmin(req, res) {
-  const configuredKey = process.env.NEWS_ADMIN_KEY;
+  const configuredKeys = getConfiguredAdminKeys();
   const requestKey = getHeader(req, "x-admin-key");
 
-  if (!configuredKey) {
+  if (configuredKeys.length === 0) {
     sendJson(res, 500, { error: "News admin key is not configured." });
     return false;
   }
 
-  if (requestKey !== configuredKey) {
+  if (!configuredKeys.includes(requestKey)) {
     sendJson(res, 401, { error: "Invalid admin key." });
     return false;
   }
@@ -230,10 +234,15 @@ async function writeNews(items) {
   if (hasRemoteStorage()) {
     try {
       await writeRemoteNews(items);
+      return;
     } catch {
-      throw new StorageConfigError(getStorageSetupMessage());
+      if (!hasDurableFileStorage()) {
+        throw new StorageConfigError(getStorageSetupMessage());
+      }
+
+      await writeFileNews(items);
+      return;
     }
-    return;
   }
 
   if (!hasDurableFileStorage()) {

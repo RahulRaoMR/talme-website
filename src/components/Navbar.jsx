@@ -201,7 +201,7 @@ function Navbar() {
             </li>
             <li>
               <a href="https://hrms.talme.in/" target="_blank" rel="noreferrer">
-                TALME INTERNET
+                INTRANET
               </a>
             </li>
           </ul>

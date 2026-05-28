@@ -35,7 +35,7 @@ Important variables:
 
 - `BACKEND_PORT`: local backend port, default `3001`.
 - `SITE_ADMIN_KEY`: admin key for reading `/api/site-data`.
-- `NEWS_ADMIN_KEY`: admin key for managing news.
+- `NEWS_ADMIN_KEY`: admin key for managing news. The news API also accepts `SITE_ADMIN_KEY`.
 - `SMTP_HOST`, `SMTP_PORT`, `SMTP_USER`, `SMTP_PASS`: SMTP email delivery.
 - `CONTACT_EMAIL_TO`, `CAREERS_EMAIL_TO`: recipients for website submissions.
 - `UPSTASH_REDIS_REST_URL`, `UPSTASH_REDIS_REST_TOKEN`: persistent storage for production/serverless deployments.
