@@ -28,6 +28,11 @@ const isServerlessRuntime = Boolean(
     process.env.AWS_LAMBDA_FUNCTION_NAME ||
     process.env.LAMBDA_TASK_ROOT
 );
+const backendProxyOrigin = (
+  process.env.TALME_BACKEND_ORIGIN ||
+  process.env.SITE_BACKEND_ORIGIN ||
+  "https://talme-website.onrender.com"
+).replace(/\/+$/, "");
 
 export const config = {
   api: {
@@ -44,6 +49,70 @@ const emptySiteData = {
   chatMessages: [],
   updatedAt: "",
 };
+
+function shouldProxyToBackend(req) {
+  if (!process.env.VERCEL || !backendProxyOrigin) {
+    return false;
+  }
+
+  const requestHost = getHeader(req, "host");
+
+  try {
+    return new URL(backendProxyOrigin).host !== requestHost;
+  } catch {
+    return false;
+  }
+}
+
+function getProxyHeaders(req) {
+  const excludedHeaders = new Set([
+    "connection",
+    "content-length",
+    "host",
+    "transfer-encoding",
+  ]);
+  const headers = {};
+
+  for (const [name, value] of Object.entries(req.headers || {})) {
+    if (excludedHeaders.has(name.toLowerCase()) || value === undefined) {
+      continue;
+    }
+
+    headers[name] = Array.isArray(value) ? value.join(", ") : value;
+  }
+
+  return headers;
+}
+
+async function proxyToBackend(req, res) {
+  const requestUrl = new URL(req.url || "/api/backend", "http://localhost");
+  const targetUrl = new URL(`${requestUrl.pathname}${requestUrl.search}`, backendProxyOrigin);
+  const body =
+    req.method === "GET" || req.method === "HEAD"
+      ? undefined
+      : await readRequestBody(req, MAX_BODY_SIZE);
+  const response = await fetch(targetUrl, {
+    method: req.method,
+    headers: getProxyHeaders(req),
+    body,
+  });
+  const responseBody = Buffer.from(await response.arrayBuffer());
+
+  res.statusCode = response.status;
+  response.headers.forEach((value, name) => {
+    const lowerName = name.toLowerCase();
+    if (
+      lowerName === "content-encoding" ||
+      lowerName === "content-length" ||
+      lowerName === "transfer-encoding"
+    ) {
+      return;
+    }
+
+    res.setHeader(name, value);
+  });
+  res.end(responseBody);
+}
 
 const transporter = nodemailer.createTransport({
   host: process.env.SMTP_HOST,
@@ -646,6 +715,11 @@ async function handleData(req, res) {
 }
 
 export default async function websiteBackend(req, res) {
+  if (shouldProxyToBackend(req)) {
+    await proxyToBackend(req, res);
+    return;
+  }
+
   setCorsHeaders(res);
 
   if (req.method === "OPTIONS") {

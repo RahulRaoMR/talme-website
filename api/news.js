@@ -35,6 +35,11 @@ const remoteStorageToken =
   "";
 const remoteStorageKey = process.env.NEWS_STORAGE_KEY || "talme:news";
 const MAX_NEWS_IMAGE_SIZE = 8 * 1024 * 1024;
+const backendProxyOrigin = (
+  process.env.TALME_BACKEND_ORIGIN ||
+  process.env.NEWS_BACKEND_ORIGIN ||
+  "https://talme-website.onrender.com"
+).replace(/\/+$/, "");
 
 export const config = {
   api: {
@@ -44,6 +49,70 @@ export const config = {
 
 class BadRequestError extends Error {}
 class StorageConfigError extends Error {}
+
+function shouldProxyToBackend(req) {
+  if (!process.env.VERCEL || !backendProxyOrigin) {
+    return false;
+  }
+
+  const requestHost = getHeader(req, "host");
+
+  try {
+    return new URL(backendProxyOrigin).host !== requestHost;
+  } catch {
+    return false;
+  }
+}
+
+function getProxyHeaders(req) {
+  const excludedHeaders = new Set([
+    "connection",
+    "content-length",
+    "host",
+    "transfer-encoding",
+  ]);
+  const headers = {};
+
+  for (const [name, value] of Object.entries(req.headers || {})) {
+    if (excludedHeaders.has(name.toLowerCase()) || value === undefined) {
+      continue;
+    }
+
+    headers[name] = Array.isArray(value) ? value.join(", ") : value;
+  }
+
+  return headers;
+}
+
+async function proxyToBackend(req, res) {
+  const requestUrl = new URL(req.url || "/api/news", "http://localhost");
+  const targetUrl = new URL(`${requestUrl.pathname}${requestUrl.search}`, backendProxyOrigin);
+  const body =
+    req.method === "GET" || req.method === "HEAD"
+      ? undefined
+      : await readRequestBody(req, MAX_NEWS_IMAGE_SIZE + 1024 * 1024);
+  const response = await fetch(targetUrl, {
+    method: req.method,
+    headers: getProxyHeaders(req),
+    body,
+  });
+  const responseBody = Buffer.from(await response.arrayBuffer());
+
+  res.statusCode = response.status;
+  response.headers.forEach((value, name) => {
+    const lowerName = name.toLowerCase();
+    if (
+      lowerName === "content-encoding" ||
+      lowerName === "content-length" ||
+      lowerName === "transfer-encoding"
+    ) {
+      return;
+    }
+
+    res.setHeader(name, value);
+  });
+  res.end(responseBody);
+}
 
 function hasRemoteStorage() {
   return Boolean(remoteStorageUrl && remoteStorageToken);
@@ -535,6 +604,11 @@ async function handleDeleteNews(req, res) {
 }
 
 export async function newsHandler(req, res) {
+  if (shouldProxyToBackend(req)) {
+    await proxyToBackend(req, res);
+    return;
+  }
+
   setCorsHeaders(res);
 
   if (req.method === "OPTIONS") {
