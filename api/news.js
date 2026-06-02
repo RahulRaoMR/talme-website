@@ -5,6 +5,7 @@ import os from "node:os";
 import path from "node:path";
 import process from "node:process";
 import { fileURLToPath } from "node:url";
+import { neon } from "@neondatabase/serverless";
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
@@ -15,6 +16,11 @@ const isServerlessRuntime = Boolean(
   process.env.VERCEL ||
     process.env.AWS_LAMBDA_FUNCTION_NAME ||
     process.env.LAMBDA_TASK_ROOT
+);
+const isHostedRuntime = Boolean(
+  isServerlessRuntime ||
+    process.env.RENDER ||
+    process.env.RENDER_SERVICE_ID
 );
 const writableStoragePath =
   process.env.NEWS_STORAGE_PATH ||
@@ -34,6 +40,14 @@ const remoteStorageToken =
   process.env.UPSTASH_REDIS_REST_TOKEN ||
   "";
 const remoteStorageKey = process.env.NEWS_STORAGE_KEY || "talme:news";
+const databaseStorageUrl =
+  process.env.NEWS_DATABASE_URL ||
+  process.env.DATABASE_URL ||
+  process.env.POSTGRES_URL ||
+  process.env.POSTGRES_PRISMA_URL ||
+  process.env.NEON_DATABASE_URL ||
+  "";
+const databaseStorageKey = process.env.NEWS_DATABASE_STORAGE_KEY || remoteStorageKey;
 const MAX_NEWS_IMAGE_SIZE = 8 * 1024 * 1024;
 const backendProxyOrigin = (
   process.env.TALME_BACKEND_ORIGIN ||
@@ -49,6 +63,9 @@ export const config = {
 
 class BadRequestError extends Error {}
 class StorageConfigError extends Error {}
+
+let databaseSql;
+let databaseReadyPromise;
 
 function shouldProxyToBackend(req) {
   if (!process.env.VERCEL || !backendProxyOrigin) {
@@ -118,11 +135,19 @@ function hasRemoteStorage() {
   return Boolean(remoteStorageUrl && remoteStorageToken);
 }
 
+function hasDatabaseStorage() {
+  return Boolean(databaseStorageUrl);
+}
+
 function hasDurableFileStorage() {
-  return !isServerlessRuntime;
+  return !isHostedRuntime;
 }
 
 function getStorageMode() {
+  if (hasDatabaseStorage()) {
+    return "database";
+  }
+
   if (hasRemoteStorage()) {
     return "remote";
   }
@@ -131,7 +156,7 @@ function getStorageMode() {
 }
 
 function getStorageSetupMessage() {
-  return "Live news editing needs persistent storage. Add Vercel KV or Upstash REST credentials, then redeploy.";
+  return "Live news editing needs persistent storage. Add DATABASE_URL/Neon or Upstash REST credentials, then redeploy.";
 }
 
 function sendJson(res, statusCode, payload) {
@@ -244,6 +269,66 @@ async function runRemoteStorageCommand(command) {
   return result.result;
 }
 
+function getDatabaseSql() {
+  databaseSql ||= neon(databaseStorageUrl);
+  return databaseSql;
+}
+
+async function ensureDatabaseStorage() {
+  databaseReadyPromise ||= getDatabaseSql()`
+    CREATE TABLE IF NOT EXISTS talme_app_storage (
+      key TEXT PRIMARY KEY,
+      value JSONB NOT NULL,
+      updated_at TIMESTAMPTZ NOT NULL DEFAULT NOW()
+    )
+  `;
+
+  await databaseReadyPromise;
+}
+
+function normalizeStoredArray(value) {
+  if (Array.isArray(value)) {
+    return value;
+  }
+
+  if (typeof value === "string") {
+    const parsedValue = JSON.parse(value);
+    return Array.isArray(parsedValue) ? parsedValue : [];
+  }
+
+  return [];
+}
+
+async function readDatabaseNews() {
+  await ensureDatabaseStorage();
+
+  const rows = await getDatabaseSql()`
+    SELECT value
+    FROM talme_app_storage
+    WHERE key = ${databaseStorageKey}
+    LIMIT 1
+  `;
+
+  if (rows.length === 0) {
+    const seedItems = await readFileNews();
+    await writeDatabaseNews(seedItems);
+    return seedItems;
+  }
+
+  return normalizeStoredArray(rows[0].value);
+}
+
+async function writeDatabaseNews(items) {
+  await ensureDatabaseStorage();
+
+  await getDatabaseSql()`
+    INSERT INTO talme_app_storage (key, value, updated_at)
+    VALUES (${databaseStorageKey}, ${JSON.stringify(items)}::jsonb, NOW())
+    ON CONFLICT (key)
+    DO UPDATE SET value = EXCLUDED.value, updated_at = NOW()
+  `;
+}
+
 async function readFileNews() {
   try {
     const storagePath = await ensureStorageFile(writableStoragePath);
@@ -288,6 +373,16 @@ async function writeRemoteNews(items) {
 }
 
 async function readNews() {
+  if (hasDatabaseStorage()) {
+    try {
+      return await readDatabaseNews();
+    } catch {
+      if (!hasRemoteStorage()) {
+        throw new StorageConfigError(getStorageSetupMessage());
+      }
+    }
+  }
+
   if (hasRemoteStorage()) {
     try {
       return await readRemoteNews();
@@ -300,6 +395,17 @@ async function readNews() {
 }
 
 async function writeNews(items) {
+  if (hasDatabaseStorage()) {
+    try {
+      await writeDatabaseNews(items);
+      return;
+    } catch {
+      if (!hasRemoteStorage()) {
+        throw new StorageConfigError(getStorageSetupMessage());
+      }
+    }
+  }
+
   if (hasRemoteStorage()) {
     try {
       await writeRemoteNews(items);

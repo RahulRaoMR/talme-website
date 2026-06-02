@@ -38,6 +38,7 @@ Important variables:
 - `NEWS_ADMIN_KEY`: admin key for managing news. The news API also accepts `SITE_ADMIN_KEY`.
 - `SMTP_HOST`, `SMTP_PORT`, `SMTP_USER`, `SMTP_PASS`: SMTP email delivery.
 - `CONTACT_EMAIL_TO`, `CAREERS_EMAIL_TO`: recipients for website submissions.
+- `DATABASE_URL`: Neon/Postgres connection string for persistent production storage. The backend creates `talme_app_storage` automatically.
 - `UPSTASH_REDIS_REST_URL`, `UPSTASH_REDIS_REST_TOKEN`: persistent storage for production/serverless deployments.
 
-Without Redis/KV, local development stores data in `server/website-storage.json` and `server/news-storage.json`. On serverless hosting, configure Redis/KV so submissions and news edits persist.
+Without database or Redis/KV credentials, local development stores data in `server/website-storage.json` and `server/news-storage.json`. On hosted deployments such as Render or Vercel, configure `DATABASE_URL` or Redis/KV so submissions and news edits persist.

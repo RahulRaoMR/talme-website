@@ -4,6 +4,7 @@ import os from "node:os";
 import path from "node:path";
 import process from "node:process";
 import nodemailer from "nodemailer";
+import { neon } from "@neondatabase/serverless";
 
 const MAX_RESUME_SIZE = 5 * 1024 * 1024;
 const MAX_BODY_SIZE = 6 * 1024 * 1024;
@@ -23,10 +24,23 @@ const remoteStorageToken =
   process.env.UPSTASH_REDIS_REST_TOKEN ||
   "";
 const storageKey = process.env.SITE_DATA_STORAGE_KEY || "talme:website-data";
+const databaseStorageUrl =
+  process.env.SITE_DATABASE_URL ||
+  process.env.DATABASE_URL ||
+  process.env.POSTGRES_URL ||
+  process.env.POSTGRES_PRISMA_URL ||
+  process.env.NEON_DATABASE_URL ||
+  "";
+const databaseStorageKey = process.env.SITE_DATABASE_STORAGE_KEY || storageKey;
 const isServerlessRuntime = Boolean(
   process.env.VERCEL ||
     process.env.AWS_LAMBDA_FUNCTION_NAME ||
     process.env.LAMBDA_TASK_ROOT
+);
+const isHostedRuntime = Boolean(
+  isServerlessRuntime ||
+    process.env.RENDER ||
+    process.env.RENDER_SERVICE_ID
 );
 const backendProxyOrigin = (
   process.env.TALME_BACKEND_ORIGIN ||
@@ -42,6 +56,9 @@ export const config = {
 
 class BadRequestError extends Error {}
 class StorageConfigError extends Error {}
+
+let databaseSql;
+let databaseReadyPromise;
 
 const emptySiteData = {
   contacts: [],
@@ -131,16 +148,24 @@ function hasRemoteStorage() {
   return Boolean(remoteStorageUrl && remoteStorageToken);
 }
 
+function hasDatabaseStorage() {
+  return Boolean(databaseStorageUrl);
+}
+
 function getStorageMode() {
+  if (hasDatabaseStorage()) {
+    return "database";
+  }
+
   if (hasRemoteStorage()) {
     return "remote";
   }
 
-  return isServerlessRuntime ? "readonly" : "local";
+  return isHostedRuntime ? "readonly" : "local";
 }
 
 function getStorageSetupMessage() {
-  return "Persistent website storage is not configured. Add Vercel KV or Upstash REST credentials, then redeploy.";
+  return "Persistent website storage is not configured. Add DATABASE_URL/Neon or Upstash REST credentials, then redeploy.";
 }
 
 function setCorsHeaders(res) {
@@ -220,6 +245,47 @@ async function runRemoteStorageCommand(command) {
   return result.result;
 }
 
+function getDatabaseSql() {
+  databaseSql ||= neon(databaseStorageUrl);
+  return databaseSql;
+}
+
+async function ensureDatabaseStorage() {
+  databaseReadyPromise ||= getDatabaseSql()`
+    CREATE TABLE IF NOT EXISTS talme_app_storage (
+      key TEXT PRIMARY KEY,
+      value JSONB NOT NULL,
+      updated_at TIMESTAMPTZ NOT NULL DEFAULT NOW()
+    )
+  `;
+
+  await databaseReadyPromise;
+}
+
+async function readDatabaseSiteData() {
+  await ensureDatabaseStorage();
+
+  const rows = await getDatabaseSql()`
+    SELECT value
+    FROM talme_app_storage
+    WHERE key = ${databaseStorageKey}
+    LIMIT 1
+  `;
+
+  return normalizeSiteData(rows[0]?.value || emptySiteData);
+}
+
+async function writeDatabaseSiteData(data) {
+  await ensureDatabaseStorage();
+
+  await getDatabaseSql()`
+    INSERT INTO talme_app_storage (key, value, updated_at)
+    VALUES (${databaseStorageKey}, ${JSON.stringify(data)}::jsonb, NOW())
+    ON CONFLICT (key)
+    DO UPDATE SET value = EXCLUDED.value, updated_at = NOW()
+  `;
+}
+
 async function readLocalSiteData() {
   try {
     const raw = await readFile(localStoragePath, "utf8");
@@ -235,6 +301,16 @@ async function writeLocalSiteData(data) {
 }
 
 async function readSiteData() {
+  if (hasDatabaseStorage()) {
+    try {
+      return await readDatabaseSiteData();
+    } catch {
+      if (!hasRemoteStorage()) {
+        throw new StorageConfigError(getStorageSetupMessage());
+      }
+    }
+  }
+
   if (hasRemoteStorage()) {
     const raw = await runRemoteStorageCommand(["GET", storageKey]);
     return normalizeSiteData(raw ? JSON.parse(raw) : emptySiteData);
@@ -249,12 +325,23 @@ async function writeSiteData(data) {
     updatedAt: new Date().toISOString(),
   };
 
+  if (hasDatabaseStorage()) {
+    try {
+      await writeDatabaseSiteData(nextData);
+      return nextData;
+    } catch {
+      if (!hasRemoteStorage()) {
+        throw new StorageConfigError(getStorageSetupMessage());
+      }
+    }
+  }
+
   if (hasRemoteStorage()) {
     await runRemoteStorageCommand(["SET", storageKey, JSON.stringify(nextData)]);
     return nextData;
   }
 
-  if (isServerlessRuntime) {
+  if (isHostedRuntime) {
     throw new StorageConfigError(getStorageSetupMessage());
   }
 
