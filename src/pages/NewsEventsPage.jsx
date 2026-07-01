@@ -501,13 +501,13 @@ function NewsEventsPage({ adminMode = false }) {
         response,
         "Unable to delete shared news."
       );
-      if (!response.ok) {
+      if (!response.ok && response.status !== 404) {
         throw new Error(result.error || "Unable to delete shared news.");
       }
 
       rememberDeletedNewsId(id);
       removeLocalNewsItem(id);
-      setNewsItems((prev) => prev.filter((item) => item.id !== id));
+      setNewsItems((prev) => prev.filter((item) => String(item.id) !== String(id)));
     } catch (error) {
       if (isAdminAuthError(error)) {
         window.localStorage.removeItem(ADMIN_STORAGE_KEY);
