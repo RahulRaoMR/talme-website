@@ -481,13 +481,16 @@ function NewsEventsPage({ adminMode = false }) {
   };
 
   const deleteNews = async (id) => {
-    if (!canSaveNews) {
-      setErrorMessage(NEWS_STORAGE_SETUP_MESSAGE);
-      return;
-    }
-
     setIsDeletingId(id);
     setErrorMessage("");
+
+    if (!canSaveNews) {
+      rememberDeletedNewsId(id);
+      removeLocalNewsItem(id);
+      setNewsItems((prev) => prev.filter((item) => String(item.id) !== String(id)));
+      setIsDeletingId("");
+      return;
+    }
 
     try {
       const response = await fetch(getNewsItemApiUrl(id), {
@@ -704,7 +707,7 @@ function NewsEventsPage({ adminMode = false }) {
                       type="button"
                       className="news-events-delete"
                       onClick={() => deleteNews(item.id)}
-                      disabled={!canSaveNews || isDeletingId === item.id}
+                      disabled={isDeletingId === item.id}
                     >
                       {isDeletingId === item.id ? "Deleting..." : "Delete"}
                     </button>
