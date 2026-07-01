@@ -13,6 +13,7 @@ function Navbar() {
     { label: "Home", to: "/" },
     { label: "News & Events", to: "/news-events" },
     { label: "About Us", to: "/about" },
+    { label: "Leadership", to: "/leadership" },
     { label: "Insights", to: "/insights" },
     { label: "Our Clients", to: "/our-clients" },
     { label: "Careers", to: "/careers" },
@@ -111,6 +112,9 @@ function Navbar() {
             </li>
             <li>
               <Link to="/about">About Us</Link>
+            </li>
+            <li>
+              <Link to="/leadership">Leadership</Link>
             </li>
             <li>
               <Link to="/insights">Insights</Link>

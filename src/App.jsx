@@ -23,6 +23,7 @@ import ChatWidget from "./components/ChatWidget";
 import OurClientsPage from "./pages/OurClientsPage";
 import NewsEventsPage from "./pages/NewsEventsPage";
 import SiteMapPage from "./pages/SiteMapPage";
+import LeadershipPage from "./pages/LeadershipPage";
 
 import { Navigate, Route, Routes } from "react-router-dom";
 
@@ -124,6 +125,7 @@ function App() {
 
         <Route path="/about" element={<About />} />
         <Route path="/about-us" element={<Navigate to="/about" replace />} />
+        <Route path="/leadership" element={<LeadershipPage />} />
         <Route path="/client-accounting" element={<ClientAccountingServices />} />
         <Route
           path="/client-accounting-services"

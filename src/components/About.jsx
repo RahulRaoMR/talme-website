@@ -1,4 +1,5 @@
 import "./About.css";
+import { Link } from "react-router-dom";
 
 function About() {
   return (
@@ -9,6 +10,9 @@ function About() {
           Engineering-led talent and delivery partner focused on measurable
           outcomes, speed, and long-term client value.
         </p>
+        <div className="about-actions">
+          <Link to="/leadership">Leadership</Link>
+        </div>
 
         <div className="about-hero-grid">
           <img
