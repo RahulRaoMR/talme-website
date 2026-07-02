@@ -52,7 +52,7 @@ const MAX_NEWS_IMAGE_SIZE = 8 * 1024 * 1024;
 const backendProxyOrigin = (
   process.env.TALME_BACKEND_ORIGIN ||
   process.env.NEWS_BACKEND_ORIGIN ||
-  "https://talme-website.onrender.com"
+  ""
 ).replace(/\/+$/, "");
 
 export const config = {

@@ -45,7 +45,7 @@ const isHostedRuntime = Boolean(
 const backendProxyOrigin = (
   process.env.TALME_BACKEND_ORIGIN ||
   process.env.SITE_BACKEND_ORIGIN ||
-  "https://talme-website.onrender.com"
+  ""
 ).replace(/\/+$/, "");
 
 export const config = {
