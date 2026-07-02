@@ -16,15 +16,8 @@ const EMPTY_FORM = {
   imageUrl: "",
 };
 
-const seedLeaders = [
-  {
-    id: "leader-saidarshan",
-    name: "Saidarshan M.V",
-    role: "Director",
-    linkedinUrl: "https://www.linkedin.com/",
-    imageUrl: "/logo.png",
-  },
-];
+const seedLeaders = [];
+
 
 function readStoredLeaders() {
   try {
