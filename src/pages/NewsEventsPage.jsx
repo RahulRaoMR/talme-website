@@ -39,10 +39,24 @@ async function fetchWithTimeout(url, options = {}) {
   }
 }
 
+function isStaleLocalNewsItem(item) {
+  const title = String(item?.title || "").trim().toLowerCase();
+  const summary = String(item?.summary || "").trim().toLowerCase();
+  const isoDate = String(item?.isoDate || "").trim();
+
+  return (
+    isoDate === "2026-05-28" &&
+    ((title === "sdfg" && summary === "asdfgh") ||
+      (title === "asdfghj" && summary === "asdfg"))
+  );
+}
+
 function sortByDateDescending(items) {
-  return [...items].sort((left, right) => {
-    return new Date(right.isoDate).getTime() - new Date(left.isoDate).getTime();
-  });
+  return items
+    .filter((item) => !isStaleLocalNewsItem(item))
+    .sort((left, right) => {
+      return new Date(right.isoDate).getTime() - new Date(left.isoDate).getTime();
+    });
 }
 
 
