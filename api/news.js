@@ -1,5 +1,4 @@
 import { Buffer } from "node:buffer";
-import { existsSync } from "node:fs";
 import { mkdir, readFile, writeFile } from "node:fs/promises";
 import os from "node:os";
 import path from "node:path";
@@ -24,11 +23,7 @@ const isHostedRuntime = Boolean(
 );
 const writableStoragePath =
   process.env.NEWS_STORAGE_PATH ||
-  (isServerlessRuntime
-    ? bundledStoragePath
-    : existsSync(bundledStoragePath)
-    ? bundledStoragePath
-    : path.join(os.tmpdir(), "talme-news-storage.json"));
+  (isHostedRuntime ? bundledStoragePath : tmpStoragePath);
 const remoteStorageUrl =
   process.env.NEWS_REDIS_REST_URL ||
   process.env.KV_REST_API_URL ||

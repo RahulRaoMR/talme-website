@@ -3,6 +3,10 @@ import { newsData } from "../data/newsData";
 import "./NewsEventsPage.css";
 
 const ADMIN_STORAGE_KEY = "talme-news-admin-key";
+const STALE_LOCAL_NEWS_KEYS = [
+  "talme-news-local-items",
+  "talme-news-deleted-ids",
+];
 const EMPTY_FORM_DATA = {
   title: "",
   summary: "",
@@ -147,6 +151,10 @@ function NewsEventsPage({ adminMode = false }) {
   const formWrapRef = useRef(null);
 
   useEffect(() => {
+    STALE_LOCAL_NEWS_KEYS.forEach((key) => {
+      window.localStorage.removeItem(key);
+    });
+
     const loadNews = async () => {
       setStatus("loading");
       setErrorMessage("");
