@@ -3,8 +3,6 @@ import { newsData } from "../data/newsData";
 import "./NewsEventsPage.css";
 
 const ADMIN_STORAGE_KEY = "talme-news-admin-key";
-const LOCAL_NEWS_STORAGE_KEY = "talme-news-local-items";
-const DELETED_NEWS_STORAGE_KEY = "talme-news-deleted-ids";
 const EMPTY_FORM_DATA = {
   title: "",
   summary: "",
@@ -37,89 +35,12 @@ async function fetchWithTimeout(url, options = {}) {
   }
 }
 
-function readLocalNewsItems() {
-  try {
-    const parsed = JSON.parse(
-      window.localStorage.getItem(LOCAL_NEWS_STORAGE_KEY) || "[]"
-    );
-    return Array.isArray(parsed) ? parsed : [];
-  } catch {
-    return [];
-  }
-}
-
-function saveLocalNewsItems(items) {
-  try {
-    window.localStorage.setItem(LOCAL_NEWS_STORAGE_KEY, JSON.stringify(items));
-  } catch {}
-}
-
-function readDeletedNewsIds() {
-  try {
-    const parsed = JSON.parse(
-      window.localStorage.getItem(DELETED_NEWS_STORAGE_KEY) || "[]"
-    );
-    return Array.isArray(parsed) ? parsed.map(String) : [];
-  } catch {
-    return [];
-  }
-}
-
-function saveDeletedNewsIds(ids) {
-  try {
-    window.localStorage.setItem(
-      DELETED_NEWS_STORAGE_KEY,
-      JSON.stringify(Array.from(new Set(ids.map(String))))
-    );
-  } catch {}
-}
-
-function filterDeletedNews(items) {
-  const deletedIds = new Set(readDeletedNewsIds());
-  return items.filter((item) => !deletedIds.has(String(item.id)));
-}
-
 function sortByDateDescending(items) {
   return [...items].sort((left, right) => {
     return new Date(right.isoDate).getTime() - new Date(left.isoDate).getTime();
   });
 }
 
-function mergeLocalNews(items) {
-  const itemMap = new Map();
-
-  [...items, ...readLocalNewsItems()].forEach((item) => {
-    if (item?.id) {
-      itemMap.set(String(item.id), item);
-    }
-  });
-
-  return sortByDateDescending(filterDeletedNews(Array.from(itemMap.values())));
-}
-
-function saveLocalNewsItem(item) {
-  if (!item?.id) return;
-
-  const nextItems = [
-    item,
-    ...readLocalNewsItems().filter((savedItem) => String(savedItem.id) !== String(item.id)),
-  ];
-  saveLocalNewsItems(nextItems);
-}
-
-function removeLocalNewsItem(id) {
-  saveLocalNewsItems(
-    readLocalNewsItems().filter((item) => String(item.id) !== String(id))
-  );
-}
-
-function rememberDeletedNewsId(id) {
-  saveDeletedNewsIds([...readDeletedNewsIds(), String(id)]);
-}
-
-function forgetDeletedNewsId(id) {
-  saveDeletedNewsIds(readDeletedNewsIds().filter((deletedId) => deletedId !== String(id)));
-}
 
 async function readJsonResponse(response, fallbackMessage) {
   const rawResponse = await response.text();
@@ -206,7 +127,7 @@ async function prepareNewsImage(file) {
 
 function NewsEventsPage({ adminMode = false }) {
   const today = new Date().toISOString().slice(0, 10);
-  const [newsItems, setNewsItems] = useState(() => mergeLocalNews(newsData));
+  const [newsItems, setNewsItems] = useState(() => sortByDateDescending(newsData));
   const [status, setStatus] = useState("idle");
   const [errorMessage, setErrorMessage] = useState("");
   const [noticeMessage, setNoticeMessage] = useState("");
@@ -254,11 +175,11 @@ function NewsEventsPage({ adminMode = false }) {
         if (storageMode === "readonly" && (adminMode || hasStoredAdminKey)) {
           setNoticeMessage(NEWS_STORAGE_SETUP_MESSAGE);
         }
-        setNewsItems(mergeLocalNews(items));
+        setNewsItems(sortByDateDescending(items));
         setStatus("ready");
       } catch (error) {
         if (!adminMode && newsData.length > 0) {
-          setNewsItems(mergeLocalNews(newsData));
+          setNewsItems(sortByDateDescending(newsData));
           setStatus("ready");
           setNoticeMessage(
             "Live news service is temporarily unavailable. Showing the latest published updates."
@@ -351,7 +272,7 @@ function NewsEventsPage({ adminMode = false }) {
       setAdminKey(key);
       setAdminPassword("");
       setIsAdminPanelOpen(true);
-      setNewsItems(mergeLocalNews(result));
+      setNewsItems(sortByDateDescending(result));
       setCanSaveNews(storageMode !== "readonly");
       setStatus("ready");
       setErrorMessage("");
@@ -431,13 +352,11 @@ function NewsEventsPage({ adminMode = false }) {
         );
       }
 
-      saveLocalNewsItem(result);
       setNewsItems((prev) =>
         isEditing
           ? prev.map((item) => (item.id === result.id ? result : item))
           : [result, ...prev]
       );
-      forgetDeletedNewsId(result.id);
       resetForm();
       setEditingId("");
       setStatus("ready");
@@ -485,9 +404,7 @@ function NewsEventsPage({ adminMode = false }) {
     setErrorMessage("");
 
     if (!canSaveNews) {
-      rememberDeletedNewsId(id);
-      removeLocalNewsItem(id);
-      setNewsItems((prev) => prev.filter((item) => String(item.id) !== String(id)));
+      setErrorMessage(NEWS_STORAGE_SETUP_MESSAGE);
       setIsDeletingId("");
       return;
     }
@@ -507,9 +424,6 @@ function NewsEventsPage({ adminMode = false }) {
       if (!response.ok && response.status !== 404) {
         throw new Error(result.error || "Unable to delete shared news.");
       }
-
-      rememberDeletedNewsId(id);
-      removeLocalNewsItem(id);
       setNewsItems((prev) => prev.filter((item) => String(item.id) !== String(id)));
     } catch (error) {
       if (isAdminAuthError(error)) {
@@ -707,7 +621,7 @@ function NewsEventsPage({ adminMode = false }) {
                       type="button"
                       className="news-events-delete"
                       onClick={() => deleteNews(item.id)}
-                      disabled={isDeletingId === item.id}
+                      disabled={!canSaveNews || isDeletingId === item.id}
                     >
                       {isDeletingId === item.id ? "Deleting..." : "Delete"}
                     </button>
