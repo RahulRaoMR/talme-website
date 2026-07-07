@@ -228,6 +228,22 @@ function sortByDateDescending(items) {
   });
 }
 
+function isStaleLocalNewsItem(item) {
+  const title = String(item?.title || "").trim().toLowerCase();
+  const summary = String(item?.summary || "").trim().toLowerCase();
+  const isoDate = String(item?.isoDate || "").trim();
+
+  return (
+    isoDate === "2026-05-28" &&
+    ((title === "sdfg" && summary === "asdfgh") ||
+      (title === "asdfghj" && summary === "asdfg"))
+  );
+}
+
+function removeStaleLocalNewsItems(items) {
+  return items.filter((item) => !isStaleLocalNewsItem(item));
+}
+
 async function ensureStorageFile(storagePath) {
   try {
     await readFile(storagePath, "utf8");
@@ -288,7 +304,7 @@ function normalizeStoredArray(value) {
 
   if (typeof value === "string") {
     const parsedValue = JSON.parse(value);
-    return Array.isArray(parsedValue) ? parsedValue : [];
+    return Array.isArray(parsedValue) ? removeStaleLocalNewsItems(parsedValue) : [];
   }
 
   return [];
@@ -329,12 +345,12 @@ async function readFileNews() {
     const storagePath = await ensureStorageFile(writableStoragePath);
     const raw = await readFile(storagePath, "utf8");
     const items = JSON.parse(raw);
-    return Array.isArray(items) ? items : [];
+    return Array.isArray(items) ? removeStaleLocalNewsItems(items) : [];
   } catch {
     const storagePath = await ensureStorageFile(tmpStoragePath);
     const raw = await readFile(storagePath, "utf8");
     const items = JSON.parse(raw);
-    return Array.isArray(items) ? items : [];
+    return Array.isArray(items) ? removeStaleLocalNewsItems(items) : [];
   }
 }
 
@@ -360,7 +376,7 @@ async function readRemoteNews() {
   }
 
   const items = JSON.parse(raw);
-  return Array.isArray(items) ? items : [];
+  return Array.isArray(items) ? removeStaleLocalNewsItems(items) : [];
 }
 
 async function writeRemoteNews(items) {
