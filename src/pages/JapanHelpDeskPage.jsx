@@ -21,7 +21,7 @@ function JapanHelpDeskPage() {
           <p>{activeService.summary}</p>
           <div className="japan-help-actions">
             <Link to="/contact" className="japan-help-primary">Talk to TALME</Link>
-            <Link to="/japan-help-desk" className="japan-help-secondary">View Services</Link>
+            <a href="#japan-help-services" className="japan-help-secondary">View Services</a>
           </div>
         </div>
         <div className="japan-help-hero-media">
@@ -29,7 +29,7 @@ function JapanHelpDeskPage() {
         </div>
       </section>
 
-      <nav className="japan-help-service-strip" aria-label="Japan Help Desk services">
+      <nav id="japan-help-services" className="japan-help-service-strip" aria-label="Japan Help Desk services">
         {japanHelpDeskServices.map((service) => (
           <Link
             key={service.slug}
