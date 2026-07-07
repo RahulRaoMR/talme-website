@@ -397,3 +397,109 @@
     font-size: 0.78rem;
   }
 }
+
+/* Japan Help Desk navigation */
+.japan-dropdown {
+  position: relative;
+}
+
+.japan-toggle {
+  border: 0;
+  padding: 0;
+  background: transparent;
+  cursor: pointer;
+  color: #45628f;
+  font-size: 0.98rem;
+  font-weight: 800;
+  letter-spacing: 0.02em;
+  white-space: nowrap;
+}
+
+.japan-toggle:hover {
+  color: #1d3f74;
+}
+
+.global-menu,
+.services-menu,
+.japan-menu {
+  list-style: none;
+  position: absolute;
+  margin: 0;
+  padding: 8px;
+  border-radius: 14px;
+  border: 1px solid rgba(38, 76, 134, 0.12);
+  background: rgba(255, 255, 255, 0.98);
+  box-shadow: 0 18px 34px rgba(19, 48, 89, 0.14);
+  opacity: 0;
+  visibility: hidden;
+  transform: translateY(8px);
+  transition: opacity 0.18s ease, transform 0.18s ease, visibility 0.18s ease;
+  z-index: 60;
+}
+
+.japan-menu {
+  top: calc(100% + 14px);
+  left: 50%;
+  min-width: 380px;
+  transform: translate(-50%, 8px);
+}
+
+.japan-dropdown:hover .japan-menu,
+.japan-dropdown.open .japan-menu {
+  opacity: 1;
+  visibility: visible;
+  transform: translate(-50%, 0);
+}
+
+.services-dropdown:hover .services-menu,
+.services-dropdown.open .services-menu {
+  opacity: 1;
+  visibility: visible;
+  transform: translate(-50%, 0);
+}
+
+.japan-menu li + li {
+  margin-top: 6px;
+}
+
+.japan-menu a {
+  display: block;
+  padding: 10px 12px;
+  border-radius: 9px;
+  color: #36557f;
+  font-size: 0.82rem;
+  font-weight: 800;
+  line-height: 1.25;
+  text-decoration: none;
+  white-space: normal;
+}
+
+.japan-menu a:hover {
+  background: #f3f7fd;
+  color: #183a6b;
+}
+
+@media (max-width: 720px) {
+  .japan-menu {
+    left: 50%;
+    right: auto;
+    min-width: min(320px, calc(100vw - 28px));
+    max-width: calc(100vw - 28px);
+    transform: translate(-50%, 8px);
+  }
+
+  .japan-dropdown.open .japan-menu,
+  .japan-dropdown:hover .japan-menu {
+    transform: translate(-50%, 0);
+  }
+
+  .japan-toggle {
+    font-size: 0.84rem;
+  }
+}
+
+@media (max-width: 480px) {
+  .japan-toggle {
+    font-size: 0.78rem;
+  }
+}

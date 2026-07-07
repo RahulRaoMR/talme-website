@@ -24,6 +24,7 @@ import OurClientsPage from "./pages/OurClientsPage";
 import NewsEventsPage from "./pages/NewsEventsPage";
 import SiteMapPage from "./pages/SiteMapPage";
 import LeadershipPage from "./pages/LeadershipPage";
+import JapanHelpDeskPage from "./pages/JapanHelpDeskPage";
 
 import { Navigate, Route, Routes } from "react-router-dom";
 
@@ -50,6 +51,8 @@ function App() {
 
         <Route path="/managed-services" element={<ManagedServices />} />
         <Route path="/assurance" element={<AssurancePage />} />
+        <Route path="/japan-help-desk" element={<JapanHelpDeskPage />} />
+        <Route path="/japan-help-desk/:slug" element={<JapanHelpDeskPage />} />
         <Route path="/services/:slug" element={<ServiceDetailPage />} />
         <Route
           path="/staff-augmentation"

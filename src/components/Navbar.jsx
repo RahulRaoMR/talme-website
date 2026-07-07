@@ -1,5 +1,6 @@
 import { useMemo, useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
+import { japanHelpDeskServices } from "../data/japanHelpDeskData";
 import "./Navbar.css";
 
 function Navbar() {
@@ -8,6 +9,7 @@ function Navbar() {
   const [searchQuery, setSearchQuery] = useState("");
   const [isGlobalOpen, setIsGlobalOpen] = useState(false);
   const [isServicesOpen, setIsServicesOpen] = useState(false);
+  const [isJapanHelpOpen, setIsJapanHelpOpen] = useState(false);
 
   const searchItems = [
     { label: "Home", to: "/" },
@@ -18,6 +20,11 @@ function Navbar() {
     { label: "Our Clients", to: "/our-clients" },
     { label: "Careers", to: "/careers" },
     { label: "Contact Us", to: "/contact" },
+    { label: "Japan Help Desk", to: "/japan-help-desk" },
+    ...japanHelpDeskServices.map((service) => ({
+      label: service.title,
+      to: `/japan-help-desk/${service.slug}`,
+    })),
     { label: "Managed Services", to: "/managed-services" },
     { label: "Assurance", to: "/assurance" },
     { label: "Client Accounting Services", to: "/client-accounting" },
@@ -81,6 +88,10 @@ function Navbar() {
     setIsServicesOpen((prev) => !prev);
   };
 
+  const handleJapanHelpToggle = () => {
+    setIsJapanHelpOpen((prev) => !prev);
+  };
+
   const filteredSearchItems = useMemo(() => {
     const query = searchQuery.trim().toLowerCase();
     if (!query) return [];
@@ -104,30 +115,14 @@ function Navbar() {
 
         <nav className="navbar-top" aria-label="Top navigation">
           <ul className="top-links">
-            <li>
-              <Link to="/">Home</Link>
-            </li>
-            <li>
-              <Link to="/news-events">News &amp; Events</Link>
-            </li>
-            <li>
-              <Link to="/about">About Us</Link>
-            </li>
-            <li>
-              <Link to="/leadership">Leadership</Link>
-            </li>
-            <li>
-              <Link to="/insights">Insights</Link>
-            </li>
-            <li>
-              <Link to="/our-clients">Our Clients</Link>
-            </li>
-            <li>
-              <Link to="/careers">Careers</Link>
-            </li>
-            <li>
-              <Link to="/contact">Contact Us</Link>
-            </li>
+            <li><Link to="/">Home</Link></li>
+            <li><Link to="/news-events">News &amp; Events</Link></li>
+            <li><Link to="/about">About Us</Link></li>
+            <li><Link to="/leadership">Leadership</Link></li>
+            <li><Link to="/insights">Insights</Link></li>
+            <li><Link to="/our-clients">Our Clients</Link></li>
+            <li><Link to="/careers">Careers</Link></li>
+            <li><Link to="/contact">Contact Us</Link></li>
             <li className="search-link">
               <button
                 type="button"
@@ -216,12 +211,30 @@ function Navbar() {
 
       <nav className="navbar-bottom" aria-label="Service navigation">
         <ul className="service-links">
-          <li>
-            <Link to="/managed-services">MANAGED SERVICES</Link>
+          <li className={`japan-dropdown ${isJapanHelpOpen ? "open" : ""}`}>
+            <button
+              type="button"
+              className="japan-toggle"
+              aria-expanded={isJapanHelpOpen}
+              onClick={handleJapanHelpToggle}
+            >
+              JAPAN HELP DESK <span className="arrow-up">&#94;</span>
+            </button>
+            <ul className="japan-menu">
+              {japanHelpDeskServices.map((service) => (
+                <li key={service.slug}>
+                  <Link
+                    to={`/japan-help-desk/${service.slug}`}
+                    onClick={() => setIsJapanHelpOpen(false)}
+                  >
+                    {service.title.toUpperCase()}
+                  </Link>
+                </li>
+              ))}
+            </ul>
           </li>
-          <li>
-            <Link to="/assurance">ASSURANCE</Link>
-          </li>
+          <li><Link to="/managed-services">MANAGED SERVICES</Link></li>
+          <li><Link to="/assurance">ASSURANCE</Link></li>
           <li className={`services-dropdown ${isServicesOpen ? "open" : ""}`}>
             <button
               type="button"
@@ -232,44 +245,16 @@ function Navbar() {
               SERVICES <span className="arrow-up">&#94;</span>
             </button>
             <ul className="services-menu">
-              <li>
-                <Link to="/services/engineering-solutions" onClick={() => setIsServicesOpen(false)}>
-                  ENGINEERING SOLUTIONS
-                </Link>
-              </li>
-              <li>
-                <Link to="/services/staff-augmentation" onClick={() => setIsServicesOpen(false)}>
-                  STAFF AUGMENTATION
-                </Link>
-              </li>
-              <li>
-                <Link to="/services/health-care-services" onClick={() => setIsServicesOpen(false)}>
-                  HEALTH CARE SERVICES
-                </Link>
-              </li>
-              <li>
-                <Link to="/services/computer-technology" onClick={() => setIsServicesOpen(false)}>
-                  COMPUTER TECHNOLOGY
-                </Link>
-              </li>
-              <li>
-                <Link to="/services/business-solutions" onClick={() => setIsServicesOpen(false)}>
-                  BUSINESS SOLUTIONS
-                </Link>
-              </li>
-              <li>
-                <Link to="/services/product-manufacturing" onClick={() => setIsServicesOpen(false)}>
-                  PRODUCT MANUFACTURING
-                </Link>
-              </li>
+              <li><Link to="/services/engineering-solutions" onClick={() => setIsServicesOpen(false)}>ENGINEERING SOLUTIONS</Link></li>
+              <li><Link to="/services/staff-augmentation" onClick={() => setIsServicesOpen(false)}>STAFF AUGMENTATION</Link></li>
+              <li><Link to="/services/health-care-services" onClick={() => setIsServicesOpen(false)}>HEALTH CARE SERVICES</Link></li>
+              <li><Link to="/services/computer-technology" onClick={() => setIsServicesOpen(false)}>COMPUTER TECHNOLOGY</Link></li>
+              <li><Link to="/services/business-solutions" onClick={() => setIsServicesOpen(false)}>BUSINESS SOLUTIONS</Link></li>
+              <li><Link to="/services/product-manufacturing" onClick={() => setIsServicesOpen(false)}>PRODUCT MANUFACTURING</Link></li>
             </ul>
           </li>
-          <li>
-            <Link to="/service-hub/financial-advisory">CONSULTING</Link>
-          </li>
-          <li>
-            <Link to="/service-hub/digital-enablement">DIGITAL</Link>
-          </li>
+          <li><Link to="/service-hub/financial-advisory">CONSULTING</Link></li>
+          <li><Link to="/service-hub/digital-enablement">DIGITAL</Link></li>
         </ul>
       </nav>
     </header>
