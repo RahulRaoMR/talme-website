@@ -114,7 +114,6 @@ function Footer() {
       </div>
 
       <div className="footer-bottom">
-        <Link to="/site-map">Site Map</Link>
         <span>Copyright 2026 TALME Technologies Pvt Ltd. All rights reserved.</span>
       </div>
     </footer>
