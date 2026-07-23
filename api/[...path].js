@@ -64,6 +64,7 @@ const emptySiteData = {
   contacts: [],
   careers: [],
   chatMessages: [],
+  leadership: [],
   updatedAt: "",
 };
 
@@ -170,7 +171,7 @@ function getStorageSetupMessage() {
 
 function setCorsHeaders(res) {
   res.setHeader("Access-Control-Allow-Origin", "*");
-  res.setHeader("Access-Control-Allow-Methods", "GET,POST,OPTIONS");
+  res.setHeader("Access-Control-Allow-Methods", "GET,POST,PUT,DELETE,OPTIONS");
   res.setHeader("Access-Control-Allow-Headers", "Content-Type,x-admin-key");
   res.setHeader("Access-Control-Expose-Headers", "X-Website-Storage-Mode");
   res.setHeader("X-Website-Storage-Mode", getStorageMode());
@@ -224,6 +225,7 @@ function normalizeSiteData(value) {
     contacts: Array.isArray(value?.contacts) ? value.contacts : [],
     careers: Array.isArray(value?.careers) ? value.careers : [],
     chatMessages: Array.isArray(value?.chatMessages) ? value.chatMessages : [],
+    leadership: Array.isArray(value?.leadership) ? value.leadership : [],
   };
 }
 
@@ -418,12 +420,12 @@ async function readRequestBody(req, maxSize = MAX_BODY_SIZE) {
   return Buffer.concat(chunks);
 }
 
-async function readJsonPayload(req) {
+async function readJsonPayload(req, maxSize = 1024 * 1024) {
   if (req.body && !Buffer.isBuffer(req.body) && typeof req.body === "object") {
     return req.body;
   }
 
-  const bodyBuffer = await readRequestBody(req, 1024 * 1024);
+  const bodyBuffer = await readRequestBody(req, maxSize);
   const bodyText = bodyBuffer.toString("utf8");
   return bodyText ? JSON.parse(bodyText) : {};
 }
@@ -787,6 +789,130 @@ async function handleChat(req, res) {
   });
 }
 
+function getLeaderId(req) {
+  const url = new URL(req.url || "/api/leadership", "http://localhost");
+  const queryId = url.searchParams.get("id");
+
+  if (queryId) {
+    return queryId;
+  }
+
+  const [, itemId] = url.pathname.match(/^\/api\/leadership\/([^/]+)$/) || [];
+  return itemId ? decodeURIComponent(itemId) : "";
+}
+
+function normalizeLeaderPayload(payload) {
+  return {
+    id: String(payload.id || createRecordId("leader")),
+    name: String(payload.name || "").trim(),
+    role: String(payload.role || "").trim(),
+    linkedinUrl: String(payload.linkedinUrl || "").trim(),
+    imageUrl: String(payload.imageUrl || "").trim(),
+  };
+}
+
+function validateLeader(leader, res) {
+  if (!leader.name || !leader.role || !leader.imageUrl) {
+    sendJson(res, 400, { error: "Name, role, and photo are required." });
+    return false;
+  }
+
+  return true;
+}
+
+async function handleLeadership(req, res) {
+  if (req.method === "GET") {
+    if (getHeader(req, "x-admin-key") && !requireAdmin(req, res)) {
+      return;
+    }
+
+    const data = await readSiteData();
+    sendJson(res, 200, data.leadership);
+    return;
+  }
+
+  if (!requireAdmin(req, res)) {
+    return;
+  }
+
+  if (req.method === "POST") {
+    const payload = await readJsonPayload(req, MAX_BODY_SIZE);
+    const nextLeader = normalizeLeaderPayload(payload);
+
+    if (!validateLeader(nextLeader, res)) {
+      return;
+    }
+
+    const data = await readSiteData();
+    const existingLeaders = data.leadership.filter(
+      (leader) => String(leader.id) !== String(nextLeader.id)
+    );
+    await writeSiteData({
+      ...data,
+      leadership: [...existingLeaders, nextLeader],
+    });
+
+    sendJson(res, 201, nextLeader);
+    return;
+  }
+
+  if (req.method === "PUT") {
+    const leaderId = getLeaderId(req);
+
+    if (!leaderId) {
+      sendJson(res, 400, { error: "Leader id is required." });
+      return;
+    }
+
+    const payload = await readJsonPayload(req, MAX_BODY_SIZE);
+    const nextLeader = normalizeLeaderPayload({ ...payload, id: leaderId });
+
+    if (!validateLeader(nextLeader, res)) {
+      return;
+    }
+
+    const data = await readSiteData();
+    const leaderIndex = data.leadership.findIndex(
+      (leader) => String(leader.id) === String(leaderId)
+    );
+
+    if (leaderIndex === -1) {
+      sendJson(res, 404, { error: "Leader not found." });
+      return;
+    }
+
+    const nextLeadership = [...data.leadership];
+    nextLeadership[leaderIndex] = nextLeader;
+    await writeSiteData({ ...data, leadership: nextLeadership });
+    sendJson(res, 200, nextLeader);
+    return;
+  }
+
+  if (req.method === "DELETE") {
+    const leaderId = getLeaderId(req);
+
+    if (!leaderId) {
+      sendJson(res, 400, { error: "Leader id is required." });
+      return;
+    }
+
+    const data = await readSiteData();
+    const nextLeadership = data.leadership.filter(
+      (leader) => String(leader.id) !== String(leaderId)
+    );
+
+    if (nextLeadership.length === data.leadership.length) {
+      sendJson(res, 404, { error: "Leader not found." });
+      return;
+    }
+
+    await writeSiteData({ ...data, leadership: nextLeadership });
+    sendJson(res, 200, { message: "Leader deleted successfully." });
+    return;
+  }
+
+  sendJson(res, 405, { error: "Method not allowed." });
+}
 async function handleData(req, res) {
   if (req.method !== "GET") {
     sendJson(res, 405, { error: "Method not allowed." });
@@ -830,6 +956,11 @@ export default async function websiteBackend(req, res) {
 
     if (route === "chat") {
       await handleChat(req, res);
+      return;
+    }
+
+    if (route === "leadership") {
+      await handleLeadership(req, res);
       return;
     }
 

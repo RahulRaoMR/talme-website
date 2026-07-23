@@ -1,13 +1,10 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { FaLinkedinIn } from "react-icons/fa";
 import "./LeadershipPage.css";
 
 const ADMIN_STORAGE_KEY = "talme-leadership-admin-key";
-const LEADERSHIP_STORAGE_KEY = "talme-leadership-members";
-const LEADERSHIP_ADMIN_KEY =
-  import.meta.env.VITE_LEADERSHIP_ADMIN_KEY ||
-  import.meta.env.VITE_SITE_ADMIN_KEY ||
-  "talme-admin";
+const LEGACY_LEADERSHIP_STORAGE_KEY = "talme-leadership-members";
+const LEADERSHIP_API_URL = "/api/leadership";
 
 const EMPTY_FORM = {
   name: "",
@@ -18,18 +15,44 @@ const EMPTY_FORM = {
 
 const seedLeaders = [];
 
+function getLeaderApiUrl(id) {
+  return `${LEADERSHIP_API_URL}?id=${encodeURIComponent(id)}`;
+}
 
-function readStoredLeaders() {
+function readLegacyStoredLeaders() {
   try {
-    const parsed = JSON.parse(window.localStorage.getItem(LEADERSHIP_STORAGE_KEY) || "null");
-    return Array.isArray(parsed) ? parsed : seedLeaders;
+    const parsed = JSON.parse(
+      window.localStorage.getItem(LEGACY_LEADERSHIP_STORAGE_KEY) || "null"
+    );
+    return Array.isArray(parsed) ? parsed : [];
   } catch {
-    return seedLeaders;
+    return [];
   }
 }
 
-function saveStoredLeaders(leaders) {
-  window.localStorage.setItem(LEADERSHIP_STORAGE_KEY, JSON.stringify(leaders));
+async function readJsonResponse(response, fallbackMessage) {
+  const rawResponse = await response.text();
+
+  if (!rawResponse) {
+    return { error: fallbackMessage };
+  }
+
+  try {
+    return JSON.parse(rawResponse);
+  } catch {
+    return { error: fallbackMessage };
+  }
+}
+
+function isAdminAuthError(error) {
+  if (!(error instanceof Error)) {
+    return false;
+  }
+
+  return (
+    error.message === "Invalid admin key." ||
+    error.message === "Website admin key is not configured."
+  );
 }
 
 function readImageAsDataUrl(file) {
@@ -48,8 +71,53 @@ function normalizeLinkedinUrl(value) {
   return `https://${trimmed}`;
 }
 
+async function saveLeaderToApi(leader, adminKey, isEditing = false) {
+  const response = await fetch(isEditing ? getLeaderApiUrl(leader.id) : LEADERSHIP_API_URL, {
+    method: isEditing ? "PUT" : "POST",
+    headers: {
+      "Content-Type": "application/json",
+      "x-admin-key": adminKey,
+    },
+    body: JSON.stringify(leader),
+  });
+  const result = await readJsonResponse(
+    response,
+    isEditing ? "Unable to update shared leader." : "Unable to save shared leader."
+  );
+
+  if (!response.ok) {
+    throw new Error(
+      result.error ||
+        (isEditing ? "Unable to update shared leader." : "Unable to save shared leader.")
+    );
+  }
+
+  return result;
+}
+
+async function migrateLegacyLeaders(leaders, adminKey) {
+  const migratedLeaders = [];
+
+  for (const leader of leaders) {
+    const migratedLeader = await saveLeaderToApi(
+      {
+        id: leader.id,
+        name: leader.name,
+        role: leader.role,
+        linkedinUrl: leader.linkedinUrl || "",
+        imageUrl: leader.imageUrl,
+      },
+      adminKey
+    );
+    migratedLeaders.push(migratedLeader);
+  }
+
+  window.localStorage.removeItem(LEGACY_LEADERSHIP_STORAGE_KEY);
+  return migratedLeaders;
+}
+
 function LeadershipPage() {
-  const [leaders, setLeaders] = useState(readStoredLeaders);
+  const [leaders, setLeaders] = useState(seedLeaders);
   const [adminKey, setAdminKey] = useState(
     () => window.localStorage.getItem(ADMIN_STORAGE_KEY) || ""
   );
@@ -57,30 +125,107 @@ function LeadershipPage() {
   const [form, setForm] = useState(EMPTY_FORM);
   const [editingId, setEditingId] = useState("");
   const [message, setMessage] = useState("");
+  const [isLoading, setIsLoading] = useState(true);
+  const [isSaving, setIsSaving] = useState(false);
   const isAdmin = Boolean(adminKey);
 
-  function persist(nextLeaders) {
-    setLeaders(nextLeaders);
-    saveStoredLeaders(nextLeaders);
-  }
+  useEffect(() => {
+    let isActive = true;
+
+    async function loadLeaders() {
+      setIsLoading(true);
+      setMessage("");
+
+      try {
+        const response = await fetch(LEADERSHIP_API_URL);
+        const result = await readJsonResponse(response, "Unable to load shared leadership.");
+
+        if (!response.ok || !Array.isArray(result)) {
+          throw new Error(result.error || "Unable to load shared leadership.");
+        }
+
+        let nextLeaders = result;
+        const legacyLeaders = readLegacyStoredLeaders();
+
+        if (nextLeaders.length === 0 && legacyLeaders.length > 0 && adminKey) {
+          nextLeaders = await migrateLegacyLeaders(legacyLeaders, adminKey);
+        }
+
+        if (isActive) {
+          setLeaders(nextLeaders);
+          setMessage("");
+        }
+      } catch (error) {
+        const legacyLeaders = readLegacyStoredLeaders();
+
+        if (isActive) {
+          if (legacyLeaders.length > 0) {
+            setLeaders(legacyLeaders);
+            setMessage(
+              "Shared leadership data is temporarily unavailable. Showing leaders saved on this device."
+            );
+          } else {
+            setLeaders(seedLeaders);
+            setMessage(
+              error instanceof Error
+                ? error.message
+                : "Unable to load shared leadership."
+            );
+          }
+        }
+      } finally {
+        if (isActive) {
+          setIsLoading(false);
+        }
+      }
+    }
+
+    loadLeaders();
+
+    return () => {
+      isActive = false;
+    };
+  }, [adminKey]);
 
   function resetForm() {
     setForm(EMPTY_FORM);
     setEditingId("");
   }
 
-  function handleAdminLogin(event) {
+  async function handleAdminLogin(event) {
     event.preventDefault();
+    const key = draftKey.trim();
+    if (!key) return;
 
-    if (draftKey.trim() !== LEADERSHIP_ADMIN_KEY) {
-      setMessage("Invalid admin key.");
-      return;
+    try {
+      const response = await fetch(LEADERSHIP_API_URL, {
+        headers: {
+          "x-admin-key": key,
+        },
+      });
+      const result = await readJsonResponse(response, "Invalid admin key.");
+
+      if (!response.ok || !Array.isArray(result)) {
+        throw new Error(result.error || "Invalid admin key.");
+      }
+
+      let nextLeaders = result;
+      const legacyLeaders = readLegacyStoredLeaders();
+
+      if (nextLeaders.length === 0 && legacyLeaders.length > 0) {
+        nextLeaders = await migrateLegacyLeaders(legacyLeaders, key);
+      }
+
+      window.localStorage.setItem(ADMIN_STORAGE_KEY, key);
+      setAdminKey(key);
+      setDraftKey("");
+      setLeaders(nextLeaders);
+      setMessage("");
+    } catch (error) {
+      window.localStorage.removeItem(ADMIN_STORAGE_KEY);
+      setAdminKey("");
+      setMessage(error instanceof Error ? error.message : "Unable to verify admin login.");
     }
-
-    window.localStorage.setItem(ADMIN_STORAGE_KEY, draftKey.trim());
-    setAdminKey(draftKey.trim());
-    setDraftKey("");
-    setMessage("");
   }
 
   function handleAdminLogout() {
@@ -97,7 +242,7 @@ function LeadershipPage() {
     setForm((current) => ({ ...current, imageUrl }));
   }
 
-  function handleSubmit(event) {
+  async function handleSubmit(event) {
     event.preventDefault();
 
     const name = form.name.trim();
@@ -117,13 +262,28 @@ function LeadershipPage() {
       imageUrl: form.imageUrl,
     };
 
-    const nextLeaders = editingId
-      ? leaders.map((leader) => (leader.id === editingId ? nextLeader : leader))
-      : [...leaders, nextLeader];
-
-    persist(nextLeaders);
-    resetForm();
+    setIsSaving(true);
     setMessage("");
+
+    try {
+      const savedLeader = await saveLeaderToApi(nextLeader, adminKey, Boolean(editingId));
+      setLeaders((current) =>
+        editingId
+          ? current.map((leader) => (leader.id === editingId ? savedLeader : leader))
+          : [...current, savedLeader]
+      );
+      resetForm();
+      setMessage("Leader saved for all devices.");
+    } catch (error) {
+      if (isAdminAuthError(error)) {
+        window.localStorage.removeItem(ADMIN_STORAGE_KEY);
+        setAdminKey("");
+      }
+
+      setMessage(error instanceof Error ? error.message : "Unable to save shared leader.");
+    } finally {
+      setIsSaving(false);
+    }
   }
 
   function startEditing(leader) {
@@ -137,9 +297,36 @@ function LeadershipPage() {
     setMessage("");
   }
 
-  function deleteLeader(id) {
-    persist(leaders.filter((leader) => leader.id !== id));
-    if (editingId === id) resetForm();
+  async function deleteLeader(id) {
+    setIsSaving(true);
+    setMessage("");
+
+    try {
+      const response = await fetch(getLeaderApiUrl(id), {
+        method: "DELETE",
+        headers: {
+          "x-admin-key": adminKey,
+        },
+      });
+      const result = await readJsonResponse(response, "Unable to delete shared leader.");
+
+      if (!response.ok && response.status !== 404) {
+        throw new Error(result.error || "Unable to delete shared leader.");
+      }
+
+      setLeaders((current) => current.filter((leader) => leader.id !== id));
+      if (editingId === id) resetForm();
+      setMessage("Leader deleted for all devices.");
+    } catch (error) {
+      if (isAdminAuthError(error)) {
+        window.localStorage.removeItem(ADMIN_STORAGE_KEY);
+        setAdminKey("");
+      }
+
+      setMessage(error instanceof Error ? error.message : "Unable to delete shared leader.");
+    } finally {
+      setIsSaving(false);
+    }
   }
 
   return (
@@ -197,9 +384,11 @@ function LeadershipPage() {
                 <img className="leadership-preview" src={form.imageUrl} alt="" />
               ) : null}
               <div className="leadership-form-actions">
-                <button type="submit">{editingId ? "Update Leader" : "Add Leader"}</button>
+                <button type="submit" disabled={isSaving}>
+                  {isSaving ? "Saving..." : editingId ? "Update Leader" : "Add Leader"}
+                </button>
                 {editingId ? (
-                  <button type="button" onClick={resetForm}>
+                  <button type="button" onClick={resetForm} disabled={isSaving}>
                     Cancel
                   </button>
                 ) : null}
@@ -211,7 +400,8 @@ function LeadershipPage() {
       </section>
 
       <section className="leadership-grid" aria-label="Leadership team">
-        {leaders.map((leader) => {
+        {isLoading ? <p className="leadership-message">Loading leadership...</p> : null}
+        {!isLoading && leaders.map((leader) => {
           const hasLinkedin = Boolean(leader.linkedinUrl);
           const photoContent = (
             <>
@@ -229,35 +419,35 @@ function LeadershipPage() {
           );
 
           return (
-          <article className="leader-card" key={leader.id}>
-            {hasLinkedin ? (
-              <a
-                className="leader-photo-link"
-                href={leader.linkedinUrl}
-                target="_blank"
-                rel="noreferrer"
-                aria-label={`Open ${leader.name} LinkedIn profile`}
-              >
-                {photoContent}
-              </a>
-            ) : (
-              <div className="leader-photo-link leader-photo-static">{photoContent}</div>
-            )}
-            <div className="leader-copy">
-              <h2>{leader.name}</h2>
-              <p>{leader.role}</p>
-              {isAdmin ? (
-                <div className="leader-actions">
-                  <button type="button" onClick={() => startEditing(leader)}>
-                    Edit
-                  </button>
-                  <button type="button" onClick={() => deleteLeader(leader.id)}>
-                    Delete
-                  </button>
-                </div>
-              ) : null}
-            </div>
-          </article>
+            <article className="leader-card" key={leader.id}>
+              {hasLinkedin ? (
+                <a
+                  className="leader-photo-link"
+                  href={leader.linkedinUrl}
+                  target="_blank"
+                  rel="noreferrer"
+                  aria-label={`Open ${leader.name} LinkedIn profile`}
+                >
+                  {photoContent}
+                </a>
+              ) : (
+                <div className="leader-photo-link leader-photo-static">{photoContent}</div>
+              )}
+              <div className="leader-copy">
+                <h2>{leader.name}</h2>
+                <p>{leader.role}</p>
+                {isAdmin ? (
+                  <div className="leader-actions">
+                    <button type="button" onClick={() => startEditing(leader)} disabled={isSaving}>
+                      Edit
+                    </button>
+                    <button type="button" onClick={() => deleteLeader(leader.id)} disabled={isSaving}>
+                      Delete
+                    </button>
+                  </div>
+                ) : null}
+              </div>
+            </article>
           );
         })}
       </section>
