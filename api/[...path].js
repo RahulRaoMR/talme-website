@@ -26,6 +26,7 @@ const remoteStorageToken =
 const storageKey = process.env.SITE_DATA_STORAGE_KEY || "talme:website-data";
 const databaseStorageUrl =
   process.env.SITE_DATABASE_URL ||
+  process.env.NEWS_DATABASE_URL ||
   process.env.DATABASE_URL ||
   process.env.POSTGRES_URL ||
   process.env.POSTGRES_PRISMA_URL ||
