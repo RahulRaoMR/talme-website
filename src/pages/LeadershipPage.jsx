@@ -146,23 +146,37 @@ function LeadershipPage() {
 
         let nextLeaders = result;
         const legacyLeaders = readLegacyStoredLeaders();
+        let nextMessage = "";
 
-        if (nextLeaders.length === 0 && legacyLeaders.length > 0 && adminKey) {
-          nextLeaders = await migrateLegacyLeaders(legacyLeaders, adminKey);
+        if (nextLeaders.length === 0 && legacyLeaders.length > 0) {
+          if (adminKey) {
+            nextLeaders = await migrateLegacyLeaders(legacyLeaders, adminKey);
+            nextMessage = "Saved leader published for all devices.";
+          } else {
+            nextLeaders = legacyLeaders;
+            nextMessage = "This leader is saved on this device only. Log in with the shared admin key to publish it for all devices.";
+          }
         }
 
         if (isActive) {
           setLeaders(nextLeaders);
-          setMessage("");
+          setMessage(nextMessage);
         }
       } catch (error) {
         const legacyLeaders = readLegacyStoredLeaders();
 
         if (isActive) {
+          if (isAdminAuthError(error)) {
+            window.localStorage.removeItem(ADMIN_STORAGE_KEY);
+            setAdminKey("");
+          }
+
           if (legacyLeaders.length > 0) {
             setLeaders(legacyLeaders);
             setMessage(
-              "Shared leadership data is temporarily unavailable. Showing leaders saved on this device."
+              isAdminAuthError(error)
+                ? "Your saved admin session is no longer valid. Log in with the shared admin key to publish this leader for all devices."
+                : "Shared leadership data is temporarily unavailable. Showing leaders saved on this device."
             );
           } else {
             setLeaders(seedLeaders);

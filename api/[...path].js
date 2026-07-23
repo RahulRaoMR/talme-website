@@ -198,16 +198,19 @@ function getHeader(req, name) {
   return headers[name] || headers[name.toLowerCase()] || "";
 }
 
+function getConfiguredAdminKeys() {
+  return [
+    process.env.LEADERSHIP_ADMIN_KEY,
+    process.env.SITE_ADMIN_KEY,
+    process.env.NEWS_ADMIN_KEY,
+  ].filter(Boolean);
+}
+
 function requireAdmin(req, res) {
-  const configuredKey = process.env.SITE_ADMIN_KEY || process.env.NEWS_ADMIN_KEY;
+  const configuredKeys = getConfiguredAdminKeys();
   const requestKey = getHeader(req, "x-admin-key");
 
-  if (!configuredKey) {
-    sendJson(res, 500, { error: "Website admin key is not configured." });
-    return false;
-  }
-
-  if (requestKey !== configuredKey) {
+  if (!configuredKeys.includes(requestKey)) {
     sendJson(res, 401, { error: "Invalid admin key." });
     return false;
   }
