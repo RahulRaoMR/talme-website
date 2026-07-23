@@ -104,8 +104,8 @@ function LeadershipPage() {
     const role = form.role.trim();
     const linkedinUrl = normalizeLinkedinUrl(form.linkedinUrl);
 
-    if (!name || !role || !linkedinUrl || !form.imageUrl) {
-      setMessage("Name, role, photo, and LinkedIn are required.");
+    if (!name || !role || !form.imageUrl) {
+      setMessage("Name, role, and photo are required.");
       return;
     }
 
@@ -131,7 +131,7 @@ function LeadershipPage() {
     setForm({
       name: leader.name,
       role: leader.role,
-      linkedinUrl: leader.linkedinUrl,
+      linkedinUrl: leader.linkedinUrl || "",
       imageUrl: leader.imageUrl,
     });
     setMessage("");
@@ -190,7 +190,7 @@ function LeadershipPage() {
                 onChange={(event) =>
                   setForm((current) => ({ ...current, linkedinUrl: event.target.value }))
                 }
-                placeholder="LinkedIn URL"
+                placeholder="LinkedIn URL (optional)"
               />
               <input type="file" accept="image/*" onChange={handleImageChange} />
               {form.imageUrl ? (
@@ -211,24 +211,38 @@ function LeadershipPage() {
       </section>
 
       <section className="leadership-grid" aria-label="Leadership team">
-        {leaders.map((leader) => (
-          <article className="leader-card" key={leader.id}>
-            <a
-              className="leader-photo-link"
-              href={leader.linkedinUrl}
-              target="_blank"
-              rel="noreferrer"
-              aria-label={`Open ${leader.name} LinkedIn profile`}
-            >
+        {leaders.map((leader) => {
+          const hasLinkedin = Boolean(leader.linkedinUrl);
+          const photoContent = (
+            <>
               <img src={leader.imageUrl} alt={leader.name} />
               <span className="leader-hover-panel">
                 <strong>{leader.name}</strong>
                 <small>{leader.role}</small>
               </span>
-              <span className="leader-linkedin" aria-hidden="true">
-                <FaLinkedinIn />
-              </span>
-            </a>
+              {hasLinkedin ? (
+                <span className="leader-linkedin" aria-hidden="true">
+                  <FaLinkedinIn />
+                </span>
+              ) : null}
+            </>
+          );
+
+          return (
+          <article className="leader-card" key={leader.id}>
+            {hasLinkedin ? (
+              <a
+                className="leader-photo-link"
+                href={leader.linkedinUrl}
+                target="_blank"
+                rel="noreferrer"
+                aria-label={`Open ${leader.name} LinkedIn profile`}
+              >
+                {photoContent}
+              </a>
+            ) : (
+              <div className="leader-photo-link leader-photo-static">{photoContent}</div>
+            )}
             <div className="leader-copy">
               <h2>{leader.name}</h2>
               <p>{leader.role}</p>
@@ -244,7 +258,8 @@ function LeadershipPage() {
               ) : null}
             </div>
           </article>
-        ))}
+          );
+        })}
       </section>
     </main>
   );
