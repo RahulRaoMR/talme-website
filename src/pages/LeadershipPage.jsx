@@ -127,7 +127,7 @@ function LeadershipPage() {
   const [message, setMessage] = useState("");
   const [isLoading, setIsLoading] = useState(true);
   const [isSaving, setIsSaving] = useState(false);
-  const [isAdminPanelOpen, setIsAdminPanelOpen] = useState(Boolean(adminKey));
+  const [isAdminPanelOpen, setIsAdminPanelOpen] = useState(false);
   const isAdmin = Boolean(adminKey);
 
   useEffect(() => {
@@ -362,7 +362,7 @@ function LeadershipPage() {
             className="leadership-admin-trigger"
             onClick={() => setIsAdminPanelOpen((current) => !current)}
           >
-            Manage Leadership
+            {isAdminPanelOpen ? "Close" : "Manage Leadership"}
           </button>
         </div>
       </section>
