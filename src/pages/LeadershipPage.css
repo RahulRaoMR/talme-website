@@ -8,9 +8,13 @@
 }
 
 .leadership-hero {
-  max-width: 1160px;
+  max-width: 1220px;
   margin: 0 auto 28px;
-  padding: clamp(26px, 4vw, 46px);
+  display: grid;
+  grid-template-columns: minmax(0, 1.3fr) minmax(260px, 360px);
+  gap: 32px;
+  align-items: start;
+  padding: clamp(24px, 4vw, 34px);
   background: #fff;
   box-shadow: 0 22px 46px rgba(10, 35, 74, 0.1);
 }
@@ -33,16 +37,46 @@
 
 .leadership-hero span {
   display: block;
-  max-width: 660px;
-  margin-top: 18px;
+  max-width: 34ch;
   color: var(--muted);
-  font-size: 1.05rem;
-  line-height: 1.7;
+  font-size: 1.02rem;
+  line-height: 1.8;
+}
+
+.leadership-hero-side {
+  display: flex;
+  min-height: 100%;
+  flex-direction: column;
+  align-items: flex-start;
+  justify-content: space-between;
+}
+
+.leadership-admin-trigger {
+  margin-top: 14px;
+  border: 1px solid rgba(10, 35, 74, 0.16);
+  background: linear-gradient(135deg, #ffffff, #eef4fb);
+  color: var(--ink);
+  font: inherit;
+  font-size: 0.84rem;
+  font-weight: 800;
+  letter-spacing: 0.02em;
+  padding: 10px 14px;
+  cursor: pointer;
+  box-shadow: 0 14px 28px rgba(10, 35, 74, 0.08);
 }
 
 .leadership-admin-panel {
-  max-width: 1160px;
+  max-width: 560px;
   margin: 0 auto 32px;
+}
+
+.leadership-admin-panel.is-admin {
+  max-width: 1160px;
+}
+
+.leadership-page-message {
+  max-width: 1220px;
+  margin: 0 auto 24px;
 }
 
 .leadership-key-form,
@@ -56,7 +90,6 @@
 }
 
 .leadership-key-form {
-  width: min(560px, 100%);
   grid-template-columns: minmax(0, 1fr) auto;
   align-items: center;
   margin-left: auto;
@@ -259,6 +292,11 @@
 @media (max-width: 760px) {
   .leadership-page {
     padding: 30px 16px 48px;
+  }
+
+  .leadership-hero {
+    grid-template-columns: 1fr;
+    gap: 20px;
   }
 
   .leadership-form,

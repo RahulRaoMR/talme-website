@@ -127,6 +127,7 @@ function LeadershipPage() {
   const [message, setMessage] = useState("");
   const [isLoading, setIsLoading] = useState(true);
   const [isSaving, setIsSaving] = useState(false);
+  const [isAdminPanelOpen, setIsAdminPanelOpen] = useState(Boolean(adminKey));
   const isAdmin = Boolean(adminKey);
 
   useEffect(() => {
@@ -232,6 +233,7 @@ function LeadershipPage() {
 
       window.localStorage.setItem(ADMIN_STORAGE_KEY, key);
       setAdminKey(key);
+      setIsAdminPanelOpen(true);
       setDraftKey("");
       setLeaders(nextLeaders);
       setMessage("");
@@ -245,6 +247,7 @@ function LeadershipPage() {
   function handleAdminLogout() {
     window.localStorage.removeItem(ADMIN_STORAGE_KEY);
     setAdminKey("");
+    setIsAdminPanelOpen(false);
     resetForm();
   }
 
@@ -346,15 +349,27 @@ function LeadershipPage() {
   return (
     <main className="leadership-page">
       <section className="leadership-hero">
-        <p>Leadership</p>
-        <h1>Meet Our Leadership</h1>
-        <span>
-          The people guiding TALME with industry experience, delivery discipline, and client focus.
-        </span>
+        <div className="leadership-hero-copy">
+          <p>Leadership</p>
+          <h1>Meet Our Leadership</h1>
+        </div>
+        <div className="leadership-hero-side">
+          <span>
+            The people guiding TALME with industry experience, delivery discipline, and client focus.
+          </span>
+          <button
+            type="button"
+            className="leadership-admin-trigger"
+            onClick={() => setIsAdminPanelOpen((current) => !current)}
+          >
+            Manage Leadership
+          </button>
+        </div>
       </section>
 
-      <section className="leadership-admin-panel" aria-label="Leadership admin">
-        {!isAdmin ? (
+      {isAdminPanelOpen ? (
+        <section className={`leadership-admin-panel ${isAdmin ? "is-admin" : ""}`} aria-label="Leadership admin">
+          {!isAdmin ? (
           <form onSubmit={handleAdminLogin} className="leadership-key-form">
             <label htmlFor="leadership-admin-key">Admin key</label>
             <input
@@ -410,8 +425,11 @@ function LeadershipPage() {
             </form>
           </>
         )}
-        {message ? <p className="leadership-message">{message}</p> : null}
-      </section>
+          {message ? <p className="leadership-message">{message}</p> : null}
+        </section>
+      ) : message ? (
+        <p className="leadership-message leadership-page-message">{message}</p>
+      ) : null}
 
       <section className="leadership-grid" aria-label="Leadership team">
         {isLoading ? <p className="leadership-message">Loading leadership...</p> : null}
