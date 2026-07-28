@@ -56,18 +56,26 @@
 }
 
 .leadership-key-form {
-  grid-template-columns: minmax(120px, auto) minmax(220px, 1fr) auto;
+  width: min(560px, 100%);
+  grid-template-columns: minmax(0, 1fr) auto;
   align-items: center;
+  margin-left: auto;
+  margin-right: auto;
+  padding: 12px;
+  box-shadow: 0 14px 28px rgba(10, 35, 74, 0.06);
 }
 
 .leadership-key-form label {
-  color: var(--ink);
-  font-weight: 800;
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
 }
 
 .leadership-key-form input,
 .leadership-form input {
-  min-height: 44px;
+  min-height: 42px;
   border: 1px solid rgba(10, 35, 74, 0.18);
   background: #fff;
   color: var(--ink);
@@ -253,9 +261,12 @@
     padding: 30px 16px 48px;
   }
 
-  .leadership-key-form,
   .leadership-form,
   .leadership-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .leadership-key-form {
     grid-template-columns: 1fr;
   }
 
