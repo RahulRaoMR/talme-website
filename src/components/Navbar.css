@@ -14,6 +14,8 @@
 }
 
 .navbar-top-row {
+  position: relative;
+  z-index: 120;
   display: flex;
   align-items: center;
   justify-content: space-between;
@@ -98,7 +100,7 @@
   top: calc(100% + 14px);
   right: 0;
   width: min(340px, 88vw);
-  z-index: 50;
+  z-index: 260;
 }
 
 .search-input {
@@ -164,13 +166,13 @@
   padding: 8px;
   border-radius: 14px;
   border: 1px solid rgba(38, 76, 134, 0.12);
-  background: rgba(255, 255, 255, 0.98);
+  background: #ffffff;
   box-shadow: 0 18px 34px rgba(19, 48, 89, 0.14);
   opacity: 0;
   visibility: hidden;
   transform: translateY(8px);
   transition: opacity 0.18s ease, transform 0.18s ease, visibility 0.18s ease;
-  z-index: 40;
+  z-index: 240;
 }
 
 .global-menu {
@@ -273,6 +275,8 @@
 }
 
 .navbar-bottom {
+  position: relative;
+  z-index: 10;
   justify-content: flex-end;
 }
 
@@ -428,13 +432,13 @@
   padding: 8px;
   border-radius: 14px;
   border: 1px solid rgba(38, 76, 134, 0.12);
-  background: rgba(255, 255, 255, 0.98);
+  background: #ffffff;
   box-shadow: 0 18px 34px rgba(19, 48, 89, 0.14);
   opacity: 0;
   visibility: hidden;
   transform: translateY(8px);
   transition: opacity 0.18s ease, transform 0.18s ease, visibility 0.18s ease;
-  z-index: 60;
+  z-index: 240;
 }
 
 .japan-menu {
