@@ -8,7 +8,7 @@
 .chat-panel {
   width: min(390px, calc(100vw - 28px));
   height: min(560px, calc(100dvh - 220px));
-  min-height: 360px;
+  min-height: 0;
   margin: 0 0 10px auto;
   border-radius: 16px;
   overflow: hidden;
@@ -83,8 +83,11 @@
 }
 
 .chat-history-card {
+  flex: 1;
+  min-height: 0;
   margin: 16px;
   padding: 14px;
+  overflow-y: auto;
   border-radius: 10px;
   background: #eceef4;
   border: 1px solid #d6dbe6;
@@ -287,12 +290,45 @@
 
   .chat-panel {
     width: min(390px, calc(100vw - 16px));
-    height: min(500px, calc(100dvh - 280px));
-    min-height: 340px;
+    height: min(430px, calc(100dvh - 300px));
+    min-height: 0;
     margin-bottom: 8px;
   }
 
+  .chat-header {
+    padding: 10px 10px 12px;
+  }
+
+  .chat-header h3 {
+    font-size: 1.15rem;
+  }
+
+  .chat-header p {
+    margin-top: 5px;
+    font-size: 0.82rem;
+  }
+
+  .chat-avatar-row {
+    padding-bottom: 8px;
+  }
+
+  .chat-avatar {
+    width: 44px;
+    height: 44px;
+    font-size: 1.25rem;
+  }
+
   .chat-history-card {
-    margin: 12px;
+    margin: 10px 12px;
+    padding: 12px;
+  }
+
+  .chat-action-row {
+    padding: 10px 12px;
+  }
+
+  .chat-primary-btn {
+    padding: 8px 20px;
+    font-size: 0.92rem;
   }
 }
