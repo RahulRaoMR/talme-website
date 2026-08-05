@@ -384,6 +384,16 @@
   }
 }
 
+
+@media (hover: none) and (pointer: coarse) and (max-width: 980px) {
+  .global-link .global-menu {
+    left: auto;
+    right: 0;
+    min-width: min(220px, calc(100vw - 28px));
+    max-width: calc(100vw - 28px);
+    transform: translateY(0);
+  }
+}
 @media (max-width: 480px) {
   .navbar-top-row,
   .navbar-bottom,
@@ -509,6 +519,7 @@
     font-size: 0.84rem;
   }
 }
+
 
 @media (max-width: 480px) {
   .japan-toggle {
