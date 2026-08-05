@@ -22,7 +22,7 @@
 .chat-header {
   background: #0b2470;
   color: #ffffff;
-  padding: 12px 12px 14px;
+  padding: 10px 12px 8px;
   display: flex;
   align-items: flex-start;
   justify-content: space-between;
@@ -39,7 +39,7 @@
 }
 
 .chat-header p {
-  margin: 8px 0 0;
+  margin: 5px 0 0;
   font-size: 0.95rem;
   font-weight: 600;
 }
@@ -65,21 +65,21 @@
 
 .chat-avatar-row {
   background: #0b2470;
-  padding-bottom: 12px;
+  padding: 6px 0 10px;
   display: flex;
   justify-content: center;
 }
 
 .chat-avatar {
-  width: 54px;
-  height: 54px;
+  width: 46px;
+  height: 46px;
   border-radius: 50%;
   background: #b9f0a8;
   color: #2f9d2f;
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  font-size: 1.5rem;
+  font-size: 1.25rem;
 }
 
 .chat-history-card {
@@ -296,7 +296,7 @@
   }
 
   .chat-header {
-    padding: 10px 10px 12px;
+    padding: 8px 10px 6px;
   }
 
   .chat-header h3 {
@@ -309,13 +309,13 @@
   }
 
   .chat-avatar-row {
-    padding-bottom: 8px;
+    padding: 5px 0 8px;
   }
 
   .chat-avatar {
-    width: 44px;
-    height: 44px;
-    font-size: 1.25rem;
+    width: 38px;
+    height: 38px;
+    font-size: 1.05rem;
   }
 
   .chat-history-card {
