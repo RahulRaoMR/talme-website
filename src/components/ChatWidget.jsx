@@ -114,10 +114,6 @@ function ChatWidget() {
                     Let me know if you have any questions!
                   </p>
                 </article>
-                <article className="chat-history-item muted">
-                  <p className="chat-history-title">Talme Technologies</p>
-                  <p className="chat-history-text">hi</p>
-                </article>
               </section>
 
               <div className="chat-action-row">
@@ -132,9 +128,6 @@ function ChatWidget() {
             </>
           ) : (
             <section className="chat-form-wrap">
-              <div className="chat-bubble">hi</div>
-              <p className="chat-meta">Now</p>
-
               <form className="chat-form-card" onSubmit={handleSubmit}>
                 <p>We just need some more information from you to proceed:</p>
                 <label htmlFor="chat-name">Name</label>
