@@ -64,10 +64,7 @@
 }
 
 .chat-avatar-row {
-  background: #0b2470;
-  padding: 6px 0 10px;
-  display: flex;
-  justify-content: center;
+  display: none;
 }
 
 .chat-avatar {
@@ -306,16 +303,6 @@
   .chat-header p {
     margin-top: 5px;
     font-size: 0.82rem;
-  }
-
-  .chat-avatar-row {
-    padding: 5px 0 8px;
-  }
-
-  .chat-avatar {
-    width: 38px;
-    height: 38px;
-    font-size: 1.05rem;
   }
 
   .chat-history-card {
