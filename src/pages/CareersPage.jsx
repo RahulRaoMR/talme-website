@@ -253,7 +253,7 @@ function CareersPage() {
               </article>
               <article>
                 <h3>Phone</h3>
-                <a href="tel:+919000000000">+91 90000 00000</a>
+                <a href="tel:+918048795189">+91 80 4879 5189</a>
               </article>
               <article>
                 <h3>Location</h3>

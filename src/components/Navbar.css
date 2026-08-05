@@ -371,6 +371,13 @@
     transform: translate(-50%, 8px);
   }
 
+  .global-link .global-menu {
+    left: auto;
+    right: 0;
+    min-width: min(220px, calc(100vw - 28px));
+    transform: translateY(0);
+  }
+
   .services-dropdown.open .services-menu,
   .services-dropdown:hover .services-menu {
     transform: translate(-50%, 0);
