@@ -1164,3 +1164,56 @@
     font-size: 0.74rem;
   }
 }
+
+/* Clean mobile service menu without changing the top navigation */
+@media (max-width: 720px) {
+  .navbar-bottom.mobile-services-open {
+    display: block;
+    width: 100%;
+    margin: 0;
+    padding: 12px 14px 14px;
+    background: #f8fbff;
+    border-top: 1px solid #e5ecf5;
+    border-bottom: 1px solid #dfe7f2;
+  }
+
+  .navbar-bottom.mobile-services-open .service-links {
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+    gap: 8px;
+    padding: 0;
+  }
+
+  .navbar-bottom.mobile-services-open .service-links > li {
+    width: 100%;
+  }
+
+  .navbar-bottom.mobile-services-open .service-links a,
+  .navbar-bottom.mobile-services-open .services-toggle,
+  .navbar-bottom.mobile-services-open .japan-toggle {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    width: 100%;
+    min-height: 44px;
+    padding: 11px 14px;
+    border: 1px solid #d8e3f1;
+    border-radius: 10px;
+    background: #ffffff;
+    color: #123d78;
+    font-size: 0.84rem;
+    font-weight: 800;
+    letter-spacing: 0.01em;
+    line-height: 1.15;
+    text-align: left;
+    box-shadow: 0 6px 16px rgba(19, 48, 89, 0.05);
+  }
+
+  .navbar-bottom.mobile-services-open .japan-menu,
+  .navbar-bottom.mobile-services-open .services-menu {
+    left: 14px;
+    right: 14px;
+    top: calc(100% + 8px);
+  }
+}
