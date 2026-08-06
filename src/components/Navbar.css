@@ -1038,3 +1038,129 @@
     z-index: 1300;
   }
 }
+
+/* Cleaner mobile header: compact, scrollable, less boxed-in */
+@media (max-width: 720px) {
+  .navbar-shell {
+    background: #ffffff;
+    border-bottom: 1px solid #e2e8f2;
+  }
+
+  .navbar-top-row {
+    grid-template-columns: 44px 1fr auto;
+    padding: 10px 12px 8px;
+  }
+
+  .mobile-menu-toggle {
+    width: 38px;
+    height: 38px;
+    font-size: 1.25rem;
+  }
+
+  .brand-logo {
+    height: 42px;
+  }
+
+  .mobile-contact-cta {
+    min-height: 34px;
+    padding: 0 15px;
+    font-size: 0.76rem;
+    box-shadow: none;
+  }
+
+  .navbar-top {
+    margin-top: 8px;
+    overflow-x: auto;
+    overflow-y: visible;
+    scrollbar-width: none;
+    -webkit-overflow-scrolling: touch;
+    border-top: 1px solid #edf1f7;
+  }
+
+  .navbar-top::-webkit-scrollbar {
+    display: none;
+  }
+
+  .top-links {
+    display: flex;
+    justify-content: flex-start;
+    width: max-content;
+    min-width: 100%;
+    gap: 8px;
+    padding: 9px 12px 10px;
+    background: #ffffff;
+  }
+
+  .top-links li,
+  .top-links li:nth-child(-n + 5),
+  .top-links li:nth-child(n + 6) {
+    background: transparent;
+    border: 0;
+  }
+
+  .top-links li:nth-child(8) {
+    display: none;
+  }
+
+  .top-links a,
+  .search-toggle,
+  .global-toggle {
+    min-height: 38px;
+    width: auto;
+    padding: 8px 12px;
+    border: 1px solid #dbe5f3;
+    border-radius: 999px;
+    background: #f8fbff;
+    color: #153f78;
+    font-size: 0.78rem;
+    font-weight: 800;
+    white-space: nowrap;
+  }
+
+  .top-links li:nth-child(-n + 5) a {
+    color: #153f78;
+    background: #f8fbff;
+  }
+
+  .top-links li:nth-child(n + 6) a,
+  .top-links li:nth-child(n + 6) .search-toggle,
+  .top-links li:nth-child(n + 6) .global-toggle {
+    min-height: 38px;
+    flex-direction: row;
+    gap: 6px;
+  }
+
+  .mobile-link-icon {
+    font-size: 0.95rem;
+  }
+
+  .search-box,
+  .global-link .global-menu {
+    left: 12px;
+    right: 12px;
+    top: calc(100% + 6px);
+  }
+
+  .navbar-bottom.mobile-services-open {
+    display: flex;
+    border-top: 1px solid #edf1f7;
+  }
+}
+
+@media (max-width: 380px) {
+  .mobile-contact-cta {
+    padding: 0 12px;
+    font-size: 0.72rem;
+  }
+
+  .brand-logo {
+    height: 38px;
+  }
+
+  .top-links a,
+  .search-toggle,
+  .global-toggle {
+    padding: 8px 10px;
+    font-size: 0.74rem;
+  }
+}
