@@ -1252,3 +1252,45 @@
     top: 158px;
   }
 }
+
+.mobile-search-panel,
+.mobile-global-panel {
+  display: none;
+}
+
+/* Mobile Search/Global render outside the clipped nav scroller */
+@media (max-width: 720px) {
+  .desktop-search-box,
+  .desktop-global-menu {
+    display: none;
+  }
+
+  .mobile-search-panel,
+  .mobile-global-panel {
+    display: block;
+    position: relative;
+    width: calc(100% - 24px);
+    margin: 8px auto 0;
+    z-index: 1800;
+  }
+
+  .mobile-global-panel {
+    list-style: none;
+    padding: 8px;
+    border-radius: 14px;
+    border: 1px solid rgba(38, 76, 134, 0.12);
+    background: #ffffff;
+    box-shadow: 0 14px 28px rgba(19, 48, 89, 0.14);
+    opacity: 1;
+    visibility: visible;
+    transform: none;
+  }
+
+  .mobile-global-panel li + li {
+    margin-top: 8px;
+  }
+
+  .mobile-search-panel .search-input {
+    box-shadow: 0 14px 28px rgba(19, 48, 89, 0.12);
+  }
+}

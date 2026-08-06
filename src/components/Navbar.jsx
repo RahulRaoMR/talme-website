@@ -213,7 +213,7 @@ function Navbar() {
                 <FiSearch className="mobile-link-icon" aria-hidden="true" />Search
               </button>
               {isSearchOpen && (
-                <div className="search-box">
+                <div className="search-box desktop-search-box">
                   <input
                     type="search"
                     className="search-input"
@@ -260,7 +260,7 @@ function Navbar() {
                 <FiGlobe className="mobile-link-icon" aria-hidden="true" />GLOBAL <span className="arrow">&#9662;</span>
               </button>
               {isGlobalOpen && (
-                <ul className="global-menu">
+                <ul className="global-menu desktop-global-menu">
                   {globalLocations.map((globalLocation) => (
                     <li key={globalLocation.flag}>
                       <Link
@@ -288,6 +288,58 @@ function Navbar() {
           </ul>
         </nav>
       </div>
+
+      {isSearchOpen && (
+        <div className="mobile-search-panel">
+          <input
+            type="search"
+            className="search-input"
+            placeholder="Search pages and services..."
+            aria-label="Search input"
+            autoFocus
+            value={searchQuery}
+            onChange={(event) => setSearchQuery(event.target.value)}
+            onKeyDown={(event) => {
+              if (event.key === "Enter" && filteredSearchItems.length > 0) {
+                navigateToSearchResult(filteredSearchItems[0].to);
+              }
+            }}
+          />
+          {searchQuery.trim() && (
+            <ul className="search-results">
+              {filteredSearchItems.length > 0 ? (
+                filteredSearchItems.map((item) => (
+                  <li key={item.to}>
+                    <button type="button" onClick={() => navigateToSearchResult(item.to)}>
+                      {item.label}
+                    </button>
+                  </li>
+                ))
+              ) : (
+                <li className="search-no-result">No matching pages found</li>
+              )}
+            </ul>
+          )}
+        </div>
+      )}
+
+      {isGlobalOpen && (
+        <ul className="mobile-global-panel global-menu">
+          {globalLocations.map((globalLocation) => (
+            <li key={globalLocation.flag}>
+              <Link to={globalLocation.to} onClick={closeAllMenus}>
+                <img
+                  className="global-flag"
+                  src={globalLocation.flagIcon}
+                  alt={`${globalLocation.label} flag`}
+                />
+                <span className="global-location-label">{globalLocation.label}</span>
+                <span className="global-location-code">{globalLocation.flag}</span>
+              </Link>
+            </li>
+          ))}
+        </ul>
+      )}
 
       <div className="navbar-divider" />
 
