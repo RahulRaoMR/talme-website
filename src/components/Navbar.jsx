@@ -160,7 +160,7 @@ function Navbar() {
 
         <nav className="navbar-top" aria-label="Top navigation">
           <ul className="top-links">
-            <li><Link to="/">Home</Link></li>
+            <li><a href="/">Home</a></li>
             <li><Link to="/news-events">News &amp; Events</Link></li>
             <li><Link to="/about">About Us</Link></li>
             <li><Link to="/leadership">Leadership</Link></li>
