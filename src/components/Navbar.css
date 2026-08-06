@@ -189,7 +189,6 @@
 }
 
 .global-link .global-menu,
-.services-dropdown:hover .services-menu,
 .services-dropdown.open .services-menu {
   opacity: 1;
   visibility: visible;
@@ -378,9 +377,7 @@
     min-width: min(220px, calc(100vw - 28px));
     transform: translateY(0);
   }
-
-  .services-dropdown.open .services-menu,
-  .services-dropdown:hover .services-menu {
+  .services-dropdown.open .services-menu {
     transform: translate(-50%, 0);
   }
 }
@@ -473,14 +470,12 @@
   transform: translate(-50%, 8px);
 }
 
-.japan-dropdown:hover .japan-menu,
 .japan-dropdown.open .japan-menu {
   opacity: 1;
   visibility: visible;
   transform: translate(-50%, 0);
 }
 
-.services-dropdown:hover .services-menu,
 .services-dropdown.open .services-menu {
   opacity: 1;
   visibility: visible;
@@ -517,9 +512,7 @@
     max-width: calc(100vw - 20px);
     transform: translateY(8px);
   }
-
-  .japan-dropdown.open .japan-menu,
-  .japan-dropdown:hover .japan-menu {
+  .japan-dropdown.open .japan-menu {
     transform: translateY(0);
   }
 
