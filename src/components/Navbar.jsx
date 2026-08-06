@@ -158,6 +158,12 @@ function Navbar() {
     setIsSearchOpen(false);
   };
 
+  const navigateAndCloseMenus = (event, to) => {
+    event.preventDefault();
+    closeAllMenus();
+    navigate(to);
+  };
+
   return (
     <header className="navbar-shell">
       <div className="navbar-top-row">
@@ -234,16 +240,19 @@ function Navbar() {
               </button>
               {isGlobalOpen && (
                 <ul className="global-menu">
-                  {globalLocations.map((location) => (
-                    <li key={location.flag}>
-                      <Link to={location.to} onPointerDown={closeAllMenus} onClick={closeAllMenus}>
+                  {globalLocations.map((globalLocation) => (
+                    <li key={globalLocation.flag}>
+                      <Link
+                        to={globalLocation.to}
+                        onClick={(event) => navigateAndCloseMenus(event, globalLocation.to)}
+                      >
                         <img
                           className="global-flag"
-                          src={location.flagIcon}
-                          alt={`${location.label} flag`}
+                          src={globalLocation.flagIcon}
+                          alt={`${globalLocation.label} flag`}
                         />
-                        <span className="global-location-label">{location.label}</span>
-                        <span className="global-location-code">{location.flag}</span>
+                        <span className="global-location-label">{globalLocation.label}</span>
+                        <span className="global-location-code">{globalLocation.flag}</span>
                       </Link>
                     </li>
                   ))}
