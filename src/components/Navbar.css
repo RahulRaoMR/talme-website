@@ -357,9 +357,10 @@
   }
 
   .search-box {
-    left: 50%;
-    right: auto;
-    transform: translateX(-50%);
+    left: auto;
+    right: 0;
+    width: min(340px, calc(100vw - 28px));
+    transform: none;
   }
 
   .services-menu,
@@ -386,6 +387,13 @@
 
 
 @media (hover: none) and (pointer: coarse) and (max-width: 980px) {
+  .search-box {
+    left: auto;
+    right: 0;
+    width: min(340px, calc(100vw - 28px));
+    transform: none;
+  }
+
   .global-link .global-menu {
     left: auto;
     right: 0;

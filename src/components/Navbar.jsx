@@ -71,25 +71,61 @@ function Navbar() {
     },
   ];
 
+  const closeSearch = () => {
+    setIsSearchOpen(false);
+    setSearchQuery("");
+  };
+
   const handleSearchToggle = (event) => {
     event.preventDefault();
     setIsSearchOpen((prev) => {
-      if (prev) setSearchQuery("");
-      return !prev;
+      const nextIsOpen = !prev;
+      if (nextIsOpen) {
+        setIsGlobalOpen(false);
+        setIsServicesOpen(false);
+        setIsJapanHelpOpen(false);
+      } else {
+        setSearchQuery("");
+      }
+      return nextIsOpen;
     });
   };
 
   const handleGlobalToggle = (event) => {
     event.preventDefault();
-    setIsGlobalOpen((prev) => !prev);
+    setIsGlobalOpen((prev) => {
+      const nextIsOpen = !prev;
+      if (nextIsOpen) {
+        closeSearch();
+        setIsServicesOpen(false);
+        setIsJapanHelpOpen(false);
+      }
+      return nextIsOpen;
+    });
   };
 
   const handleServicesToggle = () => {
-    setIsServicesOpen((prev) => !prev);
+    setIsServicesOpen((prev) => {
+      const nextIsOpen = !prev;
+      if (nextIsOpen) {
+        closeSearch();
+        setIsGlobalOpen(false);
+        setIsJapanHelpOpen(false);
+      }
+      return nextIsOpen;
+    });
   };
 
   const handleJapanHelpToggle = () => {
-    setIsJapanHelpOpen((prev) => !prev);
+    setIsJapanHelpOpen((prev) => {
+      const nextIsOpen = !prev;
+      if (nextIsOpen) {
+        closeSearch();
+        setIsGlobalOpen(false);
+        setIsServicesOpen(false);
+      }
+      return nextIsOpen;
+    });
   };
 
   const filteredSearchItems = useMemo(() => {
