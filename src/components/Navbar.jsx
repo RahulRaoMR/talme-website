@@ -85,6 +85,13 @@ function Navbar() {
     setSearchQuery("");
   };
 
+  const closeAllMenus = () => {
+    closeSearch();
+    setIsGlobalOpen(false);
+    setIsServicesOpen(false);
+    setIsJapanHelpOpen(false);
+  };
+
   const handleSearchToggle = (event) => {
     event.preventDefault();
     setIsSearchOpen((prev) => {
@@ -161,13 +168,13 @@ function Navbar() {
         <nav className="navbar-top" aria-label="Top navigation">
           <ul className="top-links">
             <li><a href="/">Home</a></li>
-            <li><Link to="/news-events">News &amp; Events</Link></li>
-            <li><Link to="/about">About Us</Link></li>
-            <li><Link to="/leadership">Leadership</Link></li>
-            <li><Link to="/insights">Insights</Link></li>
-            <li><Link to="/our-clients">Our Clients</Link></li>
-            <li><Link to="/careers">Careers</Link></li>
-            <li><Link to="/contact">Contact Us</Link></li>
+            <li><Link to="/news-events" onClick={closeAllMenus}>News &amp; Events</Link></li>
+            <li><Link to="/about" onClick={closeAllMenus}>About Us</Link></li>
+            <li><Link to="/leadership" onClick={closeAllMenus}>Leadership</Link></li>
+            <li><Link to="/insights" onClick={closeAllMenus}>Insights</Link></li>
+            <li><Link to="/our-clients" onClick={closeAllMenus}>Our Clients</Link></li>
+            <li><Link to="/careers" onClick={closeAllMenus}>Careers</Link></li>
+            <li><Link to="/contact" onClick={closeAllMenus}>Contact Us</Link></li>
             <li className="search-link">
               <button
                 type="button"
@@ -229,7 +236,7 @@ function Navbar() {
                 <ul className="global-menu">
                   {globalLocations.map((location) => (
                     <li key={location.flag}>
-                      <Link to={location.to} onClick={() => setIsGlobalOpen(false)}>
+                      <Link to={location.to} onClick={closeAllMenus}>
                         <img
                           className="global-flag"
                           src={location.flagIcon}
@@ -270,7 +277,7 @@ function Navbar() {
                 <li key={service.slug}>
                   <Link
                     to={`/japan-help-desk/${service.slug}`}
-                    onClick={() => setIsJapanHelpOpen(false)}
+                    onClick={closeAllMenus}
                   >
                     {service.title.toUpperCase()}
                   </Link>
@@ -278,8 +285,8 @@ function Navbar() {
               ))}
             </ul>
           </li>
-          <li><Link to="/managed-services">MANAGED SERVICES</Link></li>
-          <li><Link to="/assurance">ASSURANCE</Link></li>
+          <li><Link to="/managed-services" onClick={closeAllMenus}>MANAGED SERVICES</Link></li>
+          <li><Link to="/assurance" onClick={closeAllMenus}>ASSURANCE</Link></li>
           <li className={`services-dropdown ${isServicesOpen ? "open" : ""}`}>
             <button
               type="button"
@@ -290,16 +297,16 @@ function Navbar() {
               SERVICES <span className="arrow-up">&#94;</span>
             </button>
             <ul className="services-menu">
-              <li><Link to="/services/engineering-solutions" onClick={() => setIsServicesOpen(false)}>ENGINEERING SOLUTIONS</Link></li>
-              <li><Link to="/services/staff-augmentation" onClick={() => setIsServicesOpen(false)}>STAFF AUGMENTATION</Link></li>
-              <li><Link to="/services/health-care-services" onClick={() => setIsServicesOpen(false)}>HEALTH CARE SERVICES</Link></li>
-              <li><Link to="/services/computer-technology" onClick={() => setIsServicesOpen(false)}>COMPUTER TECHNOLOGY</Link></li>
-              <li><Link to="/services/business-solutions" onClick={() => setIsServicesOpen(false)}>BUSINESS SOLUTIONS</Link></li>
-              <li><Link to="/services/product-manufacturing" onClick={() => setIsServicesOpen(false)}>PRODUCT MANUFACTURING</Link></li>
+              <li><Link to="/services/engineering-solutions" onClick={closeAllMenus}>ENGINEERING SOLUTIONS</Link></li>
+              <li><Link to="/services/staff-augmentation" onClick={closeAllMenus}>STAFF AUGMENTATION</Link></li>
+              <li><Link to="/services/health-care-services" onClick={closeAllMenus}>HEALTH CARE SERVICES</Link></li>
+              <li><Link to="/services/computer-technology" onClick={closeAllMenus}>COMPUTER TECHNOLOGY</Link></li>
+              <li><Link to="/services/business-solutions" onClick={closeAllMenus}>BUSINESS SOLUTIONS</Link></li>
+              <li><Link to="/services/product-manufacturing" onClick={closeAllMenus}>PRODUCT MANUFACTURING</Link></li>
             </ul>
           </li>
-          <li><Link to="/service-hub/financial-advisory">CONSULTING</Link></li>
-          <li><Link to="/service-hub/digital-enablement">DIGITAL</Link></li>
+          <li><Link to="/service-hub/financial-advisory" onClick={closeAllMenus}>CONSULTING</Link></li>
+          <li><Link to="/service-hub/digital-enablement" onClick={closeAllMenus}>DIGITAL</Link></li>
         </ul>
       </nav>
     </header>
