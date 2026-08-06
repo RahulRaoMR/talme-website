@@ -1,15 +1,24 @@
-import { useMemo, useState } from "react";
-import { Link, useNavigate } from "react-router-dom";
+import { useEffect, useMemo, useState } from "react";
+import { Link, useLocation, useNavigate } from "react-router-dom";
 import { japanHelpDeskServices } from "../data/japanHelpDeskData";
 import "./Navbar.css";
 
 function Navbar() {
   const navigate = useNavigate();
+  const location = useLocation();
   const [isSearchOpen, setIsSearchOpen] = useState(false);
   const [searchQuery, setSearchQuery] = useState("");
   const [isGlobalOpen, setIsGlobalOpen] = useState(false);
   const [isServicesOpen, setIsServicesOpen] = useState(false);
   const [isJapanHelpOpen, setIsJapanHelpOpen] = useState(false);
+
+  useEffect(() => {
+    setIsSearchOpen(false);
+    setSearchQuery("");
+    setIsGlobalOpen(false);
+    setIsServicesOpen(false);
+    setIsJapanHelpOpen(false);
+  }, [location.pathname]);
 
   const searchItems = [
     { label: "Home", to: "/" },
