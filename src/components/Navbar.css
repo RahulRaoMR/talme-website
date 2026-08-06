@@ -1294,3 +1294,21 @@
     box-shadow: 0 14px 28px rgba(19, 48, 89, 0.12);
   }
 }
+
+/* Keep mobile Global dropdown fully inside the viewport */
+@media (max-width: 720px) {
+  .mobile-global-panel.global-menu {
+    position: relative;
+    left: auto;
+    right: auto;
+    top: auto;
+    width: calc(100% - 24px);
+    max-width: 420px;
+    margin: 8px auto 0;
+    transform: none;
+  }
+
+  .mobile-global-panel.global-menu a {
+    width: 100%;
+  }
+}
