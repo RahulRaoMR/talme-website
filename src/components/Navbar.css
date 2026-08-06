@@ -1217,3 +1217,38 @@
     top: calc(100% + 8px);
   }
 }
+
+/* Fix mobile Search and Global panels being clipped by the nav scroller */
+@media (max-width: 720px) {
+  .search-box,
+  .global-link .global-menu {
+    position: fixed;
+    left: 12px;
+    right: 12px;
+    top: 166px;
+    width: auto;
+    min-width: 0;
+    max-width: none;
+    transform: none;
+    z-index: 2200;
+  }
+
+  .search-results {
+    max-height: min(300px, calc(100dvh - 240px));
+    overflow-y: auto;
+  }
+
+  .global-link .global-menu {
+    display: grid;
+    gap: 8px;
+  }
+}
+
+@media (max-width: 380px) {
+  .search-box,
+  .global-link .global-menu {
+    left: 10px;
+    right: 10px;
+    top: 158px;
+  }
+}
