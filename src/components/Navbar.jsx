@@ -158,11 +158,6 @@ function Navbar() {
     setIsSearchOpen(false);
   };
 
-  const navigateAndCloseMenus = (event, to) => {
-    event.preventDefault();
-    closeAllMenus();
-    navigate(to);
-  };
 
   return (
     <header className="navbar-shell">
@@ -174,13 +169,13 @@ function Navbar() {
         <nav className="navbar-top" aria-label="Top navigation">
           <ul className="top-links">
             <li><a href="/">Home</a></li>
-            <li><Link to="/news-events" onPointerDown={closeAllMenus} onClick={closeAllMenus}>News &amp; Events</Link></li>
-            <li><Link to="/about" onPointerDown={closeAllMenus} onClick={closeAllMenus}>About Us</Link></li>
-            <li><Link to="/leadership" onPointerDown={closeAllMenus} onClick={closeAllMenus}>Leadership</Link></li>
-            <li><Link to="/insights" onPointerDown={closeAllMenus} onClick={closeAllMenus}>Insights</Link></li>
-            <li><Link to="/our-clients" onPointerDown={closeAllMenus} onClick={closeAllMenus}>Our Clients</Link></li>
-            <li><Link to="/careers" onPointerDown={closeAllMenus} onClick={closeAllMenus}>Careers</Link></li>
-            <li><Link to="/contact" onPointerDown={closeAllMenus} onClick={closeAllMenus}>Contact Us</Link></li>
+            <li><Link to="/news-events" onClick={closeAllMenus}>News &amp; Events</Link></li>
+            <li><Link to="/about" onClick={closeAllMenus}>About Us</Link></li>
+            <li><Link to="/leadership" onClick={closeAllMenus}>Leadership</Link></li>
+            <li><Link to="/insights" onClick={closeAllMenus}>Insights</Link></li>
+            <li><Link to="/our-clients" onClick={closeAllMenus}>Our Clients</Link></li>
+            <li><Link to="/careers" onClick={closeAllMenus}>Careers</Link></li>
+            <li><Link to="/contact" onClick={closeAllMenus}>Contact Us</Link></li>
             <li className="search-link">
               <button
                 type="button"
@@ -244,7 +239,7 @@ function Navbar() {
                     <li key={globalLocation.flag}>
                       <Link
                         to={globalLocation.to}
-                        onClick={(event) => navigateAndCloseMenus(event, globalLocation.to)}
+                        onClick={closeAllMenus}
                       >
                         <img
                           className="global-flag"
@@ -285,8 +280,7 @@ function Navbar() {
               {japanHelpDeskServices.map((service) => (
                 <li key={service.slug}>
                   <Link
-                    to={`/japan-help-desk/${service.slug}`}
-                    onPointerDown={closeAllMenus} onClick={closeAllMenus}
+                    to={`/japan-help-desk/${service.slug}`} onClick={closeAllMenus}
                   >
                     {service.title.toUpperCase()}
                   </Link>
@@ -294,8 +288,8 @@ function Navbar() {
               ))}
             </ul>
           </li>
-          <li><Link to="/managed-services" onPointerDown={closeAllMenus} onClick={closeAllMenus}>MANAGED SERVICES</Link></li>
-          <li><Link to="/assurance" onPointerDown={closeAllMenus} onClick={closeAllMenus}>ASSURANCE</Link></li>
+          <li><Link to="/managed-services" onClick={closeAllMenus}>MANAGED SERVICES</Link></li>
+          <li><Link to="/assurance" onClick={closeAllMenus}>ASSURANCE</Link></li>
           <li className={`services-dropdown ${isServicesOpen ? "open" : ""}`}>
             <button
               type="button"
@@ -306,16 +300,16 @@ function Navbar() {
               SERVICES <span className="arrow-up">&#94;</span>
             </button>
             <ul className="services-menu">
-              <li><Link to="/services/engineering-solutions" onPointerDown={closeAllMenus} onClick={closeAllMenus}>ENGINEERING SOLUTIONS</Link></li>
-              <li><Link to="/services/staff-augmentation" onPointerDown={closeAllMenus} onClick={closeAllMenus}>STAFF AUGMENTATION</Link></li>
-              <li><Link to="/services/health-care-services" onPointerDown={closeAllMenus} onClick={closeAllMenus}>HEALTH CARE SERVICES</Link></li>
-              <li><Link to="/services/computer-technology" onPointerDown={closeAllMenus} onClick={closeAllMenus}>COMPUTER TECHNOLOGY</Link></li>
-              <li><Link to="/services/business-solutions" onPointerDown={closeAllMenus} onClick={closeAllMenus}>BUSINESS SOLUTIONS</Link></li>
-              <li><Link to="/services/product-manufacturing" onPointerDown={closeAllMenus} onClick={closeAllMenus}>PRODUCT MANUFACTURING</Link></li>
+              <li><Link to="/services/engineering-solutions" onClick={closeAllMenus}>ENGINEERING SOLUTIONS</Link></li>
+              <li><Link to="/services/staff-augmentation" onClick={closeAllMenus}>STAFF AUGMENTATION</Link></li>
+              <li><Link to="/services/health-care-services" onClick={closeAllMenus}>HEALTH CARE SERVICES</Link></li>
+              <li><Link to="/services/computer-technology" onClick={closeAllMenus}>COMPUTER TECHNOLOGY</Link></li>
+              <li><Link to="/services/business-solutions" onClick={closeAllMenus}>BUSINESS SOLUTIONS</Link></li>
+              <li><Link to="/services/product-manufacturing" onClick={closeAllMenus}>PRODUCT MANUFACTURING</Link></li>
             </ul>
           </li>
-          <li><Link to="/service-hub/financial-advisory" onPointerDown={closeAllMenus} onClick={closeAllMenus}>CONSULTING</Link></li>
-          <li><Link to="/service-hub/digital-enablement" onPointerDown={closeAllMenus} onClick={closeAllMenus}>DIGITAL</Link></li>
+          <li><Link to="/service-hub/financial-advisory" onClick={closeAllMenus}>CONSULTING</Link></li>
+          <li><Link to="/service-hub/digital-enablement" onClick={closeAllMenus}>DIGITAL</Link></li>
         </ul>
       </nav>
     </header>
