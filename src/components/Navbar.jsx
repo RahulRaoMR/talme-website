@@ -1,4 +1,5 @@
 import { useEffect, useMemo, useState } from "react";
+import { FiBriefcase, FiGlobe, FiLock, FiMenu, FiSearch, FiUsers } from "react-icons/fi";
 import { Link, useLocation, useNavigate } from "react-router-dom";
 import { japanHelpDeskServices } from "../data/japanHelpDeskData";
 import "./Navbar.css";
@@ -11,6 +12,7 @@ function Navbar() {
   const [isGlobalOpen, setIsGlobalOpen] = useState(false);
   const [isServicesOpen, setIsServicesOpen] = useState(false);
   const [isJapanHelpOpen, setIsJapanHelpOpen] = useState(false);
+  const [isMobileServicesOpen, setIsMobileServicesOpen] = useState(false);
 
   useEffect(() => {
     setIsSearchOpen(false);
@@ -18,6 +20,7 @@ function Navbar() {
     setIsGlobalOpen(false);
     setIsServicesOpen(false);
     setIsJapanHelpOpen(false);
+    setIsMobileServicesOpen(false);
   }, [location.pathname]);
 
   const searchItems = [
@@ -90,6 +93,15 @@ function Navbar() {
     setIsGlobalOpen(false);
     setIsServicesOpen(false);
     setIsJapanHelpOpen(false);
+    setIsMobileServicesOpen(false);
+  };
+
+  const handleMobileMenuToggle = () => {
+    closeSearch();
+    setIsGlobalOpen(false);
+    setIsServicesOpen(false);
+    setIsJapanHelpOpen(false);
+    setIsMobileServicesOpen((prev) => !prev);
   };
 
   const handleSearchToggle = (event) => {
@@ -162,8 +174,22 @@ function Navbar() {
   return (
     <header className="navbar-shell">
       <div className="navbar-top-row">
+        <button
+          type="button"
+          className="mobile-menu-toggle"
+          aria-label="Toggle service menu"
+          aria-expanded={isMobileServicesOpen}
+          onClick={handleMobileMenuToggle}
+        >
+          <FiMenu aria-hidden="true" />
+        </button>
+
         <Link to="/" className="brand-link" aria-label="Talme Home">
           <img src="/logo.png" alt="Talme Logo" className="brand-logo" />
+        </Link>
+
+        <Link to="/contact" className="mobile-contact-cta" onClick={closeAllMenus}>
+          Contact Us
         </Link>
 
         <nav className="navbar-top" aria-label="Top navigation">
@@ -173,8 +199,8 @@ function Navbar() {
             <li><Link to="/about" onClick={closeAllMenus}>About Us</Link></li>
             <li><Link to="/leadership" onClick={closeAllMenus}>Leadership</Link></li>
             <li><Link to="/insights" onClick={closeAllMenus}>Insights</Link></li>
-            <li><Link to="/our-clients" onClick={closeAllMenus}>Our Clients</Link></li>
-            <li><Link to="/careers" onClick={closeAllMenus}>Careers</Link></li>
+            <li><Link to="/our-clients" onClick={closeAllMenus}><FiUsers className="mobile-link-icon" aria-hidden="true" />Our Clients</Link></li>
+            <li><Link to="/careers" onClick={closeAllMenus}><FiBriefcase className="mobile-link-icon" aria-hidden="true" />Careers</Link></li>
             <li><Link to="/contact" onClick={closeAllMenus}>Contact Us</Link></li>
             <li className="search-link">
               <button
@@ -184,7 +210,7 @@ function Navbar() {
                 aria-expanded={isSearchOpen}
                 onClick={handleSearchToggle}
               >
-                Search
+                <FiSearch className="mobile-link-icon" aria-hidden="true" />Search
               </button>
               {isSearchOpen && (
                 <div className="search-box">
@@ -231,7 +257,7 @@ function Navbar() {
                 aria-expanded={isGlobalOpen}
                 onClick={handleGlobalToggle}
               >
-                GLOBAL <span className="arrow">&#9662;</span>
+                <FiGlobe className="mobile-link-icon" aria-hidden="true" />GLOBAL <span className="arrow">&#9662;</span>
               </button>
               {isGlobalOpen && (
                 <ul className="global-menu">
@@ -256,7 +282,7 @@ function Navbar() {
             </li>
             <li>
               <a href="https://hrms.talme.in/" target="_blank" rel="noreferrer">
-                INTRANET
+                <FiLock className="mobile-link-icon" aria-hidden="true" />INTRANET
               </a>
             </li>
           </ul>
@@ -265,7 +291,7 @@ function Navbar() {
 
       <div className="navbar-divider" />
 
-      <nav className="navbar-bottom" aria-label="Service navigation">
+      <nav className={`navbar-bottom ${isMobileServicesOpen ? "mobile-services-open" : ""}`} aria-label="Service navigation">
         <ul className="service-links">
           <li className={`japan-dropdown ${isJapanHelpOpen ? "open" : ""}`}>
             <button

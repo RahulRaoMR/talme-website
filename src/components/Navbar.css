@@ -815,3 +815,226 @@
     max-height: min(390px, calc(100dvh - 210px));
   }
 }
+
+.mobile-menu-toggle,
+.mobile-contact-cta,
+.mobile-link-icon {
+  display: none;
+}
+
+/* Mobile app-style navigation only */
+@media (max-width: 720px) {
+  .navbar-shell {
+    padding-top: 0;
+    background: #ffffff;
+    overflow-x: clip;
+  }
+
+  .navbar-top-row {
+    display: grid;
+    grid-template-columns: 56px 1fr auto;
+    align-items: center;
+    gap: 8px;
+    width: 100%;
+    padding: 10px 14px 0;
+    border: 0;
+    border-radius: 0;
+    box-shadow: none;
+    background: #ffffff;
+  }
+
+  .mobile-menu-toggle {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 42px;
+    height: 42px;
+    border: 0;
+    background: transparent;
+    color: #0b2b5c;
+    font-size: 1.42rem;
+    cursor: pointer;
+  }
+
+  .brand-link {
+    justify-content: center;
+    width: auto;
+  }
+
+  .brand-logo {
+    height: 46px;
+  }
+
+  .mobile-contact-cta {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    min-height: 38px;
+    padding: 0 18px;
+    border-radius: 999px;
+    background: #0b2d70;
+    color: #ffffff;
+    font-size: 0.82rem;
+    font-weight: 800;
+    text-decoration: none;
+    white-space: nowrap;
+    box-shadow: 0 8px 18px rgba(11, 45, 112, 0.18);
+  }
+
+  .navbar-top {
+    grid-column: 1 / -1;
+    width: calc(100% + 28px);
+    margin: 10px -14px 0;
+    display: block;
+  }
+
+  .top-links {
+    display: grid;
+    grid-template-columns: repeat(5, minmax(0, 1fr));
+    width: 100%;
+    gap: 0;
+  }
+
+  .top-links li {
+    min-width: 0;
+  }
+
+  .top-links li:nth-child(-n + 5) {
+    background: #092a5c;
+  }
+
+  .top-links li:nth-child(n + 6) {
+    background: #ffffff;
+    border-right: 1px solid #e4e9f1;
+    border-bottom: 1px solid #e4e9f1;
+  }
+
+  .top-links li:nth-child(8) {
+    display: none;
+  }
+
+  .top-links a,
+  .search-toggle,
+  .global-toggle {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 100%;
+    min-height: 38px;
+    padding: 7px 3px;
+    color: #0b2b5c;
+    font-size: 0.72rem;
+    font-weight: 700;
+    letter-spacing: 0;
+    line-height: 1.15;
+    text-align: center;
+    white-space: normal;
+  }
+
+  .top-links li:nth-child(-n + 5) a {
+    color: #ffffff;
+  }
+
+  .top-links li:nth-child(n + 6) a,
+  .top-links li:nth-child(n + 6) .search-toggle,
+  .top-links li:nth-child(n + 6) .global-toggle {
+    min-height: 58px;
+    flex-direction: column;
+    gap: 4px;
+  }
+
+  .mobile-link-icon {
+    display: block;
+    font-size: 1.05rem;
+    color: currentColor;
+  }
+
+  .search-link,
+  .global-link {
+    position: static;
+  }
+
+  .search-box,
+  .global-link .global-menu {
+    position: absolute;
+    left: 10px;
+    right: 10px;
+    top: calc(100% + 8px);
+    width: auto;
+    min-width: 0;
+    max-width: none;
+    transform: none;
+    z-index: 1200;
+  }
+
+  .global-link .global-menu {
+    display: grid;
+    gap: 8px;
+    padding: 8px;
+  }
+
+  .global-link .global-menu li + li {
+    margin-top: 0;
+  }
+
+  .navbar-divider {
+    display: none;
+  }
+
+  .navbar-bottom {
+    display: none;
+    position: relative;
+    width: 100%;
+    margin: 0;
+    padding: 10px 12px 12px;
+    overflow: visible;
+    background: #f8fbff;
+    border-bottom: 1px solid #dfe7f2;
+  }
+
+  .navbar-bottom.mobile-services-open {
+    display: flex;
+  }
+
+  .service-links {
+    width: 100%;
+    min-width: 0;
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 8px;
+    padding: 0;
+  }
+
+  .service-links > li {
+    min-width: 0;
+  }
+
+  .service-links a,
+  .services-toggle,
+  .japan-toggle {
+    min-height: 40px;
+    width: 100%;
+    padding: 8px 10px;
+    border-radius: 8px;
+    background: #ffffff;
+    color: #123d78;
+    border: 1px solid #dbe5f3;
+    font-size: 0.76rem;
+    line-height: 1.2;
+    text-align: center;
+  }
+
+  .japan-menu,
+  .services-menu {
+    position: absolute;
+    left: 12px;
+    right: 12px;
+    top: calc(100% + 8px);
+    width: auto;
+    min-width: 0;
+    max-width: none;
+    max-height: min(430px, calc(100dvh - 210px));
+    overflow-y: auto;
+    z-index: 1300;
+  }
+}
