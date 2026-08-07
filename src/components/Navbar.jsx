@@ -156,6 +156,12 @@ function Navbar() {
     });
   };
 
+  const handleDesktopDropdownLeave = (closeDropdown) => (event) => {
+    if (event.pointerType === "mouse") {
+      closeDropdown(false);
+    }
+  };
+
   const filteredSearchItems = useMemo(() => {
     const query = searchQuery.trim().toLowerCase();
     if (!query) return [];
@@ -345,7 +351,7 @@ function Navbar() {
 
       <nav className={`navbar-bottom ${isMobileServicesOpen ? "mobile-services-open" : ""}`} aria-label="Service navigation">
         <ul className="service-links">
-          <li className={`japan-dropdown ${isJapanHelpOpen ? "open" : ""}`}>
+          <li className={`japan-dropdown ${isJapanHelpOpen ? "open" : ""}`} onPointerLeave={handleDesktopDropdownLeave(setIsJapanHelpOpen)}>
             <button
               type="button"
               className="japan-toggle"
@@ -368,7 +374,7 @@ function Navbar() {
           </li>
           <li><Link to="/managed-services" onClick={closeAllMenus}>MANAGED SERVICES</Link></li>
           <li><Link to="/assurance" onClick={closeAllMenus}>ASSURANCE</Link></li>
-          <li className={`services-dropdown ${isServicesOpen ? "open" : ""}`}>
+          <li className={`services-dropdown ${isServicesOpen ? "open" : ""}`} onPointerLeave={handleDesktopDropdownLeave(setIsServicesOpen)}>
             <button
               type="button"
               className="services-toggle"
