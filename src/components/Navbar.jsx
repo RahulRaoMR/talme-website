@@ -1,4 +1,4 @@
-import { useEffect, useMemo, useState } from "react";
+import { useEffect, useMemo, useRef, useState } from "react";
 import { FiBriefcase, FiGlobe, FiLock, FiMenu, FiSearch, FiUsers } from "react-icons/fi";
 import { Link, useLocation, useNavigate } from "react-router-dom";
 import { japanHelpDeskServices } from "../data/japanHelpDeskData";
@@ -13,6 +13,7 @@ function Navbar() {
   const [isServicesOpen, setIsServicesOpen] = useState(false);
   const [isJapanHelpOpen, setIsJapanHelpOpen] = useState(false);
   const [isMobileServicesOpen, setIsMobileServicesOpen] = useState(false);
+  const desktopDropdownCloseTimer = useRef(null);
 
   useEffect(() => {
     setIsSearchOpen(false);
@@ -156,10 +157,20 @@ function Navbar() {
     });
   };
 
-  const handleDesktopDropdownLeave = (closeDropdown) => (event) => {
-    if (event.pointerType === "mouse") {
-      closeDropdown(false);
+  const cancelDesktopDropdownClose = () => {
+    if (desktopDropdownCloseTimer.current) {
+      window.clearTimeout(desktopDropdownCloseTimer.current);
+      desktopDropdownCloseTimer.current = null;
     }
+  };
+
+  const handleDesktopDropdownLeave = (closeDropdown) => (event) => {
+    if (event.pointerType !== "mouse") return;
+    cancelDesktopDropdownClose();
+    desktopDropdownCloseTimer.current = window.setTimeout(() => {
+      closeDropdown(false);
+      desktopDropdownCloseTimer.current = null;
+    }, 350);
   };
 
   const filteredSearchItems = useMemo(() => {
@@ -351,7 +362,7 @@ function Navbar() {
 
       <nav className={`navbar-bottom ${isMobileServicesOpen ? "mobile-services-open" : ""}`} aria-label="Service navigation">
         <ul className="service-links">
-          <li className={`japan-dropdown ${isJapanHelpOpen ? "open" : ""}`} onPointerLeave={handleDesktopDropdownLeave(setIsJapanHelpOpen)}>
+          <li className={`japan-dropdown ${isJapanHelpOpen ? "open" : ""}`} onPointerEnter={cancelDesktopDropdownClose} onPointerLeave={handleDesktopDropdownLeave(setIsJapanHelpOpen)}>
             <button
               type="button"
               className="japan-toggle"
@@ -374,7 +385,7 @@ function Navbar() {
           </li>
           <li><Link to="/managed-services" onClick={closeAllMenus}>MANAGED SERVICES</Link></li>
           <li><Link to="/assurance" onClick={closeAllMenus}>ASSURANCE</Link></li>
-          <li className={`services-dropdown ${isServicesOpen ? "open" : ""}`} onPointerLeave={handleDesktopDropdownLeave(setIsServicesOpen)}>
+          <li className={`services-dropdown ${isServicesOpen ? "open" : ""}`} onPointerEnter={cancelDesktopDropdownClose} onPointerLeave={handleDesktopDropdownLeave(setIsServicesOpen)}>
             <button
               type="button"
               className="services-toggle"
