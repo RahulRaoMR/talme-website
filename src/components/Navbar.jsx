@@ -266,7 +266,7 @@ function Navbar() {
                 </div>
               )}
             </li>
-            <li className="global-link">
+            <li className="global-link" onPointerEnter={cancelDesktopDropdownClose} onPointerLeave={handleDesktopDropdownLeave(setIsGlobalOpen)}>
               <button
                 type="button"
                 className="global-toggle"
