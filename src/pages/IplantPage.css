@@ -1,0 +1,63 @@
+.iplant-page {
+  min-height: 70vh;
+  padding: 76px 24px;
+  background: linear-gradient(180deg, #f8fbff 0%, #eef5ff 100%);
+}
+
+.iplant-hero {
+  width: min(1040px, 100%);
+  margin: 0 auto;
+  padding: clamp(42px, 7vw, 82px);
+  border: 1px solid rgba(38, 76, 134, 0.12);
+  border-radius: 18px;
+  background: #ffffff;
+  box-shadow: 0 28px 60px rgba(19, 48, 89, 0.1);
+}
+
+.iplant-eyebrow {
+  margin: 0 0 12px;
+  color: #2f61b5;
+  font-size: 0.82rem;
+  font-weight: 800;
+  letter-spacing: 0.22em;
+}
+
+.iplant-hero h1 {
+  margin: 0;
+  color: #092a5c;
+  font-size: clamp(3rem, 9vw, 6rem);
+  line-height: 0.95;
+}
+
+.iplant-hero p:not(.iplant-eyebrow) {
+  max-width: 680px;
+  margin: 24px 0 0;
+  color: #3f5f8b;
+  font-size: clamp(1rem, 2.6vw, 1.28rem);
+  line-height: 1.7;
+}
+
+.iplant-action {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 46px;
+  margin-top: 32px;
+  padding: 0 22px;
+  border-radius: 999px;
+  background: #0b2d70;
+  color: #ffffff;
+  font-weight: 800;
+  text-decoration: none;
+}
+
+@media (max-width: 640px) {
+  .iplant-page {
+    padding: 42px 16px;
+  }
+
+  .iplant-hero {
+    border-radius: 14px;
+    padding: 34px 22px;
+  }
+}
