@@ -539,6 +539,25 @@ async function sendContactEmail({ name, companyName, email, message }) {
   return true;
 }
 
+function getEmailDeliveryErrorMessage(error) {
+  const message = error instanceof Error ? error.message : String(error || "");
+  const code = error && typeof error === "object" ? error.code : "";
+
+  if (code === "ETIMEDOUT" || message.includes("ETIMEDOUT")) {
+    return "Could not connect to the SMTP mail server. Check SMTP_HOST, SMTP_PORT, SMTP_SECURE, SMTP_USER, and SMTP_PASS on the live hosting environment.";
+  }
+
+  if (code === "EAUTH" || message.toLowerCase().includes("auth")) {
+    return "SMTP login failed. Check SMTP_USER and SMTP_PASS on the live hosting environment.";
+  }
+
+  if (code === "ENOTFOUND" || message.includes("ENOTFOUND")) {
+    return "SMTP_HOST could not be found. Set a valid mail server host on the live hosting environment.";
+  }
+
+  return message || "Unable to send career email.";
+}
+
 async function sendCareerEmail({ fields, file }) {
   if (!process.env.SMTP_HOST) {
     return false;
@@ -721,7 +740,7 @@ async function handleCareers(req, res) {
   try {
     emailed = await sendCareerEmail({ fields, file });
   } catch (error) {
-    emailError = error instanceof Error ? error.message : "Unable to send career email.";
+    emailError = getEmailDeliveryErrorMessage(error);
   }
 
   if (!emailed) {
