@@ -15,7 +15,6 @@ import AssurancePage from "./pages/AssurancePage";
 import CareersPage from "./pages/CareersPage";
 import InsightDetailPage from "./pages/InsightDetailPage";
 import InsightsPage from "./pages/InsightsPage";
-import IplantPage from "./pages/IplantPage";
 import LegalPage from "./pages/LegalPage";
 import PeoplePractice from "./pages/PeoplePractice";
 import ServiceDetailPage from "./pages/ServiceDetailPage";
@@ -142,7 +141,6 @@ function App() {
         <Route path="/job-description" element={<Navigate to="/careers" replace />} />
         <Route path="/job-descriptions" element={<Navigate to="/careers" replace />} />
         <Route path="/insights" element={<InsightsPage />} />
-        <Route path="/iplant" element={<IplantPage />} />
         <Route path="/news-events" element={<NewsEventsPage />} />
         <Route path="/news-admin" element={<NewsEventsPage adminMode />} />
         <Route path="/insights/:slug" element={<InsightDetailPage />} />

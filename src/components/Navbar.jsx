@@ -405,7 +405,11 @@ function Navbar() {
           </li>
           <li><Link to="/service-hub/financial-advisory" onClick={closeAllMenus}>CONSULTING</Link></li>
           <li><Link to="/service-hub/digital-enablement" onClick={closeAllMenus}>DIGITAL</Link></li>
-          <li><Link to="/iplant" onClick={closeAllMenus}>IPLANT</Link></li>
+          <li>
+            <a href="https://iplant.talme.in/" target="_blank" rel="noreferrer">
+              IPLANT
+            </a>
+          </li>
         </ul>
       </nav>
     </header>
