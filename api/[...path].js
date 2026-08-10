@@ -540,24 +540,28 @@ async function sendContactEmail({ name, companyName, email, message }) {
 }
 
 async function sendCareerEmail({ fields, file }) {
-  if (!process.env.SMTP_HOST || !process.env.CAREERS_EMAIL_TO) {
+  if (!process.env.SMTP_HOST) {
     return false;
   }
 
+  const recipient = process.env.CAREERS_EMAIL_TO || "hr@talme.in";
   const mailFrom =
     process.env.CAREERS_EMAIL_FROM || process.env.SMTP_USER || "no-reply@talme.in";
 
   await transporter.sendMail({
     from: mailFrom,
-    to: process.env.CAREERS_EMAIL_TO,
+    to: recipient,
     replyTo: fields.email,
     subject: `Career application: ${fields.fullName} - ${fields.role}`,
     text: [
+      "New career application from TALME website.",
+      "",
       `Full name: ${fields.fullName}`,
       `Email: ${fields.email}`,
-      `Phone: ${fields.phone}`,
-      `Role: ${fields.role}`,
-      `Message: ${fields.message || "N/A"}`,
+      `Phone number: ${fields.phone}`,
+      `Role applying for: ${fields.role}`,
+      `Short note: ${fields.message || "N/A"}`,
+      `CV attachment: ${file.filename}`,
     ].join("\n"),
     attachments: [
       {
