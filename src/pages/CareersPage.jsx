@@ -108,7 +108,7 @@ function CareersPage() {
         );
       }
 
-      setStatusMessage("Application submitted successfully. Our HR team will review your profile.");
+      setStatusMessage(result.message || "Application sent to HR successfully. Our HR team will review your profile.");
       setFormData(initialFormState);
       setResumeFile(null);
       if (fileInputRef.current) {

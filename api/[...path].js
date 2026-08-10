@@ -724,21 +724,24 @@ async function handleCareers(req, res) {
     emailError = error instanceof Error ? error.message : "Unable to send career email.";
   }
 
-  if (!stored && !emailed) {
+  if (!emailed) {
     sendJson(res, 503, {
-      error: "Careers backend is not configured for storage or email delivery.",
-      details: storageError || emailError,
+      error: "Application could not be emailed to HR.",
+      details:
+        emailError ||
+        "SMTP email delivery is not configured on this server. Add SMTP_HOST, SMTP_USER, SMTP_PASS, and CAREERS_EMAIL_TO, then redeploy.",
+      id: record.id,
+      stored,
+      storageError,
+      emailed,
     });
     return;
   }
 
   sendJson(res, 200, {
-    message:
-      stored && emailed
-        ? "Application stored and sent successfully."
-        : emailed
-          ? "Application sent successfully."
-          : "Application stored successfully.",
+    message: stored
+      ? "Application sent to HR and stored successfully."
+      : "Application sent to HR successfully.",
     id: record.id,
     emailed,
     stored,
