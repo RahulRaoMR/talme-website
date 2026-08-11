@@ -219,7 +219,7 @@ function Navbar() {
             <li><Link to="/our-clients" onClick={closeAllMenus}><FiUsers className="mobile-link-icon" aria-hidden="true" />Our Clients</Link></li>
             <li><Link to="/careers" onClick={closeAllMenus}><FiBriefcase className="mobile-link-icon" aria-hidden="true" />Careers</Link></li>
             <li><Link to="/contact" onClick={closeAllMenus}>Contact Us</Link></li>
-            <li className="search-link">
+            <li className="search-link" onPointerEnter={cancelDesktopDropdownClose} onPointerLeave={handleDesktopDropdownLeave(setIsSearchOpen)}>
               <button
                 type="button"
                 className="search-toggle"
