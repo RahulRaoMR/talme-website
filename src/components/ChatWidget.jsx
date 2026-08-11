@@ -148,14 +148,14 @@ function ChatWidget() {
                   onChange={handleInputChange}
                   required
                 />
-                <button type="submit" className="chat-primary-btn">
-                  {submitState.status === "sending" ? "Sending..." : "Send"}
-                </button>
                 {submitState.status !== "idle" && (
                   <p className={`chat-submit-note ${submitState.status}`}>
                     {submitState.message}
                   </p>
                 )}
+                <button type="submit" className="chat-primary-btn">
+                  {submitState.status === "sending" ? "Sending..." : "Send"}
+                </button>
               </form>
             </section>
           )}

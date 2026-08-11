@@ -216,22 +216,31 @@
 }
 
 .chat-submit-note {
-  margin: 8px 0 0;
-  font-size: 0.84rem;
+  margin: 8px 0 2px;
+  padding: 9px 12px;
+  border-radius: 10px;
+  font-size: 0.86rem;
+  line-height: 1.35;
   text-align: center;
-  font-weight: 600;
+  font-weight: 700;
 }
 
 .chat-submit-note.sending {
-  color: #4a6288;
+  color: #29476f;
+  background: #eef4ff;
+  border: 1px solid #cbd9f0;
 }
 
 .chat-submit-note.success {
-  color: #1d7a3a;
+  color: #176a34;
+  background: #ecf8ef;
+  border: 1px solid #bce4c7;
 }
 
 .chat-submit-note.error {
-  color: #c62828;
+  color: #b42323;
+  background: #fff1f1;
+  border: 1px solid #f3caca;
 }
 
 .chat-launcher {
