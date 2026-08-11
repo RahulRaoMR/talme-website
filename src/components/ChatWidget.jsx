@@ -153,9 +153,11 @@ function ChatWidget() {
                     {submitState.message}
                   </p>
                 )}
-                <button type="submit" className="chat-primary-btn">
-                  {submitState.status === "sending" ? "Sending..." : "Send"}
-                </button>
+                {submitState.status !== "success" && (
+                  <button type="submit" className="chat-primary-btn">
+                    {submitState.status === "sending" ? "Sending..." : "Send"}
+                  </button>
+                )}
               </form>
             </section>
           )}
