@@ -128,37 +128,41 @@ function ChatWidget() {
             </>
           ) : (
             <section className="chat-form-wrap">
-              <form className="chat-form-card" onSubmit={handleSubmit}>
-                <p>We just need some more information from you to proceed:</p>
-                <label htmlFor="chat-name">Name</label>
-                <input
-                  id="chat-name"
-                  name="name"
-                  type="text"
-                  value={formData.name}
-                  onChange={handleInputChange}
-                  required
-                />
-                <label htmlFor="chat-message">Message</label>
-                <textarea
-                  id="chat-message"
-                  name="message"
-                  rows="3"
-                  value={formData.message}
-                  onChange={handleInputChange}
-                  required
-                />
-                {submitState.status !== "idle" && (
-                  <p className={`chat-submit-note ${submitState.status}`}>
-                    {submitState.message}
-                  </p>
-                )}
-                {submitState.status !== "success" && (
+              {submitState.status === "success" ? (
+                <div className="chat-form-card chat-success-card">
+                  <p className="chat-submit-note success">{submitState.message}</p>
+                </div>
+              ) : (
+                <form className="chat-form-card" onSubmit={handleSubmit}>
+                  <p>We just need some more information from you to proceed:</p>
+                  <label htmlFor="chat-name">Name</label>
+                  <input
+                    id="chat-name"
+                    name="name"
+                    type="text"
+                    value={formData.name}
+                    onChange={handleInputChange}
+                    required
+                  />
+                  <label htmlFor="chat-message">Message</label>
+                  <textarea
+                    id="chat-message"
+                    name="message"
+                    rows="3"
+                    value={formData.message}
+                    onChange={handleInputChange}
+                    required
+                  />
+                  {submitState.status !== "idle" && (
+                    <p className={`chat-submit-note ${submitState.status}`}>
+                      {submitState.message}
+                    </p>
+                  )}
                   <button type="submit" className="chat-primary-btn">
                     {submitState.status === "sending" ? "Sending..." : "Send"}
                   </button>
-                )}
-              </form>
+                </form>
+              )}
             </section>
           )}
         </aside>

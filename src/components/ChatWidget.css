@@ -215,6 +215,14 @@
   min-width: 86px;
 }
 
+.chat-success-card {
+  padding: 12px;
+}
+
+.chat-success-card .chat-submit-note {
+  margin: 0;
+}
+
 .chat-submit-note {
   margin: 8px 0 2px;
   padding: 9px 12px;
