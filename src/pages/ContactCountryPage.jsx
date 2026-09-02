@@ -40,9 +40,9 @@ const contactByCountry = {
           "Pacific Century Place Marunouchi, 8\u968E, 13\u968E, 1 Chome-11-1 Marunouchi, Chiyoda City, Tokyo 100-6208, Japan.",
         hours: "Open today 09:00 am - 05:00 pm",
         directions:
-          "https://www.google.com/maps/dir/?api=1&destination=Pacific+Century+Place+Marunouchi+8%E9%9A%8E+13%E9%9A%8E+1+Chome-11-1+Marunouchi+Chiyoda+City+Tokyo+100-6208+Japan",
+          "https://www.google.com/maps/search/?api=1&query=Pacific+Century+Place+Marunouchi+Tokyo",
         mapSrc:
-          "https://maps.google.com/maps?q=Pacific%20Century%20Place%20Marunouchi%208%E9%9A%8E%2013%E9%9A%8E%201%20Chome-11-1%20Marunouchi%20Chiyoda%20City%20Tokyo%20100-6208%20Japan&t=&z=16&ie=UTF8&iwloc=&output=embed",
+          "https://maps.google.com/maps?q=Pacific%20Century%20Place%20Marunouchi%20Tokyo&t=&z=16&ie=UTF8&iwloc=&output=embed",
       },
     ],
   },

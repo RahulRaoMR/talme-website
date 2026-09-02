@@ -28,7 +28,7 @@ const officeLocations = [
         address:
           "Pacific Century Place Marunouchi, 8\u968E, 13\u968E, 1 Chome-11-1 Marunouchi, Chiyoda City, Tokyo 100-6208, Japan.",
         directions:
-          "https://www.google.com/maps/dir/?api=1&destination=Pacific+Century+Place+Marunouchi+8%E9%9A%8E+13%E9%9A%8E+1+Chome-11-1+Marunouchi+Chiyoda+City+Tokyo+100-6208+Japan",
+          "https://www.google.com/maps/search/?api=1&query=Pacific+Century+Place+Marunouchi+Tokyo",
       },
     ],
   },
