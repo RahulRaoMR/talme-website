@@ -19,8 +19,8 @@
   display: flex;
   align-items: center;
   justify-content: space-between;
-  gap: 16px;
-  padding: 14px 18px;
+  gap: 22px;
+  padding: 18px 22px 18px 20px;
   border: 1px solid rgba(38, 76, 134, 0.08);
   border-radius: 26px;
   background: rgba(255, 255, 255, 0.92);
@@ -35,7 +35,7 @@
 }
 
 .brand-logo {
-  height: 64px;
+  height: 74px;
   width: auto;
 }
 
@@ -59,7 +59,7 @@
 }
 
 .top-links {
-  gap: clamp(8px, 0.9vw, 16px);
+  gap: clamp(8px, 0.85vw, 15px);
 }
 
 .top-links a,
@@ -285,6 +285,11 @@ body {
   outline: none;
 }
 
+.desktop-language-label {
+  flex: 0 0 auto;
+  margin-left: 2px;
+}
+
 .services-toggle,
 .service-links a {
   color: #45628f;
@@ -358,6 +363,10 @@ body {
 }
 
 @media (max-width: 720px) {
+  .desktop-language-label {
+    display: none;
+  }
+
   .navbar-shell {
     padding-top: 10px;
   }

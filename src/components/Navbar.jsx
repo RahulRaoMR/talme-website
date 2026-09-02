@@ -376,25 +376,25 @@ function Navbar() {
                 <FiLock className="mobile-link-icon" aria-hidden="true" />INTRANET
               </a>
             </li>
-            <li className="language-link">
-              <label className="language-label" htmlFor="site-language">
-                <FiGlobe aria-hidden="true" />
-                <select
-                  id="site-language"
-                  value={selectedLanguage}
-                  onChange={handleLanguageChange}
-                  aria-label="Translate website"
-                >
-                  {translationLanguages.map((language) => (
-                    <option key={language.code} value={language.code}>
-                      {language.label}
-                    </option>
-                  ))}
-                </select>
-              </label>
-            </li>
+
           </ul>
         </nav>
+
+        <label className="language-label desktop-language-label" htmlFor="site-language">
+          <FiGlobe aria-hidden="true" />
+          <select
+            id="site-language"
+            value={selectedLanguage}
+            onChange={handleLanguageChange}
+            aria-label="Translate website"
+          >
+            {translationLanguages.map((language) => (
+              <option key={language.code} value={language.code}>
+                {language.label}
+              </option>
+            ))}
+          </select>
+        </label>
       </div>
 
       {isSearchOpen && (
