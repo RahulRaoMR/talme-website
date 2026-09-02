@@ -1422,3 +1422,77 @@ body {
     margin-top: 8px;
   }
 }
+/* Final mobile nav fit: show all primary links without horizontal clipping */
+@media (max-width: 720px) {
+  .navbar-top {
+    width: calc(100% + 24px);
+    margin: 8px -12px 0;
+    overflow: visible;
+    border-top: 1px solid #edf1f7;
+  }
+
+  .top-links {
+    display: grid;
+    grid-template-columns: repeat(5, minmax(0, 1fr));
+    width: 100%;
+    min-width: 0;
+    gap: 0;
+    padding: 0;
+    background: #ffffff;
+  }
+
+  .top-links li,
+  .top-links li:nth-child(-n + 5),
+  .top-links li:nth-child(n + 6) {
+    min-width: 0;
+    background: transparent;
+    border: 0;
+  }
+
+  .top-links li:nth-child(8) {
+    display: none;
+  }
+
+  .top-links li:nth-child(-n + 5) {
+    background: #092a5c;
+  }
+
+  .top-links li:nth-child(n + 6) {
+    border-right: 1px solid #e4e9f1;
+    border-bottom: 1px solid #e4e9f1;
+  }
+
+  .top-links a,
+  .search-toggle,
+  .global-toggle {
+    width: 100%;
+    min-height: 42px;
+    padding: 7px 3px;
+    border: 0;
+    border-radius: 0;
+    background: transparent;
+    color: #0b2b5c;
+    font-size: 0.7rem;
+    line-height: 1.12;
+    text-align: center;
+    white-space: normal;
+  }
+
+  .top-links li:nth-child(-n + 5) a {
+    color: #ffffff;
+    background: transparent;
+  }
+
+  .top-links li:nth-child(n + 6) a,
+  .top-links li:nth-child(n + 6) .search-toggle,
+  .top-links li:nth-child(n + 6) .global-toggle {
+    min-height: 58px;
+    flex-direction: column;
+    gap: 4px;
+  }
+
+  .mobile-link-icon {
+    display: block;
+    font-size: 1rem;
+  }
+}
