@@ -192,7 +192,9 @@
   color: #ffffff;
   font-size: clamp(2rem, 3vw, 2.9rem);
   line-height: 1.03;
-  letter-spacing: -0.05em;
+  letter-spacing: 0;
+  overflow-wrap: anywhere;
+  word-break: normal;
 }
 
 .hero-panel-card-primary p {
@@ -201,6 +203,7 @@
   color: rgba(255, 255, 255, 0.84);
   font-size: 1.05rem;
   line-height: 1.65;
+  overflow-wrap: anywhere;
 }
 
 .hero-panel-grid {
@@ -279,5 +282,31 @@
 
   .hero-panel-card-primary {
     min-height: unset;
+  }
+}
+
+html.translated-ltr .hero-panel-card-primary,
+html.translated-rtl .hero-panel-card-primary {
+  min-height: auto;
+}
+
+html.translated-ltr .hero-panel-card-primary h2,
+html.translated-rtl .hero-panel-card-primary h2 {
+  max-width: 100%;
+  font-size: clamp(1.45rem, 2.1vw, 2.15rem);
+  line-height: 1.18;
+}
+
+html.translated-ltr .hero-panel-card-primary p,
+html.translated-rtl .hero-panel-card-primary p {
+  max-width: 100%;
+  font-size: 0.98rem;
+  line-height: 1.55;
+}
+
+@media (max-width: 720px) {
+  html.translated-ltr .hero-panel-card-primary h2,
+  html.translated-rtl .hero-panel-card-primary h2 {
+    font-size: clamp(1.35rem, 7vw, 1.95rem);
   }
 }
