@@ -29,6 +29,24 @@ const contactByCountry = {
     ],
   },
 
+  japan: {
+    title: "Japan Office",
+    cityLabel: "Japan",
+    offices: [
+      {
+        label: "Tokyo Office",
+        intro: "Better yet, see us in person!",
+        address:
+          "Pacific Century Place Marunouchi, 8\u968E, 13\u968E, 1 Chome-11-1 Marunouchi, Chiyoda City, Tokyo 100-6208, Japan.",
+        hours: "Open today 09:00 am - 05:00 pm",
+        directions:
+          "https://www.google.com/maps/dir/?api=1&destination=Pacific+Century+Place+Marunouchi+8%E9%9A%8E+13%E9%9A%8E+1+Chome-11-1+Marunouchi+Chiyoda+City+Tokyo+100-6208+Japan",
+        mapSrc:
+          "https://maps.google.com/maps?q=Pacific%20Century%20Place%20Marunouchi%208%E9%9A%8E%2013%E9%9A%8E%201%20Chome-11-1%20Marunouchi%20Chiyoda%20City%20Tokyo%20100-6208%20Japan&t=&z=16&ie=UTF8&iwloc=&output=embed",
+      },
+    ],
+  },
+
   singapore: {
     title: "Singapore Office",
     cityLabel: "Singapore",
@@ -55,7 +73,7 @@ function ContactCountryPage() {
       <main className="country-contact-page">
         <section className="country-contact-container not-found">
           <h1>Location Not Found</h1>
-          <p>Please choose India or Singapore from GLOBAL.</p>
+          <p>Please choose India, Japan, or Singapore from GLOBAL.</p>
           <Link to="/contact" className="country-back-link">
             Back to Contact
           </Link>

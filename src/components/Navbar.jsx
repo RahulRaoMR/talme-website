@@ -67,6 +67,7 @@ function Navbar() {
     { label: "Product Manufacturing", to: "/services/product-manufacturing" },
     { label: "India Contact", to: "/contact/india" },
     { label: "Singapore Contact", to: "/contact/singapore" },
+    { label: "Japan Contact", to: "/contact/japan" },
   ];
 
   const globalLocations = [
@@ -81,6 +82,12 @@ function Navbar() {
       flag: "SG",
       flagIcon: "https://flagcdn.com/w40/sg.png",
       to: "/contact/singapore",
+    },
+    {
+      label: "Japan",
+      flag: "JP",
+      flagIcon: "https://flagcdn.com/w40/jp.png",
+      to: "/contact/japan",
     },
   ];
 
