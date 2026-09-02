@@ -237,6 +237,53 @@
   letter-spacing: 0.08em;
 }
 
+#google_translate_element,
+.goog-te-banner-frame,
+.goog-te-balloon-frame,
+.goog-logo-link,
+.goog-te-gadget {
+  display: none !important;
+}
+
+body {
+  top: 0 !important;
+}
+
+.language-link {
+  display: flex;
+  align-items: center;
+}
+
+.language-label {
+  display: inline-flex;
+  align-items: center;
+  gap: 7px;
+  min-height: 34px;
+  padding: 0 10px;
+  border: 1px solid rgba(38, 76, 134, 0.18);
+  border-radius: 999px;
+  background: #ffffff;
+  color: #204a87;
+  box-shadow: 0 10px 20px rgba(19, 48, 89, 0.08);
+}
+
+.language-label svg {
+  width: 16px;
+  height: 16px;
+  flex: 0 0 auto;
+}
+
+.language-label select {
+  border: 0;
+  background: transparent;
+  color: #204a87;
+  font: inherit;
+  font-size: 0.86rem;
+  font-weight: 800;
+  cursor: pointer;
+  outline: none;
+}
+
 .services-toggle,
 .service-links a {
   color: #45628f;
@@ -1310,5 +1357,27 @@
 
   .mobile-global-panel.global-menu a {
     width: 100%;
+  }
+}
+
+/* Translation control */
+@media (max-width: 720px) {
+  .top-links .language-link {
+    display: flex;
+    grid-column: auto;
+  }
+
+  .top-links .language-label {
+    width: 100%;
+    justify-content: center;
+    min-height: 46px;
+    border-radius: 0;
+    border-color: rgba(38, 76, 134, 0.12);
+    box-shadow: none;
+  }
+
+  .top-links .language-label select {
+    max-width: 92px;
+    font-size: 0.8rem;
   }
 }

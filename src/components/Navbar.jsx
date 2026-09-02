@@ -91,6 +91,72 @@ function Navbar() {
     },
   ];
 
+  const translationLanguages = [
+    { label: "English", code: "en" },
+    { label: "Japanese", code: "ja" },
+    { label: "Hindi", code: "hi" },
+    { label: "Kannada", code: "kn" },
+    { label: "Chinese", code: "zh-CN" },
+  ];
+
+  const getStoredLanguage = () => {
+    if (typeof window === "undefined") return "en";
+    return window.localStorage.getItem("talme-language") || "en";
+  };
+
+  const [selectedLanguage, setSelectedLanguage] = useState(getStoredLanguage);
+
+  useEffect(() => {
+    if (typeof window === "undefined") return undefined;
+
+    window.googleTranslateElementInit = () => {
+      if (!window.google?.translate || document.querySelector("#google_translate_element select")) return;
+      new window.google.translate.TranslateElement(
+        {
+          pageLanguage: "en",
+          includedLanguages: "en,ja,hi,kn,zh-CN",
+          autoDisplay: false,
+        },
+        "google_translate_element"
+      );
+    };
+
+    if (!document.querySelector('script[src*="translate.google.com/translate_a/element.js"]')) {
+      const script = document.createElement("script");
+      script.src = "https://translate.google.com/translate_a/element.js?cb=googleTranslateElementInit";
+      script.async = true;
+      document.body.appendChild(script);
+    } else if (window.google?.translate) {
+      window.googleTranslateElementInit();
+    }
+
+    return undefined;
+  }, []);
+
+  const setTranslateCookie = (languageCode) => {
+    const value = languageCode === "en" ? "" : `/en/${languageCode}`;
+    const expires = languageCode === "en" ? "Thu, 01 Jan 1970 00:00:00 GMT" : "Fri, 31 Dec 9999 23:59:59 GMT";
+    const hostParts = window.location.hostname.split(".");
+    const domains = [window.location.hostname];
+
+    if (hostParts.length > 1) {
+      domains.push(`.${hostParts.slice(-2).join(".")}`);
+    }
+
+    domains.forEach((domain) => {
+      document.cookie = `googtrans=${value}; expires=${expires}; path=/; domain=${domain}`;
+    });
+    document.cookie = `googtrans=${value}; expires=${expires}; path=/`;
+  };
+
+  const handleLanguageChange = (event) => {
+    const languageCode = event.target.value;
+    setSelectedLanguage(languageCode);
+    window.localStorage.setItem("talme-language", languageCode);
+    setTranslateCookie(languageCode);
+    window.location.reload();
+  };
+
   const closeSearch = () => {
     setIsSearchOpen(false);
     setSearchQuery("");
@@ -197,6 +263,7 @@ function Navbar() {
 
   return (
     <header className="navbar-shell">
+      <div id="google_translate_element" aria-hidden="true" />
       <div className="navbar-top-row">
         <button
           type="button"
@@ -308,6 +375,23 @@ function Navbar() {
               <a href="https://hrms.talme.in/" target="_blank" rel="noreferrer">
                 <FiLock className="mobile-link-icon" aria-hidden="true" />INTRANET
               </a>
+            </li>
+            <li className="language-link">
+              <label className="language-label" htmlFor="site-language">
+                <FiGlobe aria-hidden="true" />
+                <select
+                  id="site-language"
+                  value={selectedLanguage}
+                  onChange={handleLanguageChange}
+                  aria-label="Translate website"
+                >
+                  {translationLanguages.map((language) => (
+                    <option key={language.code} value={language.code}>
+                      {language.label}
+                    </option>
+                  ))}
+                </select>
+              </label>
             </li>
           </ul>
         </nav>
