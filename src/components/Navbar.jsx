@@ -262,7 +262,7 @@ function Navbar() {
 
 
   return (
-    <header className="navbar-shell">
+    <header className="navbar-shell notranslate" translate="no">
       <div id="google_translate_element" aria-hidden="true" />
       <div className="navbar-top-row">
         <button
