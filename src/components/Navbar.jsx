@@ -282,6 +282,23 @@ function Navbar() {
         <Link to="/contact" className="mobile-contact-cta" onClick={closeAllMenus}>
           Contact Us
         </Link>
+        <label className="language-label mobile-language-label notranslate" htmlFor="mobile-site-language" translate="no">
+          <FiGlobe aria-hidden="true" />
+          <select
+            id="mobile-site-language"
+            value={selectedLanguage}
+            onChange={handleLanguageChange}
+            aria-label="Translate website"
+            className="notranslate"
+            translate="no"
+          >
+            {translationLanguages.map((language) => (
+              <option key={language.code} value={language.code} className="notranslate" translate="no">
+                {language.label}
+              </option>
+            ))}
+          </select>
+        </label>
 
         <nav className="navbar-top" aria-label="Top navigation">
           <ul className="top-links">

@@ -295,6 +295,10 @@ body {
   margin-left: 2px;
 }
 
+.mobile-language-label {
+  display: none;
+}
+
 .services-toggle,
 .service-links a {
   color: #45628f;
@@ -1394,5 +1398,27 @@ body {
   .top-links .language-label select {
     max-width: 92px;
     font-size: 0.8rem;
+  }
+}
+/* Keep translation visible in mobile portrait */
+@media (max-width: 720px) {
+  .mobile-language-label {
+    display: inline-flex;
+    grid-column: 1 / -1;
+    justify-self: center;
+    min-height: 34px;
+    margin-top: 2px;
+    padding: 0 12px;
+    border-radius: 999px;
+    box-shadow: none;
+  }
+
+  .mobile-language-label select {
+    max-width: 112px;
+    font-size: 0.8rem;
+  }
+
+  .navbar-top {
+    margin-top: 8px;
   }
 }
