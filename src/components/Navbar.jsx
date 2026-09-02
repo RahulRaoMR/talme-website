@@ -380,16 +380,18 @@ function Navbar() {
           </ul>
         </nav>
 
-        <label className="language-label desktop-language-label" htmlFor="site-language">
+        <label className="language-label desktop-language-label notranslate" htmlFor="site-language" translate="no">
           <FiGlobe aria-hidden="true" />
           <select
             id="site-language"
             value={selectedLanguage}
             onChange={handleLanguageChange}
             aria-label="Translate website"
+            className="notranslate"
+            translate="no"
           >
             {translationLanguages.map((language) => (
-              <option key={language.code} value={language.code}>
+              <option key={language.code} value={language.code} className="notranslate" translate="no">
                 {language.label}
               </option>
             ))}

@@ -285,6 +285,11 @@ body {
   outline: none;
 }
 
+.language-label.notranslate,
+.language-label .notranslate {
+  unicode-bidi: isolate;
+}
+
 .desktop-language-label {
   flex: 0 0 auto;
   margin-left: 2px;
