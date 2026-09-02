@@ -1566,3 +1566,18 @@ body {
     font-size: 0.72rem;
   }
 }
+/* Prevent duplicate desktop Global dropdown behind mobile panel */
+@media (max-width: 720px) {
+  .global-link .desktop-global-menu,
+  .desktop-global-menu {
+    display: none !important;
+    opacity: 0 !important;
+    visibility: hidden !important;
+  }
+
+  .mobile-global-panel.global-menu {
+    display: grid !important;
+    gap: 8px;
+    overflow: hidden;
+  }
+}
