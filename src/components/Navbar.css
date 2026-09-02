@@ -1496,3 +1496,73 @@ body {
     font-size: 1rem;
   }
 }
+/* Polish mobile language selector placement */
+@media (max-width: 720px) {
+  .navbar-top-row {
+    grid-template-columns: 42px 1fr auto auto;
+    column-gap: 6px;
+    row-gap: 6px;
+  }
+
+  .mobile-contact-cta {
+    grid-column: 4;
+    grid-row: 1;
+  }
+
+  .mobile-language-label {
+    grid-column: 3;
+    grid-row: 1;
+    justify-self: end;
+    align-self: center;
+    min-height: 34px;
+    margin-top: 0;
+    padding: 0 8px;
+    border-color: #dbe5f3;
+    background: #f8fbff;
+    color: #123d78;
+    box-shadow: none;
+  }
+
+  .mobile-language-label svg {
+    width: 15px;
+    height: 15px;
+  }
+
+  .mobile-language-label select {
+    width: 74px;
+    max-width: 74px;
+    font-size: 0.76rem;
+    font-weight: 800;
+  }
+
+  .navbar-top {
+    grid-column: 1 / -1;
+  }
+}
+
+@media (max-width: 390px) {
+  .navbar-top-row {
+    grid-template-columns: 40px 1fr auto auto;
+    column-gap: 5px;
+    padding-left: 10px;
+    padding-right: 10px;
+  }
+
+  .mobile-contact-cta {
+    min-height: 32px;
+    padding: 0 11px;
+    font-size: 0.72rem;
+  }
+
+  .mobile-language-label {
+    min-height: 32px;
+    padding: 0 7px;
+    gap: 4px;
+  }
+
+  .mobile-language-label select {
+    width: 64px;
+    max-width: 64px;
+    font-size: 0.72rem;
+  }
+}
