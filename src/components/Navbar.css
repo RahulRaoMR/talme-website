@@ -8,7 +8,7 @@
 .navbar-top-row,
 .navbar-bottom,
 .navbar-divider {
-  width: min(1240px, calc(100% - 32px));
+  width: min(1280px, calc(100% - 32px));
   margin-left: auto;
   margin-right: auto;
 }
@@ -19,8 +19,8 @@
   display: flex;
   align-items: center;
   justify-content: space-between;
-  gap: 26px;
-  padding: 18px 22px;
+  gap: 16px;
+  padding: 14px 18px;
   border: 1px solid rgba(38, 76, 134, 0.08);
   border-radius: 26px;
   background: rgba(255, 255, 255, 0.92);
@@ -35,7 +35,7 @@
 }
 
 .brand-logo {
-  height: 74px;
+  height: 64px;
   width: auto;
 }
 
@@ -59,7 +59,7 @@
 }
 
 .top-links {
-  gap: clamp(12px, 1.4vw, 28px);
+  gap: clamp(8px, 0.9vw, 16px);
 }
 
 .top-links a,
@@ -67,9 +67,10 @@
 .global-toggle {
   text-decoration: none;
   color: #45628f;
-  font-size: 1rem;
+  font-size: 0.92rem;
   font-weight: 700;
-  letter-spacing: -0.01em;
+  letter-spacing: 0;
+  white-space: nowrap;
 }
 
 .top-links a:hover,
@@ -259,7 +260,7 @@ body {
   align-items: center;
   gap: 7px;
   min-height: 34px;
-  padding: 0 10px;
+  padding: 0 8px;
   border: 1px solid rgba(38, 76, 134, 0.18);
   border-radius: 999px;
   background: #ffffff;
@@ -278,7 +279,7 @@ body {
   background: transparent;
   color: #204a87;
   font: inherit;
-  font-size: 0.86rem;
+  font-size: 0.82rem;
   font-weight: 800;
   cursor: pointer;
   outline: none;
