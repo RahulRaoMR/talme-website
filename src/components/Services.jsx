@@ -71,7 +71,7 @@ function Services() {
 
         <div className="stat-box">
           <h3>
-            <CountUp end={2} duration={3} enableScrollSpy scrollSpyOnce />
+            <CountUp end={3} duration={3} enableScrollSpy scrollSpyOnce />
           </h3>
           <p>Global Offices</p>
         </div>
