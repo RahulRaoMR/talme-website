@@ -8,7 +8,6 @@ const clientLogos = [
   { name: "Yokogawa", logo: "/images/clients/yokogawa.svg" },
   { name: "SLK", logo: "/images/clients/slk.svg" },
   { name: "Edwards", logo: "/images/clients/edwards.svg" },
-  { name: "MindIT", logo: "https://logo.clearbit.com/mindit.io" },
   { name: "Leadsoc", logo: "/images/clients/leadsoc.svg" },
   { name: "Enparadigm", logo: "/images/clients/enparadigm.svg" },
   { name: "ThoughtFocus", logo: "/images/clients/thoughtfocus.svg" },
