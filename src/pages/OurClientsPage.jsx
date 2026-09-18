@@ -13,7 +13,7 @@ const clientLogos = [
   { name: "Enparadigm", logo: "/images/clients/enparadigm.svg" },
   { name: "ThoughtFocus", logo: "/images/clients/thoughtfocus.svg" },
   { name: "Quinnel Soft", logo: "/images/clients/quinnel-soft.svg" },
-  { name: "Aquimo", logo: "https://logo.clearbit.com/aquimo.com" },
+  { name: "Aquimo", logo: "/images/clients/aquimo.svg" },
   { name: "Micron", logo: "/images/clients/micron.svg" },
   { name: "eMIDS", logo: "/images/clients/emids.svg" },
   { name: "Digit", logo: "/images/clients/digit.svg" },

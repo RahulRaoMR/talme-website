@@ -1,0 +1,9 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 520 260" role="img" aria-label="Aquimo">
+  <rect width="520" height="260" fill="none"/>
+  <path d="M92 82c52-76 138-77 174 20 8 22 11 47 12 72 22-55 58-76 99-67 47 10 85 55 111 92-35-18-76-30-118-26-38 4-68 22-93 53-4-66-16-119-39-155-33-53-86-62-144 21-8 12-20 2-2-10Z" fill="#f36a2d"/>
+  <g fill="#1c78b8" font-family="Arial Black, Arial, Helvetica, sans-serif" font-weight="900">
+    <text x="28" y="216" font-size="104" letter-spacing="-8">Aquimo</text>
+  </g>
+  <circle cx="476" cy="154" r="7" fill="none" stroke="#1c78b8" stroke-width="2"/>
+  <text x="476" y="158" text-anchor="middle" fill="#1c78b8" font-family="Arial, Helvetica, sans-serif" font-size="9" font-weight="700">R</text>
+</svg>
