@@ -3,8 +3,8 @@ import "./OurClientsPage.css";
 const clientLogos = [
   { name: "L&T Technology Services", logo: "/images/clients/l-and-t.svg" },
   { name: "PAMP Technologies", logo: "/images/clients/pamp-technologies.svg" },
-  { name: "VVDN Technologies", logo: "https://logo.clearbit.com/vvdntech.com" },
-  { name: "HL Klemove", logo: "https://logo.clearbit.com/hlklemove.com" },
+  { name: "VVDN Technologies", logo: "/images/clients/vvdn-technologies.svg" },
+  { name: "HL Klemove", logo: "/images/clients/hl-klemove.svg" },
   { name: "Yokogawa", logo: "https://logo.clearbit.com/yokogawa.com" },
   { name: "SLK", logo: "https://logo.clearbit.com/slksoftware.com" },
   { name: "Edwards", logo: "https://logo.clearbit.com/edwardsvacuum.com" },
