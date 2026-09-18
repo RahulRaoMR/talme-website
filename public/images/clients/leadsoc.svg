@@ -1,0 +1,11 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 210" role="img" aria-label="Leadsoc">
+  <rect width="320" height="210" fill="none"/>
+  <g transform="translate(98 18)">
+    <path d="M15 72c6-32 30-54 62-54 18 0 34 8 45 21L96 58 78 42 45 94Z" fill="#133a5a"/>
+    <path d="M53 100 88 44l19 17-35 56Z" fill="#39a9dc"/>
+    <path d="M100 28 118 0l9 29-28 1Z" fill="#dd2c3a"/>
+    <path d="M104 39c16 18 20 46 8 69-8 15-22 26-38 31l31-51 24-17c0-12-4-23-12-32Z" fill="#e3343f"/>
+  </g>
+  <text x="160" y="145" text-anchor="middle" fill="#1a3550" font-family="Georgia, 'Times New Roman', serif" font-size="44">LEAD<tspan fill="#d92331">SOC</tspan></text>
+  <text x="160" y="170" text-anchor="middle" fill="#1a3550" font-family="Georgia, 'Times New Roman', serif" font-size="16">partnering your success</text>
+</svg>
