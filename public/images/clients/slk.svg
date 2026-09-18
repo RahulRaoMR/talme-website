@@ -1,0 +1,8 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 720 260" role="img" aria-label="SLK">
+  <rect width="720" height="260" fill="none"/>
+  <g transform="translate(28 36)">
+    <path d="M0 145 149 60c23-13 40 18 18 32L31 174C9 187-20 157 0 145Z" fill="#8d18a8"/>
+    <path d="M115 139 343 0c30-18 64 10 54 44l-54 181c-10 35-50 49-81 30L115 164c-16-10-16-16 0-25Z" fill="#8d18a8"/>
+  </g>
+  <text x="364" y="184" fill="#000" font-family="Arial Black, Arial, Helvetica, sans-serif" font-size="150" font-style="italic" letter-spacing="8">SLK</text>
+</svg>
