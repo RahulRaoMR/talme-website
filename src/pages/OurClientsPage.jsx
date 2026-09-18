@@ -1,7 +1,7 @@
 import "./OurClientsPage.css";
 
 const clientLogos = [
-  { name: "L&T Technology Services", logo: "https://logo.clearbit.com/ltts.com" },
+  { name: "L&T Technology Services", logo: "/images/clients/l-and-t.svg" },
   { name: "PAMP Technologies", logo: "https://logo.clearbit.com/pamp.com" },
   { name: "VVDN Technologies", logo: "https://logo.clearbit.com/vvdntech.com" },
   { name: "HL Klemove", logo: "https://logo.clearbit.com/hlklemove.com" },
