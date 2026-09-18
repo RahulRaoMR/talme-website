@@ -14,6 +14,15 @@ const clientLogos = [
   { name: "ThoughtFocus", logo: "https://logo.clearbit.com/thoughtfocus.com" },
   { name: "Quinnel Soft", logo: "https://logo.clearbit.com/quinnelsoft.com" },
   { name: "Aquimo", logo: "https://logo.clearbit.com/aquimo.com" },
+  { name: "Micron", logo: "https://logo.clearbit.com/micron.com" },
+  { name: "eMIDS", logo: "https://logo.clearbit.com/emids.com" },
+  { name: "Digit", logo: "https://logo.clearbit.com/godigit.com" },
+  { name: "Tessolve", logo: "https://logo.clearbit.com/tessolve.com" },
+  { name: "Southern Electronics", logo: "https://logo.clearbit.com/southernelectronics.co.in" },
+  { name: "Avinashi Ads", logo: "https://logo.clearbit.com/avinashiads.com" },
+  { name: "Brillio", logo: "https://logo.clearbit.com/brillio.com" },
+  { name: "GNA India Private Limited", logo: "https://logo.clearbit.com/gnaindia.com" },
+  { name: "Semnox Solutions", logo: "https://logo.clearbit.com/semnox.com" },
 ];
 
 function OurClientsPage() {
