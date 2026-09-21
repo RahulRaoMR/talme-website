@@ -493,7 +493,6 @@ function Navbar() {
               ))}
             </ul>
           </li>
-          <li><Link to="/assurance" onClick={closeAllMenus}>ASSURANCE</Link></li>
           <li className={`services-dropdown ${isServicesOpen ? "open" : ""}`} onPointerEnter={cancelDesktopDropdownClose} onPointerLeave={handleDesktopDropdownLeave(setIsServicesOpen)}>
             <button
               type="button"
