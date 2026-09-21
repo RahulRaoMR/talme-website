@@ -511,8 +511,6 @@ function Navbar() {
               <li><Link to="/services/product-manufacturing" onClick={closeAllMenus}>PRODUCT MANUFACTURING</Link></li>
             </ul>
           </li>
-          <li><Link to="/service-hub/financial-advisory" onClick={closeAllMenus}>CONSULTING</Link></li>
-          <li><Link to="/service-hub/digital-enablement" onClick={closeAllMenus}>DIGITAL</Link></li>
           <li>
             <a href="https://iplant.talme.in/" target="_blank" rel="noreferrer">
               IPLANT
