@@ -310,90 +310,6 @@ function Navbar() {
             <li><Link to="/our-clients" onClick={closeAllMenus}><FiUsers className="mobile-link-icon" aria-hidden="true" />Our Clients</Link></li>
             <li><Link to="/careers" onClick={closeAllMenus}><FiBriefcase className="mobile-link-icon" aria-hidden="true" />Careers</Link></li>
             <li><Link to="/contact" onClick={closeAllMenus}>Contact Us</Link></li>
-            <li className="search-link" onPointerEnter={cancelDesktopDropdownClose} onPointerLeave={handleDesktopDropdownLeave(setIsSearchOpen)}>
-              <button
-                type="button"
-                className="search-toggle"
-                aria-label="Toggle search"
-                aria-expanded={isSearchOpen}
-                onClick={handleSearchToggle}
-              >
-                <FiSearch className="mobile-link-icon" aria-hidden="true" />Search
-              </button>
-              {isSearchOpen && (
-                <div className="search-box desktop-search-box">
-                  <input
-                    type="search"
-                    className="search-input"
-                    placeholder="Search pages and services..."
-                    aria-label="Search input"
-                    autoFocus
-                    value={searchQuery}
-                    onChange={(event) => setSearchQuery(event.target.value)}
-                    onKeyDown={(event) => {
-                      if (event.key === "Enter" && filteredSearchItems.length > 0) {
-                        navigateToSearchResult(filteredSearchItems[0].to);
-                      }
-                    }}
-                  />
-                  {searchQuery.trim() && (
-                    <ul className="search-results">
-                      {filteredSearchItems.length > 0 ? (
-                        filteredSearchItems.map((item) => (
-                          <li key={item.to}>
-                            <button
-                              type="button"
-                              onClick={() => navigateToSearchResult(item.to)}
-                            >
-                              {item.label}
-                            </button>
-                          </li>
-                        ))
-                      ) : (
-                        <li className="search-no-result">No matching pages found</li>
-                      )}
-                    </ul>
-                  )}
-                </div>
-              )}
-            </li>
-            <li className="global-link" onPointerEnter={cancelDesktopDropdownClose} onPointerLeave={handleDesktopDropdownLeave(setIsGlobalOpen)}>
-              <button
-                type="button"
-                className="global-toggle"
-                aria-label="Toggle global locations"
-                aria-expanded={isGlobalOpen}
-                onClick={handleGlobalToggle}
-              >
-                <FiGlobe className="mobile-link-icon" aria-hidden="true" />GLOBAL <span className="arrow">&#9662;</span>
-              </button>
-              {isGlobalOpen && (
-                <ul className="global-menu desktop-global-menu">
-                  {globalLocations.map((globalLocation) => (
-                    <li key={globalLocation.flag}>
-                      <Link
-                        to={globalLocation.to}
-                        onClick={closeAllMenus}
-                      >
-                        <img
-                          className="global-flag"
-                          src={globalLocation.flagIcon}
-                          alt={`${globalLocation.label} flag`}
-                        />
-                        <span className="global-location-label">{globalLocation.label}</span>
-                        <span className="global-location-code">{globalLocation.flag}</span>
-                      </Link>
-                    </li>
-                  ))}
-                </ul>
-              )}
-            </li>
-            <li>
-              <a href="https://hrms.talme.in/" target="_blank" rel="noreferrer">
-                <FiLock className="mobile-link-icon" aria-hidden="true" />INTRANET
-              </a>
-            </li>
-
           </ul>
         </nav>
 
@@ -514,6 +430,89 @@ function Navbar() {
           <li>
             <a href="https://iplant.talme.in/" target="_blank" rel="noreferrer">
               IPLANT
+            </a>
+          </li>
+          <li className="search-link" onPointerEnter={cancelDesktopDropdownClose} onPointerLeave={handleDesktopDropdownLeave(setIsSearchOpen)}>
+            <button
+              type="button"
+              className="search-toggle"
+              aria-label="Toggle search"
+              aria-expanded={isSearchOpen}
+              onClick={handleSearchToggle}
+            >
+              <FiSearch className="mobile-link-icon" aria-hidden="true" />Search
+            </button>
+            {isSearchOpen && (
+              <div className="search-box desktop-search-box">
+                <input
+                  type="search"
+                  className="search-input"
+                  placeholder="Search pages and services..."
+                  aria-label="Search input"
+                  autoFocus
+                  value={searchQuery}
+                  onChange={(event) => setSearchQuery(event.target.value)}
+                  onKeyDown={(event) => {
+                    if (event.key === "Enter" && filteredSearchItems.length > 0) {
+                      navigateToSearchResult(filteredSearchItems[0].to);
+                    }
+                  }}
+                />
+                {searchQuery.trim() && (
+                  <ul className="search-results">
+                    {filteredSearchItems.length > 0 ? (
+                      filteredSearchItems.map((item) => (
+                        <li key={item.to}>
+                          <button
+                            type="button"
+                            onClick={() => navigateToSearchResult(item.to)}
+                          >
+                            {item.label}
+                          </button>
+                        </li>
+                      ))
+                    ) : (
+                      <li className="search-no-result">No matching pages found</li>
+                    )}
+                  </ul>
+                )}
+              </div>
+            )}
+          </li>
+          <li className="global-link" onPointerEnter={cancelDesktopDropdownClose} onPointerLeave={handleDesktopDropdownLeave(setIsGlobalOpen)}>
+            <button
+              type="button"
+              className="global-toggle"
+              aria-label="Toggle global locations"
+              aria-expanded={isGlobalOpen}
+              onClick={handleGlobalToggle}
+            >
+              <FiGlobe className="mobile-link-icon" aria-hidden="true" />GLOBAL <span className="arrow">&#9662;</span>
+            </button>
+            {isGlobalOpen && (
+              <ul className="global-menu desktop-global-menu">
+                {globalLocations.map((globalLocation) => (
+                  <li key={globalLocation.flag}>
+                    <Link
+                      to={globalLocation.to}
+                      onClick={closeAllMenus}
+                    >
+                      <img
+                        className="global-flag"
+                        src={globalLocation.flagIcon}
+                        alt={`${globalLocation.label} flag`}
+                      />
+                      <span className="global-location-label">{globalLocation.label}</span>
+                      <span className="global-location-code">{globalLocation.flag}</span>
+                    </Link>
+                  </li>
+                ))}
+              </ul>
+            )}
+          </li>
+          <li>
+            <a href="https://hrms.talme.in/" target="_blank" rel="noreferrer">
+              <FiLock className="mobile-link-icon" aria-hidden="true" />INTRANET
             </a>
           </li>
         </ul>
