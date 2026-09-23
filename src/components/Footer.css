@@ -26,6 +26,8 @@
 }
 
 .footer-services-column {
+  width: min(880px, 100%);
+  margin: 0 auto;
   padding: 0;
 }
 
@@ -34,7 +36,7 @@
   padding: 0;
   border: 0;
   background: transparent;
-  text-align: left;
+  text-align: center;
   cursor: default;
 }
 
@@ -60,6 +62,7 @@
   display: grid;
   grid-template-columns: repeat(3, minmax(0, 1fr));
   gap: 0 34px;
+  margin: 0 auto;
 }
 
 .footer-column a {
