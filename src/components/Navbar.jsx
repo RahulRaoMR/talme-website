@@ -65,6 +65,11 @@ function Navbar() {
     { label: "Computer Technology", to: "/services/computer-technology" },
     { label: "Business Solutions", to: "/services/business-solutions" },
     { label: "Product Manufacturing", to: "/services/product-manufacturing" },
+    { label: "Automotive", to: "/services/automotive" },
+    { label: "Aerospace", to: "/services/aerospace" },
+    { label: "Semiconductor", to: "/services/semiconductor" },
+    { label: "CEIT", to: "/services/ceit" },
+    { label: "PLM", to: "/services/plm" },
     { label: "India Contact", to: "/contact/india" },
     { label: "Singapore Contact", to: "/contact/singapore" },
     { label: "Japan Contact", to: "/contact/japan" },
@@ -425,6 +430,11 @@ function Navbar() {
               <li><Link to="/services/computer-technology" onClick={closeAllMenus}>COMPUTER TECHNOLOGY</Link></li>
               <li><Link to="/services/business-solutions" onClick={closeAllMenus}>BUSINESS SOLUTIONS</Link></li>
               <li><Link to="/services/product-manufacturing" onClick={closeAllMenus}>PRODUCT MANUFACTURING</Link></li>
+              <li><Link to="/services/automotive" onClick={closeAllMenus}>AUTOMOTIVE</Link></li>
+              <li><Link to="/services/aerospace" onClick={closeAllMenus}>AEROSPACE</Link></li>
+              <li><Link to="/services/semiconductor" onClick={closeAllMenus}>SEMICONDUCTOR</Link></li>
+              <li><Link to="/services/ceit" onClick={closeAllMenus}>CEIT</Link></li>
+              <li><Link to="/services/plm" onClick={closeAllMenus}>PLM</Link></li>
             </ul>
           </li>
           <li>

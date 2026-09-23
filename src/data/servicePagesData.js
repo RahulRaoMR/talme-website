@@ -155,6 +155,136 @@ export const servicePagesData = {
       "https://images.pexels.com/photos/162553/keys-workshop-mechanic-tools-162553.jpeg?auto=compress&cs=tinysrgb&w=1400",
     ],
   },
+  automotive: {
+    title: "Automotive",
+    tag: "Industry Services",
+    intro:
+      "Automotive engineering and data support for connected, electric, and production-ready vehicle programs.",
+    highlights: [
+      "Vehicle systems engineering support",
+      "Design validation and documentation",
+      "EV, embedded, and connected platform workflows",
+      "Quality, supplier, and program coordination",
+    ],
+    details: [
+      "TALME supports automotive teams with structured engineering delivery across design, validation, documentation, and manufacturing readiness.",
+      "Our delivery model helps OEMs and suppliers improve speed, traceability, and quality across complex vehicle development programs.",
+    ],
+    outcomes: [
+      "Faster engineering turnaround",
+      "Improved validation readiness and documentation quality",
+      "Better program visibility across teams and suppliers",
+    ],
+    gallery: [
+      "https://images.pexels.com/photos/3802510/pexels-photo-3802510.jpeg?auto=compress&cs=tinysrgb&w=1400",
+      "https://images.pexels.com/photos/3862632/pexels-photo-3862632.jpeg?auto=compress&cs=tinysrgb&w=1400",
+      "https://images.pexels.com/photos/4489737/pexels-photo-4489737.jpeg?auto=compress&cs=tinysrgb&w=1400",
+    ],
+  },
+  aerospace: {
+    title: "Aerospace",
+    tag: "Industry Services",
+    intro:
+      "Aerospace engineering support for precision documentation, compliance workflows, and program execution.",
+    highlights: [
+      "Aircraft systems and documentation support",
+      "Design review and validation workflows",
+      "Compliance-ready engineering records",
+      "Program tracking and supplier coordination",
+    ],
+    details: [
+      "TALME helps aerospace organizations manage engineering detail with disciplined documentation, validation support, and delivery governance.",
+      "We focus on traceability, accuracy, and controlled execution for programs where reliability and compliance matter at every stage.",
+    ],
+    outcomes: [
+      "Stronger engineering data control",
+      "Improved documentation and review cycles",
+      "Reduced delivery risk across aerospace programs",
+    ],
+    gallery: [
+      "https://images.pexels.com/photos/46148/aircraft-jet-landing-cloud-46148.jpeg?auto=compress&cs=tinysrgb&w=1400",
+      "https://images.pexels.com/photos/358220/pexels-photo-358220.jpeg?auto=compress&cs=tinysrgb&w=1400",
+      "https://images.pexels.com/photos/159490/yale-university-landscape-universities-schools-159490.jpeg?auto=compress&cs=tinysrgb&w=1400",
+    ],
+  },
+  semiconductor: {
+    title: "Semiconductor",
+    tag: "Industry Services",
+    intro:
+      "Semiconductor support services for process discipline, data visibility, and engineering execution across high-tech programs.",
+    highlights: [
+      "Semiconductor process and engineering support",
+      "Manufacturing data and traceability workflows",
+      "Quality documentation and change control",
+      "Automation and analytics enablement",
+    ],
+    details: [
+      "TALME supports semiconductor and electronics teams with structured data, documentation, and process execution across engineering and operations.",
+      "Our teams help improve visibility, control, and repeatability in environments where precision and speed are both critical.",
+    ],
+    outcomes: [
+      "Improved process visibility and traceability",
+      "Faster engineering change execution",
+      "Higher quality control across production workflows",
+    ],
+    gallery: [
+      "https://images.pexels.com/photos/2582937/pexels-photo-2582937.jpeg?auto=compress&cs=tinysrgb&w=1400",
+      "https://images.pexels.com/photos/3912981/pexels-photo-3912981.jpeg?auto=compress&cs=tinysrgb&w=1400",
+      "https://images.pexels.com/photos/442150/pexels-photo-442150.jpeg?auto=compress&cs=tinysrgb&w=1400",
+    ],
+  },
+  ceit: {
+    title: "CEIT",
+    tag: "Engineering Services",
+    intro:
+      "CEIT services for engineering information, technical documentation, and controlled execution across enterprise programs.",
+    highlights: [
+      "Engineering information management",
+      "Technical documentation and data structuring",
+      "Workflow governance and delivery tracking",
+      "Cross-functional engineering coordination",
+    ],
+    details: [
+      "TALME CEIT services connect engineering knowledge, information workflows, and technical delivery governance into a controlled operating model.",
+      "We help teams standardize engineering information, improve documentation accuracy, and keep execution aligned with program goals.",
+    ],
+    outcomes: [
+      "Cleaner engineering information flow",
+      "Reduced rework from inconsistent documentation",
+      "Better control across technical delivery stages",
+    ],
+    gallery: [
+      "https://images.pexels.com/photos/3862132/pexels-photo-3862132.jpeg?auto=compress&cs=tinysrgb&w=1400",
+      "https://images.pexels.com/photos/3861969/pexels-photo-3861969.jpeg?auto=compress&cs=tinysrgb&w=1400",
+      "https://images.pexels.com/photos/3183153/pexels-photo-3183153.jpeg?auto=compress&cs=tinysrgb&w=1400",
+    ],
+  },
+  plm: {
+    title: "PLM",
+    tag: "Engineering Services",
+    intro:
+      "Product Lifecycle Management services that improve product data control from concept through release and change management.",
+    highlights: [
+      "PLM process setup and optimization",
+      "BOM, CAD, and engineering change management",
+      "Product data governance and migration support",
+      "Lifecycle reporting and workflow automation",
+    ],
+    details: [
+      "TALME supports PLM programs by improving how product data, engineering changes, and lifecycle decisions move across teams and systems.",
+      "Our approach helps organizations reduce friction between engineering, manufacturing, quality, and supplier stakeholders.",
+    ],
+    outcomes: [
+      "Improved product data accuracy",
+      "Faster engineering change cycles",
+      "Better collaboration across product lifecycle teams",
+    ],
+    gallery: [
+      "https://images.pexels.com/photos/3862364/pexels-photo-3862364.jpeg?auto=compress&cs=tinysrgb&w=1400",
+      "https://images.pexels.com/photos/3862130/pexels-photo-3862130.jpeg?auto=compress&cs=tinysrgb&w=1400",
+      "https://images.pexels.com/photos/3184465/pexels-photo-3184465.jpeg?auto=compress&cs=tinysrgb&w=1400",
+    ],
+  },
   consulting: {
     title: "Consulting",
     tag: "Advisory",

@@ -74,6 +74,26 @@ function App() {
           element={<Navigate to="/services/product-manufacturing" replace />}
         />
         <Route
+          path="/automotive"
+          element={<Navigate to="/services/automotive" replace />}
+        />
+        <Route
+          path="/aerospace"
+          element={<Navigate to="/services/aerospace" replace />}
+        />
+        <Route
+          path="/semiconductor"
+          element={<Navigate to="/services/semiconductor" replace />}
+        />
+        <Route
+          path="/ceit"
+          element={<Navigate to="/services/ceit" replace />}
+        />
+        <Route
+          path="/plm"
+          element={<Navigate to="/services/plm" replace />}
+        />
+        <Route
           path="/oem-data"
           element={<Navigate to="/services/product-manufacturing" replace />}
         />
@@ -83,19 +103,19 @@ function App() {
         />
         <Route
           path="/automotive-data"
-          element={<Navigate to="/services/engineering-solutions" replace />}
+          element={<Navigate to="/services/automotive" replace />}
         />
         <Route
           path="/automotive-engineering-services"
-          element={<Navigate to="/services/engineering-solutions" replace />}
+          element={<Navigate to="/services/automotive" replace />}
         />
         <Route
           path="/aerospace-data"
-          element={<Navigate to="/services/engineering-solutions" replace />}
+          element={<Navigate to="/services/aerospace" replace />}
         />
         <Route
           path="/aerospace-engineering-services"
-          element={<Navigate to="/services/engineering-solutions" replace />}
+          element={<Navigate to="/services/aerospace" replace />}
         />
         <Route
           path="/oil-gas-data"

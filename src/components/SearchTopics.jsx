@@ -36,15 +36,33 @@ const topicGroups = [
     items: [
       {
         label: "Aerospace Data Services",
-        to: "/services/engineering-solutions",
+        to: "/services/aerospace",
         description:
           "Aerospace engineering support and structured data services for documentation, validation, and delivery workflows.",
       },
       {
         label: "Automotive Data Services",
-        to: "/services/engineering-solutions",
+        to: "/services/automotive",
         description:
           "Automotive engineering and data-enabled services to improve turnaround time, quality, and process consistency.",
+      },
+      {
+        label: "Semiconductor Services",
+        to: "/services/semiconductor",
+        description:
+          "Semiconductor process, engineering data, quality documentation, and traceability support for high-tech programs.",
+      },
+      {
+        label: "CEIT Services",
+        to: "/services/ceit",
+        description:
+          "Engineering information, technical documentation, and controlled execution support for enterprise programs.",
+      },
+      {
+        label: "PLM Services",
+        to: "/services/plm",
+        description:
+          "Product lifecycle management support for BOM, CAD, change workflows, product data governance, and reporting.",
       },
       {
         label: "Oil and Gas Data Services",

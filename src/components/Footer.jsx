@@ -18,6 +18,11 @@ function Footer() {
             <Link to="/services/computer-technology">Computer Technology</Link>
             <Link to="/services/business-solutions">Business Solutions</Link>
             <Link to="/services/product-manufacturing">Product Manufacturing</Link>
+            <Link to="/services/automotive">Automotive</Link>
+            <Link to="/services/aerospace">Aerospace</Link>
+            <Link to="/services/semiconductor">Semiconductor</Link>
+            <Link to="/services/ceit">CEIT</Link>
+            <Link to="/services/plm">PLM</Link>
           </div>
         </section>
       </div>
