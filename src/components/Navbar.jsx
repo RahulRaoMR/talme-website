@@ -391,7 +391,14 @@ function Navbar() {
 
       <div className="navbar-divider" />
 
-      <nav className={`navbar-bottom ${isMobileServicesOpen ? "mobile-services-open" : ""}`} aria-label="Service navigation">
+      <nav
+        className={`navbar-bottom ${isMobileServicesOpen ? "mobile-services-open" : ""}`}
+        aria-label="Service navigation"
+        onMouseLeave={() => {
+          setIsServicesOpen(false);
+          setIsJapanHelpOpen(false);
+        }}
+      >
         <ul className="service-links">
           <li className={`japan-dropdown ${isJapanHelpOpen ? "open" : ""}`} onPointerEnter={cancelDesktopDropdownClose} onPointerLeave={handleDesktopDropdownLeave(setIsJapanHelpOpen)}>
             <button
@@ -423,7 +430,11 @@ function Navbar() {
             >
               SERVICES <span className="arrow-up">&#94;</span>
             </button>
-            <ul className="services-menu">
+            <ul
+              className="services-menu"
+              onPointerEnter={cancelDesktopDropdownClose}
+              onPointerLeave={handleDesktopDropdownLeave(setIsServicesOpen)}
+            >
               <li><Link to="/services/engineering-solutions" onClick={closeAllMenus}>ENGINEERING SOLUTIONS</Link></li>
               <li><Link to="/services/staff-augmentation" onClick={closeAllMenus}>STAFF AUGMENTATION</Link></li>
               <li><Link to="/services/health-care-services" onClick={closeAllMenus}>HEALTH CARE SERVICES</Link></li>
