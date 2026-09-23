@@ -394,10 +394,16 @@ function Navbar() {
       <nav
         className={`navbar-bottom ${isMobileServicesOpen ? "mobile-services-open" : ""}`}
         aria-label="Service navigation"
-        onMouseLeave={() => {
-          setIsServicesOpen(false);
-          setIsJapanHelpOpen(false);
-          setIsGlobalOpen(false);
+        onPointerEnter={cancelDesktopDropdownClose}
+        onPointerLeave={(event) => {
+          if (event.pointerType !== "mouse") return;
+          cancelDesktopDropdownClose();
+          desktopDropdownCloseTimer.current = window.setTimeout(() => {
+            setIsServicesOpen(false);
+            setIsJapanHelpOpen(false);
+            setIsGlobalOpen(false);
+            desktopDropdownCloseTimer.current = null;
+          }, 350);
         }}
       >
         <ul className="service-links">
