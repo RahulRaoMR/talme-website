@@ -1838,3 +1838,44 @@ body {
   opacity: 1;
   font-weight: 900;
 }
+
+/* Compact Japan Help Desk dropdown */
+@media (min-width: 721px) {
+  .japan-menu {
+    min-width: 650px;
+    padding: 12px;
+    display: grid;
+    grid-template-columns: repeat(2, minmax(280px, 1fr));
+    gap: 8px;
+  }
+
+  .japan-menu li + li {
+    margin-top: 0;
+  }
+
+  .japan-menu a {
+    min-height: 42px;
+    display: flex;
+    align-items: center;
+    padding: 10px 14px;
+    border-radius: 10px;
+    background: #f8fbff;
+    border: 1px solid #e4ebf5;
+    color: #2d4f7c;
+    font-size: 0.8rem;
+    font-weight: 900;
+    line-height: 1.15;
+  }
+}
+
+@media (max-width: 720px) {
+  .navbar-bottom.mobile-services-open .japan-menu {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 7px;
+  }
+
+  .navbar-bottom.mobile-services-open .japan-menu li + li {
+    margin-top: 0;
+  }
+}
