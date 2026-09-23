@@ -6,16 +6,18 @@
 }
 
 .footer-columns {
-  width: min(820px, 100%);
+  width: min(980px, 100%);
   margin: 0 auto 34px;
   display: grid;
   grid-template-columns: 1fr;
   gap: 18px;
-  padding: 24px 28px;
+  padding: 30px 34px;
   border: 1px solid rgba(255, 255, 255, 0.1);
-  border-radius: 18px;
-  background: rgba(255, 255, 255, 0.035);
-  box-shadow: 0 20px 40px rgba(0, 0, 0, 0.14);
+  border-radius: 22px;
+  background:
+    linear-gradient(135deg, rgba(255, 255, 255, 0.075), rgba(255, 255, 255, 0.025)),
+    rgba(10, 26, 58, 0.6);
+  box-shadow: 0 24px 54px rgba(0, 0, 0, 0.18);
 }
 
 .footer-column {
@@ -37,10 +39,10 @@
 }
 
 .footer-column-toggle h4 {
-  margin: 0 0 16px;
-  font-size: 0.82rem;
-  font-weight: 800;
-  letter-spacing: 0.08em;
+  margin: 0 0 20px;
+  font-size: 0.78rem;
+  font-weight: 900;
+  letter-spacing: 0.14em;
   text-transform: uppercase;
   color: #ffffff;
 }
@@ -56,8 +58,8 @@
 
 .footer-services-links {
   display: grid;
-  grid-template-columns: repeat(2, minmax(220px, 1fr));
-  gap: 10px 34px;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 0 34px;
 }
 
 .footer-column a {
@@ -74,22 +76,24 @@
   position: relative;
   width: 100%;
   margin-bottom: 0;
-  padding: 10px 12px 10px 28px;
-  border-radius: 12px;
-  background: rgba(255, 255, 255, 0.035);
-  border: 1px solid rgba(255, 255, 255, 0.07);
+  padding: 12px 0 12px 18px;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.095);
+  color: #e3ecff;
+  font-size: 0.96rem;
+  font-weight: 650;
 }
 
 .footer-services-links a::before {
   content: "";
   position: absolute;
-  left: 12px;
+  left: 0;
   top: 50%;
-  width: 6px;
-  height: 6px;
+  width: 5px;
+  height: 5px;
   border-radius: 50%;
   background: #f0c980;
   transform: translateY(-50%);
+  box-shadow: 0 0 0 4px rgba(240, 201, 128, 0.08);
 }
 
 .footer-column a:hover {
@@ -98,7 +102,8 @@
 }
 
 .footer-services-links a:hover {
-  background: rgba(255, 255, 255, 0.07);
+  color: #ffffff;
+  background: transparent;
 }
 
 .footer-social {
@@ -172,13 +177,14 @@
   }
 
   .footer-columns {
-    width: min(680px, 100%);
+    width: min(720px, 100%);
     grid-template-columns: 1fr;
-    padding: 18px;
+    padding: 24px;
   }
 
   .footer-services-links {
-    gap: 9px;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 0 24px;
   }
 
   .footer-bottom {
@@ -197,7 +203,7 @@
   .footer-columns {
     grid-template-columns: 1fr;
     gap: 14px;
-    padding: 16px;
+    padding: 18px;
     margin-bottom: 22px;
     border-radius: 16px;
   }
