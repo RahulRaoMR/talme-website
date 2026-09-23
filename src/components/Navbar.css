@@ -1782,3 +1782,44 @@ body {
     box-shadow: 0 6px 16px rgba(19, 48, 89, 0.05);
   }
 }
+
+/* Compact services dropdown after adding industry pages */
+@media (min-width: 721px) {
+  .services-menu {
+    min-width: 560px;
+    padding: 12px;
+    display: grid;
+    grid-template-columns: repeat(2, minmax(230px, 1fr));
+    gap: 8px;
+  }
+
+  .services-menu li + li {
+    margin-top: 0;
+  }
+
+  .services-menu li a {
+    min-height: 42px;
+    display: flex;
+    align-items: center;
+    padding: 10px 14px;
+    border-radius: 10px;
+    background: #f8fbff;
+    border: 1px solid #e4ebf5;
+    color: #2d4f7c;
+    font-size: 0.82rem;
+    font-weight: 900;
+    line-height: 1.15;
+  }
+}
+
+@media (max-width: 720px) {
+  .navbar-bottom.mobile-services-open .services-menu {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 7px;
+  }
+
+  .navbar-bottom.mobile-services-open .services-menu li + li {
+    margin-top: 0;
+  }
+}
