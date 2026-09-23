@@ -1823,3 +1823,18 @@ body {
     margin-top: 0;
   }
 }
+
+/* Keep Global dropdown labels readable */
+.global-menu a .global-location-label,
+.mobile-global-panel.global-menu a .global-location-label {
+  color: #ffffff;
+  opacity: 1;
+  font-weight: 800;
+}
+
+.global-menu a .global-location-code,
+.mobile-global-panel.global-menu a .global-location-code {
+  color: #ffd977;
+  opacity: 1;
+  font-weight: 900;
+}
