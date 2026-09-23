@@ -28,7 +28,7 @@ function Navbar() {
     { label: "Home", to: "/" },
     { label: "News & Events", to: "/news-events" },
     { label: "About Us", to: "/about" },
-    { label: "Leadership", to: "/leadership" },
+    { label: "Family", to: "/family" },
     { label: "Insights", to: "/insights" },
     { label: "Our Clients", to: "/our-clients" },
     { label: "Careers", to: "/careers" },
@@ -310,7 +310,7 @@ function Navbar() {
             <li><a href="/">Home</a></li>
             <li><Link to="/news-events" onClick={closeAllMenus}>News &amp; Events</Link></li>
             <li><Link to="/about" onClick={closeAllMenus}>About Us</Link></li>
-            <li><Link to="/leadership" onClick={closeAllMenus}>Leadership</Link></li>
+            <li><Link to="/family" onClick={closeAllMenus}>Family</Link></li>
             <li><Link to="/insights" onClick={closeAllMenus}>Insights</Link></li>
             <li><Link to="/our-clients" onClick={closeAllMenus}><FiUsers className="mobile-link-icon" aria-hidden="true" />Our Clients</Link></li>
             <li><Link to="/careers" onClick={closeAllMenus}><FiBriefcase className="mobile-link-icon" aria-hidden="true" />Careers</Link></li>

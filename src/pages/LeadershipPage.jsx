@@ -350,8 +350,8 @@ function LeadershipPage() {
     <main className="leadership-page">
       <section className="leadership-hero">
         <div className="leadership-hero-copy">
-          <p>Leadership</p>
-          <h1>Meet Our Leadership</h1>
+          <p>Family</p>
+          <h1>Meet Our Family</h1>
         </div>
         <div className="leadership-hero-side">
           <span>
@@ -362,13 +362,13 @@ function LeadershipPage() {
             className="leadership-admin-trigger"
             onClick={() => setIsAdminPanelOpen((current) => !current)}
           >
-            {isAdminPanelOpen ? "Close" : "Manage Leadership"}
+            {isAdminPanelOpen ? "Close" : "Manage Family"}
           </button>
         </div>
       </section>
 
       {isAdminPanelOpen ? (
-        <section className={`leadership-admin-panel ${isAdmin ? "is-admin" : ""}`} aria-label="Leadership admin">
+        <section className={`leadership-admin-panel ${isAdmin ? "is-admin" : ""}`} aria-label="Family admin">
           {!isAdmin ? (
           <form onSubmit={handleAdminLogin} className="leadership-key-form">
             <label htmlFor="leadership-admin-key">Admin key</label>
@@ -379,7 +379,7 @@ function LeadershipPage() {
               onChange={(event) => setDraftKey(event.target.value)}
               placeholder="Enter admin key"
             />
-            <button type="submit">Manage Leadership</button>
+            <button type="submit">Manage Family</button>
           </form>
         ) : (
           <>
@@ -431,8 +431,8 @@ function LeadershipPage() {
         <p className="leadership-message leadership-page-message">{message}</p>
       ) : null}
 
-      <section className="leadership-grid" aria-label="Leadership team">
-        {isLoading ? <p className="leadership-message">Loading leadership...</p> : null}
+      <section className="leadership-grid" aria-label="Family team">
+        {isLoading ? <p className="leadership-message">Loading family...</p> : null}
         {!isLoading && leaders.map((leader) => {
           const hasLinkedin = Boolean(leader.linkedinUrl);
           const photoContent = (

@@ -19,6 +19,7 @@ const defaultMeta = {
 const canonicalRouteMap = {
   "/services": "/",
   "/about-us": "/about",
+  "/leadership": "/family",
   "/clients": "/our-clients",
   "/contact-us": "/contact",
   "/business-solutions": "/services/business-solutions",
@@ -190,6 +191,16 @@ const staticRouteMeta = {
     title: "About TALME | Talme Technologies",
     description:
       "Learn about Talme Technologies, our engineering-led recruitment services, and our global delivery capabilities.",
+  },
+  "/family": {
+    title: "Family | Talme Technologies",
+    description:
+      "Meet the Talme Technologies family guiding delivery with industry experience, discipline, and client focus.",
+  },
+  "/leadership": {
+    title: "Family | Talme Technologies",
+    description:
+      "Meet the Talme Technologies family guiding delivery with industry experience, discipline, and client focus.",
   },
   "/client-accounting": {
     title: "Client Accounting Services | Talme Technologies",

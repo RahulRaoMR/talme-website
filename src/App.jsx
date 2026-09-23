@@ -147,6 +147,7 @@ function App() {
 
         <Route path="/about" element={<About />} />
         <Route path="/about-us" element={<Navigate to="/about" replace />} />
+        <Route path="/family" element={<LeadershipPage />} />
         <Route path="/leadership" element={<LeadershipPage />} />
         <Route path="/client-accounting" element={<ClientAccountingServices />} />
         <Route

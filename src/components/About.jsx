@@ -11,7 +11,7 @@ function About() {
           outcomes, speed, and long-term client value.
         </p>
         <div className="about-actions">
-          <Link to="/leadership">Leadership</Link>
+          <Link to="/family">Family</Link>
         </div>
 
         <div className="about-hero-grid">
