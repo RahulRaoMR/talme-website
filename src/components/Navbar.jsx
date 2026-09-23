@@ -397,6 +397,7 @@ function Navbar() {
         onMouseLeave={() => {
           setIsServicesOpen(false);
           setIsJapanHelpOpen(false);
+          setIsGlobalOpen(false);
         }}
       >
         <ul className="service-links">
@@ -511,7 +512,11 @@ function Navbar() {
               <FiGlobe className="mobile-link-icon" aria-hidden="true" />GLOBAL <span className="arrow">&#9662;</span>
             </button>
             {isGlobalOpen && (
-              <ul className="global-menu desktop-global-menu">
+              <ul
+                className="global-menu desktop-global-menu"
+                onPointerEnter={cancelDesktopDropdownClose}
+                onPointerLeave={handleDesktopDropdownLeave(setIsGlobalOpen)}
+              >
                 {globalLocations.map((globalLocation) => (
                   <li key={globalLocation.flag}>
                     <Link
