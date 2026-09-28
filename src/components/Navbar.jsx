@@ -402,6 +402,7 @@ function Navbar() {
             setIsServicesOpen(false);
             setIsJapanHelpOpen(false);
             setIsGlobalOpen(false);
+            setIsSearchOpen(false);
             desktopDropdownCloseTimer.current = null;
           }, 350);
         }}
@@ -471,7 +472,11 @@ function Navbar() {
               <FiSearch className="mobile-link-icon" aria-hidden="true" />Search
             </button>
             {isSearchOpen && (
-              <div className="search-box desktop-search-box">
+              <div
+                className="search-box desktop-search-box"
+                onPointerEnter={cancelDesktopDropdownClose}
+                onPointerLeave={handleDesktopDropdownLeave(setIsSearchOpen)}
+              >
                 <input
                   type="search"
                   className="search-input"
