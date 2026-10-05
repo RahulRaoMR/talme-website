@@ -314,7 +314,17 @@ function Navbar() {
             <li><Link to="/insights" onClick={closeAllMenus}>Insights</Link></li>
             <li><Link to="/our-clients" onClick={closeAllMenus}><FiUsers className="mobile-link-icon" aria-hidden="true" />Our Clients</Link></li>
             <li><Link to="/careers" onClick={closeAllMenus}><FiBriefcase className="mobile-link-icon" aria-hidden="true" />Careers</Link></li>
-            <li><Link to="/contact" onClick={closeAllMenus}>Contact Us</Link></li>
+            <li className="mobile-primary-extra">
+              <a href="https://iplant.talme.in/" target="_blank" rel="noreferrer">
+                IPLANT
+              </a>
+            </li>
+            <li className="mobile-primary-extra">
+              <a href="https://hrms.talme.in/" target="_blank" rel="noreferrer">
+                <FiLock className="mobile-link-icon" aria-hidden="true" />INTRANET
+              </a>
+            </li>
+            <li className="contact-top-link"><Link to="/contact" onClick={closeAllMenus}>Contact Us</Link></li>
           </ul>
         </nav>
 
@@ -456,7 +466,7 @@ function Navbar() {
               <li><Link to="/services/plm" onClick={closeAllMenus}>PLM</Link></li>
             </ul>
           </li>
-          <li>
+          <li className="lower-iplant-link">
             <a href="https://iplant.talme.in/" target="_blank" rel="noreferrer">
               IPLANT
             </a>
@@ -547,7 +557,7 @@ function Navbar() {
               </ul>
             )}
           </li>
-          <li>
+          <li className="lower-intranet-link">
             <a href="https://hrms.talme.in/" target="_blank" rel="noreferrer">
               <FiLock className="mobile-link-icon" aria-hidden="true" />INTRANET
             </a>
