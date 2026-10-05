@@ -3,6 +3,9 @@ import CountUp from "react-countup";
 import "./Services.css";
 import {
   FaBoxOpen,
+  FaCar,
+  FaCogs,
+  FaDesktop,
   FaMicrochip,
   FaRocket,
   FaIndustry,
@@ -11,6 +14,9 @@ import {
 
 const serviceItems = [
   { label: "Product Life Cycle Management", Icon: FaBoxOpen },
+  { label: "Automotive Engineering", Icon: FaCar },
+  { label: "Engineering Software Services", Icon: FaDesktop },
+  { label: "Mechanical Engineering Services", Icon: FaCogs },
   { label: "VLSI Services", Icon: FaMicrochip },
   { label: "Aerospace Engineering Services", Icon: FaRocket },
   { label: "Oil and Gas Services", Icon: FaIndustry },
