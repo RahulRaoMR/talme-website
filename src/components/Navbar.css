@@ -1965,14 +1965,16 @@ body {
     display: block;
   }
 
-  .top-links .mobile-primary-extra a {
+  .top-links .mobile-primary-extra a,
+  .top-links .mobile-primary-extra .search-toggle {
     min-height: 58px;
     flex-direction: column;
     gap: 4px;
   }
 
   .navbar-bottom.mobile-services-open .lower-iplant-link,
-  .navbar-bottom.mobile-services-open .lower-intranet-link {
+  .navbar-bottom.mobile-services-open .lower-intranet-link,
+  .navbar-bottom.mobile-services-open .lower-search-link {
     display: none;
   }
 }

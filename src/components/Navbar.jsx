@@ -315,6 +315,17 @@ function Navbar() {
             <li><Link to="/our-clients" onClick={closeAllMenus}><FiUsers className="mobile-link-icon" aria-hidden="true" />Our Clients</Link></li>
             <li><Link to="/careers" onClick={closeAllMenus}><FiBriefcase className="mobile-link-icon" aria-hidden="true" />Careers</Link></li>
             <li className="mobile-primary-extra">
+              <button
+                type="button"
+                className="search-toggle"
+                aria-label="Toggle search"
+                aria-expanded={isSearchOpen}
+                onClick={handleSearchToggle}
+              >
+                <FiSearch className="mobile-link-icon" aria-hidden="true" />Search
+              </button>
+            </li>
+            <li className="mobile-primary-extra">
               <a href="https://iplant.talme.in/" target="_blank" rel="noreferrer">
                 IPLANT
               </a>
@@ -471,7 +482,7 @@ function Navbar() {
               IPLANT
             </a>
           </li>
-          <li className="search-link" onPointerEnter={cancelDesktopDropdownClose} onPointerLeave={handleDesktopDropdownLeave(setIsSearchOpen)}>
+          <li className="search-link lower-search-link" onPointerEnter={cancelDesktopDropdownClose} onPointerLeave={handleDesktopDropdownLeave(setIsSearchOpen)}>
             <button
               type="button"
               className="search-toggle"
