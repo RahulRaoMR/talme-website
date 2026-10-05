@@ -168,10 +168,10 @@
 }
 
 .leadership-grid {
-  max-width: 1040px;
+  max-width: 900px;
   margin: 0 auto;
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(220px, 280px));
+  grid-template-columns: repeat(auto-fit, minmax(190px, 220px));
   justify-content: center;
   gap: clamp(20px, 2.4vw, 30px);
 }
@@ -179,12 +179,15 @@
 .leader-card {
   min-width: 0;
   width: 100%;
+  max-width: 220px;
+  margin: 0 auto;
 }
 
 .leader-photo-link {
   position: relative;
   display: block;
-  aspect-ratio: 4 / 3;
+  width: min(100%, 220px);
+  aspect-ratio: 1 / 1;
   overflow: hidden;
   background: #111827;
   text-decoration: none;
@@ -307,7 +310,7 @@
   }
 
   .leader-card {
-    max-width: 280px;
+    max-width: 220px;
     margin: 0 auto;
   }
 
