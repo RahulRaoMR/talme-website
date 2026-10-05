@@ -168,15 +168,17 @@
 }
 
 .leadership-grid {
-  max-width: 1280px;
+  max-width: 1040px;
   margin: 0 auto;
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+  grid-template-columns: repeat(auto-fit, minmax(220px, 280px));
+  justify-content: center;
   gap: clamp(20px, 2.4vw, 30px);
 }
 
 .leader-card {
   min-width: 0;
+  width: 100%;
 }
 
 .leader-photo-link {
@@ -302,6 +304,11 @@
   .leadership-form,
   .leadership-grid {
     grid-template-columns: 1fr;
+  }
+
+  .leader-card {
+    max-width: 280px;
+    margin: 0 auto;
   }
 
   .leadership-key-form {
