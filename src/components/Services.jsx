@@ -2,41 +2,19 @@ import { createElement } from "react";
 import CountUp from "react-countup";
 import "./Services.css";
 import {
-  FaHeartbeat,
-  FaLaptopCode,
-  FaCogs,
-  FaGlobe,
   FaBoxOpen,
-  FaVideo,
-  FaRobot,
-  FaDesktop,
   FaMicrochip,
-  FaCar,
-  FaCloud,
   FaRocket,
-  FaLightbulb,
   FaIndustry,
   FaTools,
-  FaCog,
 } from "react-icons/fa";
 
 const serviceItems = [
-  { label: "Healthcare Services", Icon: FaHeartbeat },
-  { label: "IT Services", Icon: FaLaptopCode },
-  { label: "Mechanical Engineering Services", Icon: FaCogs },
-  { label: "Outsourcing and Offshoring Services", Icon: FaGlobe },
   { label: "Product Life Cycle Management", Icon: FaBoxOpen },
-  { label: "Video Interviewing", Icon: FaVideo },
-  { label: "Robotic Process Automation", Icon: FaRobot },
-  { label: "Engineering Software Solutions", Icon: FaDesktop },
   { label: "VLSI Services", Icon: FaMicrochip },
-  { label: "Automotive Services", Icon: FaCar },
-  { label: "Cloud Engineering Services", Icon: FaCloud },
   { label: "Aerospace Engineering Services", Icon: FaRocket },
-  { label: "Business Solutions", Icon: FaLightbulb },
   { label: "Oil and Gas Services", Icon: FaIndustry },
   { label: "Original Equipment Manufacture (OEM)", Icon: FaTools },
-  { label: "Other Engineering Services", Icon: FaCog },
 ];
 
 function Services() {
