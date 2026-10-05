@@ -304,9 +304,12 @@
     gap: 20px;
   }
 
-  .leadership-form,
-  .leadership-grid {
+  .leadership-form {
     grid-template-columns: 1fr;
+  }
+
+  .leadership-grid {
+    grid-template-columns: repeat(2, minmax(0, 150px));
   }
 
   .leader-card {
