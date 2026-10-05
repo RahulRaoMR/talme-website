@@ -315,6 +315,16 @@ function LeadershipPage() {
   }
 
   async function deleteLeader(id) {
+    const leader = leaders.find((item) => item.id === id);
+    const leaderName = leader?.name || "this family member";
+    const confirmed = window.confirm(
+      `Are you sure you want to delete ${leaderName}? This cannot be undone.`
+    );
+
+    if (!confirmed) {
+      return;
+    }
+
     setIsSaving(true);
     setMessage("");
 
