@@ -89,11 +89,13 @@
 
 .search-toggle,
 .global-toggle,
+.japan-toggle,
 .services-toggle {
   border: 0;
   padding: 0;
   background: transparent;
   cursor: pointer;
+  font: inherit;
 }
 
 .search-box {
@@ -1686,8 +1688,10 @@ body {
     padding: 0 14px;
     border-radius: 999px;
     color: #2c4f80;
+    font-family: inherit;
     font-size: 0.88rem;
     font-weight: 900;
+    line-height: 1;
     letter-spacing: 0.015em;
   }
 
