@@ -17,9 +17,9 @@
   position: absolute;
   inset: 0;
   background:
-    radial-gradient(circle at 16% 15%, rgba(0, 99, 220, 0.14), transparent 28%),
-    linear-gradient(90deg, rgba(248, 251, 255, 0.96) 0%, rgba(241, 248, 255, 0.86) 42%, rgba(4, 31, 82, 0.28) 100%),
-    linear-gradient(180deg, rgba(255, 255, 255, 0.08), rgba(226, 239, 255, 0.5));
+    radial-gradient(circle at 14% 18%, rgba(0, 92, 222, 0.16), transparent 28%),
+    linear-gradient(90deg, rgba(248, 251, 255, 0.97) 0%, rgba(242, 248, 255, 0.9) 39%, rgba(5, 35, 92, 0.34) 100%),
+    linear-gradient(180deg, rgba(255, 255, 255, 0.04), rgba(226, 239, 255, 0.42));
   pointer-events: none;
   z-index: 1;
 }
@@ -31,6 +31,16 @@
   background: #09285f;
 }
 
+.hero-video-bg::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background:
+    radial-gradient(circle at 76% 35%, rgba(0, 115, 255, 0.44), transparent 34%),
+    linear-gradient(135deg, #f8fbff 0%, #dcecff 42%, #073f9f 100%);
+  transform: scale(1.02);
+}
+
 .hero-bg-video {
   position: absolute;
   inset: 0;
@@ -38,8 +48,8 @@
   height: 100%;
   object-fit: cover;
   object-position: center right;
-  opacity: 0.82;
-  filter: saturate(1.08) contrast(1.04) brightness(1.02);
+  opacity: 0.94;
+  filter: saturate(1.12) contrast(1.06) brightness(1.03);
 }
 
 .hero-video-sky {
@@ -50,7 +60,7 @@
     linear-gradient(90deg, rgba(255, 255, 255, 0.08), rgba(0, 92, 222, 0.18), rgba(255, 255, 255, 0.08));
   background-size: 180% 100%, 220% 100%;
   animation: heroScan 14s linear infinite;
-  opacity: 0.34;
+  opacity: 0.2;
   mix-blend-mode: screen;
 }
 
@@ -71,7 +81,7 @@
     linear-gradient(90deg, rgba(255, 255, 255, 0.18), transparent);
   box-shadow: -26px 30px 80px rgba(2, 25, 71, 0.3);
   transform: perspective(900px) rotateY(-10deg) rotateX(2deg);
-  opacity: 0.26;
+  display: none;
 }
 
 .hero-video-building span {
@@ -105,7 +115,7 @@
     linear-gradient(90deg, transparent, rgba(88, 179, 255, 0.72), transparent) 35% 42% / 46% 2px no-repeat,
     linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.62), transparent) 18% 68% / 52% 2px no-repeat;
   animation: heroDataFlow 6.5s ease-in-out infinite;
-  opacity: 0.5;
+  opacity: 0.36;
 }
 
 .hero-video-wordmark {

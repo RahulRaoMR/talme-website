@@ -11,10 +11,10 @@ function Hero() {
           muted
           loop
           playsInline
-          preload="metadata"
+          preload="auto"
         >
           <source
-            src="https://videos.pexels.com/video-files/9674159/9674159-uhd_3840_2160_25fps.mp4"
+            src="https://videos.pexels.com/video-files/36324409/15404923_1920_1080_60fps.mp4"
             type="video/mp4"
           />
         </video>
