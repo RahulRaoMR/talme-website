@@ -14,7 +14,7 @@ function Hero() {
           preload="auto"
         >
           <source
-            src="https://videos.pexels.com/video-files/36324409/15404923_1920_1080_60fps.mp4"
+            src="https://videos.pexels.com/video-files/7165703/7165703-hd_1920_1080_50fps.mp4"
             type="video/mp4"
           />
         </video>
