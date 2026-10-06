@@ -5,6 +5,19 @@ function Hero() {
   return (
     <section className="hero">
       <div className="hero-video-bg" aria-hidden="true">
+        <video
+          className="hero-bg-video"
+          autoPlay
+          muted
+          loop
+          playsInline
+          preload="metadata"
+        >
+          <source
+            src="https://videos.pexels.com/video-files/9674159/9674159-uhd_3840_2160_25fps.mp4"
+            type="video/mp4"
+          />
+        </video>
         <div className="hero-video-sky" />
         <div className="hero-video-building">
           {Array.from({ length: 30 }).map((_, index) => (
