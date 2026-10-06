@@ -17,9 +17,9 @@
   position: absolute;
   inset: 0;
   background:
-    radial-gradient(circle at 14% 18%, rgba(0, 92, 222, 0.16), transparent 28%),
-    linear-gradient(90deg, rgba(248, 251, 255, 0.98) 0%, rgba(242, 248, 255, 0.9) 41%, rgba(4, 23, 63, 0.48) 100%),
-    linear-gradient(180deg, rgba(255, 255, 255, 0.04), rgba(226, 239, 255, 0.46));
+    radial-gradient(circle at 14% 18%, rgba(0, 92, 222, 0.12), transparent 28%),
+    linear-gradient(90deg, rgba(248, 251, 255, 0.96) 0%, rgba(242, 248, 255, 0.8) 38%, rgba(4, 23, 63, 0.26) 100%),
+    linear-gradient(180deg, rgba(255, 255, 255, 0.02), rgba(226, 239, 255, 0.3));
   pointer-events: none;
   z-index: 1;
 }
@@ -48,8 +48,107 @@
   height: 100%;
   object-fit: cover;
   object-position: center center;
-  opacity: 0.88;
+  opacity: 0.72;
   filter: saturate(1.04) contrast(1.04) brightness(1.02);
+}
+
+.hero-workspace-motion {
+  position: absolute;
+  right: min(4vw, 52px);
+  bottom: clamp(24px, 5vw, 64px);
+  width: min(52vw, 690px);
+  height: min(36vw, 430px);
+  opacity: 0.92;
+  transform: perspective(900px) rotateY(-8deg);
+}
+
+.workspace-screen,
+.workspace-person,
+.workspace-desk {
+  position: absolute;
+  display: block;
+}
+
+.workspace-screen {
+  border: 1px solid rgba(255, 255, 255, 0.34);
+  border-radius: 14px;
+  background:
+    linear-gradient(135deg, rgba(255, 255, 255, 0.38), transparent 34%),
+    linear-gradient(160deg, rgba(0, 94, 225, 0.72), rgba(5, 34, 90, 0.82));
+  box-shadow: 0 24px 52px rgba(0, 35, 95, 0.28);
+  overflow: hidden;
+}
+
+.workspace-screen::after {
+  content: "";
+  position: absolute;
+  inset: 16% 12%;
+  background:
+    linear-gradient(90deg, rgba(255, 255, 255, 0.74), transparent) 0 16% / 74% 2px no-repeat,
+    linear-gradient(90deg, rgba(103, 197, 255, 0.7), transparent) 0 45% / 58% 2px no-repeat,
+    linear-gradient(90deg, rgba(255, 255, 255, 0.56), transparent) 0 74% / 84% 2px no-repeat;
+  animation: workspaceData 4.8s ease-in-out infinite;
+}
+
+.screen-one {
+  right: 18%;
+  top: 4%;
+  width: 42%;
+  height: 42%;
+}
+
+.screen-two {
+  right: 2%;
+  top: 30%;
+  width: 34%;
+  height: 32%;
+  animation: workspaceFloat 6s ease-in-out infinite;
+}
+
+.screen-three {
+  right: 43%;
+  top: 38%;
+  width: 30%;
+  height: 28%;
+  animation: workspaceFloat 7s ease-in-out infinite reverse;
+}
+
+.workspace-desk {
+  right: 2%;
+  bottom: 4%;
+  width: 76%;
+  height: 12%;
+  border-radius: 999px;
+  background: linear-gradient(90deg, rgba(4, 26, 70, 0.72), rgba(0, 91, 224, 0.38));
+  box-shadow: 0 22px 42px rgba(0, 24, 72, 0.26);
+}
+
+.workspace-person {
+  width: 54px;
+  height: 96px;
+  border-radius: 999px 999px 18px 18px;
+  background:
+    radial-gradient(circle at 50% 18%, rgba(255, 255, 255, 0.86) 0 14px, transparent 15px),
+    linear-gradient(180deg, rgba(10, 45, 111, 0.86), rgba(0, 91, 224, 0.54));
+  filter: drop-shadow(0 18px 24px rgba(0, 27, 82, 0.28));
+  animation: workspacePerson 5.5s ease-in-out infinite;
+}
+
+.person-one {
+  right: 58%;
+  bottom: 13%;
+}
+
+.person-two {
+  right: 31%;
+  bottom: 11%;
+  animation-delay: 0.7s;
+}
+
+.person-three {
+  right: 10%;
+  bottom: 12%;
+  animation-delay: 1.2s;
 }
 
 .hero-video-sky {
@@ -178,6 +277,35 @@
   }
   50% {
     transform: translateY(-8px);
+  }
+}
+
+@keyframes workspaceFloat {
+  0%, 100% {
+    transform: translateY(0);
+  }
+  50% {
+    transform: translateY(-12px);
+  }
+}
+
+@keyframes workspaceData {
+  0%, 100% {
+    transform: translateX(-10px);
+    opacity: 0.52;
+  }
+  50% {
+    transform: translateX(16px);
+    opacity: 1;
+  }
+}
+
+@keyframes workspacePerson {
+  0%, 100% {
+    transform: translateY(0) scale(1);
+  }
+  50% {
+    transform: translateY(-5px) scale(1.02);
   }
 }
 
@@ -411,6 +539,14 @@
     opacity: 0.58;
   }
 
+  .hero-workspace-motion {
+    right: -150px;
+    bottom: 22px;
+    width: 430px;
+    height: 280px;
+    opacity: 0.52;
+  }
+
   .hero-video-lines,
   .hero-video-wordmark {
     opacity: 0.42;
@@ -460,7 +596,9 @@
   .hero-video-sky,
   .hero-video-building span,
   .hero-video-lines,
-  .hero-video-wordmark {
+  .hero-video-wordmark,
+  .workspace-screen,
+  .workspace-person {
     animation: none;
   }
 }

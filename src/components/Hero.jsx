@@ -18,6 +18,15 @@ function Hero() {
             type="video/mp4"
           />
         </video>
+        <div className="hero-workspace-motion">
+          <span className="workspace-screen screen-one" />
+          <span className="workspace-screen screen-two" />
+          <span className="workspace-screen screen-three" />
+          <span className="workspace-person person-one" />
+          <span className="workspace-person person-two" />
+          <span className="workspace-person person-three" />
+          <span className="workspace-desk" />
+        </div>
         <div className="hero-video-sky" />
         <div className="hero-video-building">
           {Array.from({ length: 30 }).map((_, index) => (
