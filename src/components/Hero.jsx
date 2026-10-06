@@ -4,6 +4,16 @@ import "./Hero.css";
 function Hero() {
   return (
     <section className="hero">
+      <div className="hero-video-bg" aria-hidden="true">
+        <div className="hero-video-sky" />
+        <div className="hero-video-building">
+          {Array.from({ length: 30 }).map((_, index) => (
+            <span key={index} />
+          ))}
+        </div>
+        <div className="hero-video-lines" />
+        <div className="hero-video-wordmark">TALME</div>
+      </div>
       <div className="hero-inner">
         <div className="hero-content">
           <span className="hero-kicker">Engineering. Talent. Transformation.</span>
