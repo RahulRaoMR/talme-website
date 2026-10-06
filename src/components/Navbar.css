@@ -1695,6 +1695,12 @@ body {
     letter-spacing: 0.015em;
   }
 
+  .service-links .lower-iplant-link > a,
+  .service-links .lower-intranet-link > a {
+    font-weight: 900;
+    -webkit-text-stroke: 0.18px currentColor;
+  }
+
   .service-links > li > a:hover,
   .services-toggle:hover,
   .japan-toggle:hover,
