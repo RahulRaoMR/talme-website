@@ -31,8 +31,8 @@ function HomePage() {
   return (
     <>
       <Hero />
-      <Engagement />
       <Services />
+      <Engagement />
     </>
   );
 }

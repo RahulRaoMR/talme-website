@@ -34,17 +34,6 @@ function Services() {
         </p>
       </div>
 
-      <div className="services-grid">
-        {serviceItems.map(({ label, Icon }) => (
-          <article className="service-card" key={label}>
-            <span className="icon-wrap">
-              {createElement(Icon, { className: "icon" })}
-            </span>
-            <p>{label}</p>
-          </article>
-        ))}
-      </div>
-
       <div className="stats-section">
         <div className="stat-box">
           <h3>
@@ -80,6 +69,17 @@ function Services() {
           </h3>
           <p>Employees</p>
         </div>
+      </div>
+
+      <div className="services-grid">
+        {serviceItems.map(({ label, Icon }) => (
+          <article className="service-card" key={label}>
+            <span className="icon-wrap">
+              {createElement(Icon, { className: "icon" })}
+            </span>
+            <p>{label}</p>
+          </article>
+        ))}
       </div>
     </section>
   );
