@@ -19,9 +19,16 @@ function Hero() {
           />
         </video>
         <div className="hero-workspace-motion">
+          <span className="workspace-glow" />
+          <span className="workspace-floor" />
           <span className="workspace-screen screen-one" />
           <span className="workspace-screen screen-two" />
           <span className="workspace-screen screen-three" />
+          <span className="workspace-screen screen-four" />
+          <span className="workspace-holo-ring ring-one" />
+          <span className="workspace-holo-ring ring-two" />
+          <span className="workspace-data-column data-one" />
+          <span className="workspace-data-column data-two" />
           <span className="workspace-person person-one" />
           <span className="workspace-person person-two" />
           <span className="workspace-person person-three" />
