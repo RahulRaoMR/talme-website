@@ -436,7 +436,7 @@ function Navbar() {
               aria-expanded={isJapanHelpOpen}
               onClick={handleJapanHelpToggle}
             >
-              JAPAN HELP DESK <span className="arrow-up">&#94;</span>
+              JAPAN HELP DESK <span className="arrow-up">&#9662;</span>
             </button>
             <ul className="japan-menu">
               {japanHelpDeskServices.map((service) => (
@@ -457,7 +457,7 @@ function Navbar() {
               aria-expanded={isServicesOpen}
               onClick={handleServicesToggle}
             >
-              SERVICES <span className="arrow-up">&#94;</span>
+              SERVICES <span className="arrow-up">&#9662;</span>
             </button>
             <ul
               className="services-menu"
