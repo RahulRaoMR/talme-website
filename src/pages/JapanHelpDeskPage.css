@@ -10,8 +10,8 @@
 
 .japan-help-hero {
   display: grid;
-  grid-template-columns: minmax(0, 0.95fr) minmax(380px, 1.05fr);
-  min-height: 520px;
+  grid-template-columns: minmax(0, 1.12fr) minmax(330px, 0.88fr);
+  min-height: 460px;
   border: 1px solid var(--jh-line);
   background: #ffffff;
   box-shadow: 0 28px 70px rgba(12, 33, 67, 0.12);
@@ -19,7 +19,7 @@
 }
 
 .japan-help-hero-copy {
-  padding: clamp(30px, 5vw, 64px);
+  padding: clamp(28px, 4.4vw, 56px);
   display: flex;
   flex-direction: column;
   justify-content: center;
@@ -37,26 +37,57 @@
 
 .japan-help-hero h1 {
   margin: 0;
-  max-width: 680px;
+  max-width: 720px;
   color: var(--jh-ink);
-  font-size: clamp(2.4rem, 5vw, 5rem);
-  line-height: 0.98;
+  font-size: clamp(2.35rem, 4.2vw, 4.45rem);
+  line-height: 1;
   font-weight: 800;
 }
 
 .japan-help-hero-copy > p:not(.japan-help-kicker) {
   margin: 24px 0 0;
-  max-width: 590px;
+  max-width: 660px;
   color: var(--jh-soft);
   font-size: clamp(1rem, 1.5vw, 1.22rem);
   line-height: 1.75;
+}
+
+.japan-help-hero-points {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 10px;
+  margin-top: 26px;
+  max-width: 760px;
+}
+
+.japan-help-hero-points span {
+  position: relative;
+  min-height: 72px;
+  padding: 14px 14px 14px 34px;
+  border: 1px solid rgba(36, 79, 145, 0.14);
+  background: linear-gradient(145deg, #ffffff, #f5f9ff);
+  color: #254a7f;
+  font-size: 0.86rem;
+  font-weight: 800;
+  line-height: 1.36;
+  box-shadow: 0 14px 28px rgba(12, 33, 67, 0.07);
+}
+
+.japan-help-hero-points span::before {
+  content: "";
+  position: absolute;
+  left: 15px;
+  top: 20px;
+  width: 7px;
+  height: 7px;
+  background: #244f91;
 }
 
 .japan-help-actions {
   display: flex;
   flex-wrap: wrap;
   gap: 12px;
-  margin-top: 30px;
+  margin-top: 26px;
 }
 
 .japan-help-primary,
@@ -83,8 +114,12 @@
 }
 
 .japan-help-hero-media {
-  min-height: 420px;
+  min-height: 360px;
   background: #dce6f3;
+}
+
+.japan-help-hero-media img {
+  aspect-ratio: 4 / 3;
 }
 
 .japan-help-hero-media img,
@@ -368,8 +403,16 @@
   }
 
   .japan-help-hero-media {
-    min-height: 300px;
+    min-height: 260px;
     order: -1;
+  }
+
+  .japan-help-hero-points {
+    grid-template-columns: 1fr;
+  }
+
+  .japan-help-hero-points span {
+    min-height: auto;
   }
 
   .japan-help-service-strip {
@@ -393,7 +436,7 @@
   }
 
   .japan-help-hero-media {
-    min-height: 220px;
+    min-height: 190px;
   }
 
   .japan-help-service-strip {

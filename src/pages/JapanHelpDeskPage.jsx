@@ -19,6 +19,11 @@ function JapanHelpDeskPage() {
           <p className="japan-help-kicker">Japan Help Desk</p>
           <h1>{activeService.title}</h1>
           <p>{activeService.summary}</p>
+          <div className="japan-help-hero-points">
+            {activeService.deliverables.slice(0, 3).map((item) => (
+              <span key={item}>{item}</span>
+            ))}
+          </div>
           <div className="japan-help-actions">
             <Link to="/contact" className="japan-help-primary">Talk to TALME</Link>
             <a href="#japan-help-services" className="japan-help-secondary">View Services</a>
