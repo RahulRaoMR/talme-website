@@ -206,13 +206,88 @@
   margin-top: 18px;
 }
 
+.japan-help-detail-stack {
+  display: grid;
+  grid-template-columns: minmax(0, 1.25fr) minmax(280px, 0.75fr);
+  gap: 18px;
+  margin-top: 18px;
+}
+
+.japan-help-detail-card {
+  position: relative;
+  overflow: hidden;
+  border: 1px solid var(--jh-line);
+  background:
+    linear-gradient(135deg, rgba(255, 255, 255, 0.96), rgba(247, 250, 255, 0.96)),
+    #ffffff;
+  padding: clamp(22px, 3vw, 34px);
+  box-shadow: 0 18px 42px rgba(12, 33, 67, 0.08);
+}
+
+.japan-help-detail-card::before {
+  content: "";
+  position: absolute;
+  right: -72px;
+  top: -72px;
+  width: 170px;
+  height: 170px;
+  border-radius: 50%;
+  background: rgba(36, 79, 145, 0.08);
+}
+
+.japan-help-detail-card-wide {
+  grid-row: span 2;
+  background:
+    radial-gradient(circle at 88% 12%, rgba(36, 79, 145, 0.12), transparent 26%),
+    linear-gradient(135deg, #ffffff, #f6f9ff);
+}
+
+.japan-help-detail-card span {
+  position: relative;
+  display: inline-flex;
+  margin-bottom: 14px;
+  color: #1f56a4;
+  font-size: 0.78rem;
+  font-weight: 900;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+}
+
+.japan-help-detail-card h2 {
+  position: relative;
+  margin: 0 0 16px;
+  color: var(--jh-ink);
+  font-size: clamp(1.35rem, 2.2vw, 2rem);
+  line-height: 1.16;
+}
+
+.japan-help-detail-card p {
+  position: relative;
+  margin: 0;
+  color: var(--jh-soft);
+  font-size: 1rem;
+  line-height: 1.76;
+}
+
+.japan-help-detail-card p + p {
+  margin-top: 13px;
+}
+
 .japan-help-content-grid ul {
   list-style: none;
   margin: 0;
   padding: 0;
 }
 
-.japan-help-content-grid li {
+.japan-help-detail-card ul {
+  position: relative;
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+
+.japan-help-content-grid li,
+.japan-help-detail-card li {
   position: relative;
   padding: 13px 0 13px 24px;
   border-top: 1px solid var(--jh-line);
@@ -221,7 +296,8 @@
   line-height: 1.5;
 }
 
-.japan-help-content-grid li::before {
+.japan-help-content-grid li::before,
+.japan-help-detail-card li::before {
   content: "";
   position: absolute;
   left: 0;
@@ -229,6 +305,29 @@
   width: 8px;
   height: 8px;
   background: #244f91;
+}
+
+.japan-help-fit-card {
+  background:
+    linear-gradient(145deg, rgba(8, 31, 69, 0.96), rgba(36, 79, 145, 0.96)),
+    #244f91;
+}
+
+.japan-help-fit-card::before {
+  background: rgba(255, 255, 255, 0.09);
+}
+
+.japan-help-fit-card span {
+  color: #f0c980;
+}
+
+.japan-help-fit-card h2,
+.japan-help-fit-card p {
+  color: #ffffff;
+}
+
+.japan-help-fit-card p {
+  color: rgba(255, 255, 255, 0.82);
 }
 
 .japan-help-gallery {
@@ -255,8 +354,13 @@
   .japan-help-hero,
   .japan-help-overview,
   .japan-help-content-grid,
+  .japan-help-detail-stack,
   .japan-help-gallery {
     grid-template-columns: 1fr;
+  }
+
+  .japan-help-detail-card-wide {
+    grid-row: auto;
   }
 
   .japan-help-hero {

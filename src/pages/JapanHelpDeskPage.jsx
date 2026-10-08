@@ -87,6 +87,32 @@ function JapanHelpDeskPage() {
         </article>
       </section>
 
+      <section className="japan-help-detail-stack">
+        <article className="japan-help-detail-card japan-help-detail-card-wide">
+          <span>How TALME Supports</span>
+          <h2>Practical execution from first discussion to operational follow-through.</h2>
+          {activeService.approach.map((item) => (
+            <p key={item}>{item}</p>
+          ))}
+        </article>
+
+        <article className="japan-help-detail-card">
+          <span>What You Receive</span>
+          <h2>Key Deliverables</h2>
+          <ul>
+            {activeService.deliverables.map((item) => (
+              <li key={item}>{item}</li>
+            ))}
+          </ul>
+        </article>
+
+        <article className="japan-help-detail-card japan-help-fit-card">
+          <span>Ideal For</span>
+          <h2>Where This Service Fits Best</h2>
+          <p>{activeService.idealFor}</p>
+        </article>
+      </section>
+
       <section className="japan-help-gallery" aria-label="Japan Help Desk visual highlights">
         <img src={activeService.image} alt="Japan Help Desk business support" />
         <div>
