@@ -28,7 +28,9 @@
   position: absolute;
   inset: 0;
   overflow: hidden;
-  background: #09285f;
+  background:
+    radial-gradient(circle at 86% 20%, rgba(0, 86, 216, 0.36), transparent 26%),
+    linear-gradient(135deg, #f9fcff 0%, #e5f1ff 42%, #0b2d6b 100%);
 }
 
 .hero-video-bg::before {
@@ -59,20 +61,21 @@
   height: 100%;
   object-fit: cover;
   object-position: 58% center;
-  opacity: 0.72;
-  filter: saturate(1.04) contrast(1.02) brightness(1.08);
+  opacity: 0.34;
+  filter: saturate(1.08) contrast(1.05) brightness(1.06);
 }
 
 .hero-workspace-motion {
   position: absolute;
-  right: clamp(-80px, 4vw, 80px);
-  bottom: clamp(14px, 4vw, 62px);
-  width: min(44vw, 540px);
-  height: min(30vw, 340px);
-  opacity: 0.18;
-  transform: perspective(900px) rotateY(-8deg);
+  right: clamp(28px, 7vw, 120px);
+  bottom: clamp(8px, 3vw, 42px);
+  width: min(52vw, 690px);
+  height: min(39vw, 470px);
+  opacity: 0.82;
+  transform: perspective(980px) rotateY(-12deg) rotateX(2deg);
   z-index: 0;
-  filter: blur(0.3px);
+  filter: saturate(1.06);
+  pointer-events: none;
 }
 
 .workspace-screen,
@@ -87,26 +90,28 @@
 }
 
 .workspace-glow {
-  inset: 3% -8% -18% 6%;
+  inset: -2% -10% -18% 2%;
   border-radius: 46%;
   background:
-    radial-gradient(circle at 46% 38%, rgba(64, 169, 255, 0.42), transparent 32%),
-    radial-gradient(circle at 72% 54%, rgba(0, 82, 204, 0.34), transparent 34%),
-    linear-gradient(140deg, rgba(255, 255, 255, 0.24), rgba(0, 70, 170, 0.12));
-  filter: blur(18px);
+    radial-gradient(circle at 42% 36%, rgba(58, 160, 255, 0.48), transparent 32%),
+    radial-gradient(circle at 75% 54%, rgba(0, 82, 204, 0.42), transparent 34%),
+    radial-gradient(circle at 32% 74%, rgba(240, 201, 128, 0.16), transparent 28%),
+    linear-gradient(140deg, rgba(255, 255, 255, 0.26), rgba(0, 70, 170, 0.16));
+  filter: blur(14px);
   animation: workspaceGlow 6s ease-in-out infinite;
 }
 
 .workspace-screen {
-  border: 1px solid rgba(255, 255, 255, 0.52);
-  border-radius: 18px;
+  border: 1px solid rgba(255, 255, 255, 0.64);
+  border-radius: 16px;
   background:
-    linear-gradient(135deg, rgba(255, 255, 255, 0.58), transparent 32%),
-    linear-gradient(160deg, rgba(0, 108, 255, 0.94), rgba(5, 28, 83, 0.96));
+    linear-gradient(135deg, rgba(255, 255, 255, 0.68), transparent 30%),
+    linear-gradient(160deg, rgba(0, 104, 255, 0.82), rgba(5, 28, 83, 0.9));
   box-shadow:
-    0 30px 70px rgba(0, 35, 95, 0.44),
-    inset 0 1px 0 rgba(255, 255, 255, 0.42);
+    0 32px 76px rgba(0, 35, 95, 0.42),
+    inset 0 1px 0 rgba(255, 255, 255, 0.52);
   overflow: hidden;
+  backdrop-filter: blur(10px);
 }
 
 .workspace-screen::before {
@@ -123,17 +128,18 @@
   position: absolute;
   inset: 16% 12%;
   background:
-    linear-gradient(90deg, rgba(255, 255, 255, 0.74), transparent) 0 16% / 74% 2px no-repeat,
-    linear-gradient(90deg, rgba(103, 197, 255, 0.7), transparent) 0 45% / 58% 2px no-repeat,
-    linear-gradient(90deg, rgba(255, 255, 255, 0.56), transparent) 0 74% / 84% 2px no-repeat;
+    linear-gradient(90deg, rgba(255, 255, 255, 0.82), transparent) 0 12% / 76% 2px no-repeat,
+    linear-gradient(90deg, rgba(103, 197, 255, 0.78), transparent) 0 36% / 62% 2px no-repeat,
+    linear-gradient(90deg, rgba(255, 255, 255, 0.6), transparent) 0 62% / 84% 2px no-repeat,
+    linear-gradient(90deg, rgba(240, 201, 128, 0.58), transparent) 0 86% / 48% 2px no-repeat;
   animation: workspaceData 4.8s ease-in-out infinite;
 }
 
 .screen-one {
-  right: 19%;
-  top: 1%;
-  width: 44%;
-  height: 43%;
+  right: 20%;
+  top: 0;
+  width: 46%;
+  height: 42%;
 }
 
 .screen-two {
@@ -161,10 +167,10 @@
 }
 
 .workspace-floor {
-  right: -1%;
-  bottom: -2%;
-  width: 88%;
-  height: 24%;
+  right: -2%;
+  bottom: -3%;
+  width: 92%;
+  height: 26%;
   border-radius: 50%;
   background:
     radial-gradient(ellipse at center, rgba(255, 255, 255, 0.34), transparent 56%),
@@ -187,8 +193,8 @@
 }
 
 .workspace-person {
-  width: 62px;
-  height: 112px;
+  width: 54px;
+  height: 98px;
   border-radius: 999px 999px 18px 18px;
   background:
     radial-gradient(circle at 50% 17%, rgba(255, 255, 255, 0.94) 0 16px, transparent 17px),
@@ -202,7 +208,7 @@
   position: absolute;
   left: 50%;
   top: 46%;
-  width: 86px;
+  width: 74px;
   height: 12px;
   border-radius: 999px;
   background: rgba(202, 226, 255, 0.54);
@@ -238,9 +244,9 @@
 
 .ring-one {
   right: 28%;
-  bottom: 27%;
-  width: 146px;
-  height: 146px;
+  bottom: 25%;
+  width: 158px;
+  height: 158px;
 }
 
 .ring-two {
@@ -281,16 +287,16 @@
     linear-gradient(90deg, rgba(255, 255, 255, 0.08), rgba(0, 92, 222, 0.18), rgba(255, 255, 255, 0.08));
   background-size: 180% 100%, 220% 100%;
   animation: heroScan 14s linear infinite;
-  opacity: 0.2;
+  opacity: 0.44;
   mix-blend-mode: screen;
 }
 
 .hero-video-building {
   position: absolute;
-  right: clamp(-90px, -5vw, -34px);
-  bottom: -34px;
-  width: min(58vw, 760px);
-  height: min(62vw, 540px);
+  right: clamp(-70px, -4vw, -20px);
+  bottom: -54px;
+  width: min(54vw, 680px);
+  height: min(48vw, 470px);
   display: grid;
   grid-template-columns: repeat(6, 1fr);
   grid-auto-rows: 1fr;
@@ -298,11 +304,12 @@
   padding: 22px;
   border: 1px solid rgba(255, 255, 255, 0.22);
   background:
-    linear-gradient(135deg, rgba(2, 28, 76, 0.9), rgba(0, 77, 178, 0.72)),
-    linear-gradient(90deg, rgba(255, 255, 255, 0.18), transparent);
-  box-shadow: -26px 30px 80px rgba(2, 25, 71, 0.3);
-  transform: perspective(900px) rotateY(-10deg) rotateX(2deg);
-  display: none;
+    linear-gradient(135deg, rgba(2, 28, 76, 0.54), rgba(0, 77, 178, 0.36)),
+    linear-gradient(90deg, rgba(255, 255, 255, 0.14), transparent);
+  box-shadow: -26px 30px 80px rgba(2, 25, 71, 0.22);
+  transform: perspective(900px) rotateY(-13deg) rotateX(2deg);
+  opacity: 0.45;
+  z-index: 0;
 }
 
 .hero-video-building span {
@@ -336,7 +343,9 @@
     linear-gradient(90deg, transparent, rgba(88, 179, 255, 0.72), transparent) 35% 42% / 46% 2px no-repeat,
     linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.62), transparent) 18% 68% / 52% 2px no-repeat;
   animation: heroDataFlow 6.5s ease-in-out infinite;
-  display: none;
+  display: block;
+  opacity: 0.48;
+  z-index: 1;
 }
 
 .hero-video-wordmark {
