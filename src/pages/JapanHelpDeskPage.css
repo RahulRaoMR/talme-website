@@ -269,7 +269,8 @@
 }
 
 .japan-help-expanded-scope,
-.japan-help-process {
+.japan-help-process,
+.japan-help-text-section {
   margin-top: 8px;
   border: 1px solid var(--jh-line);
   background: #ffffff;
@@ -344,6 +345,36 @@
   color: var(--jh-soft);
   font-size: 0.9rem;
   line-height: 1.6;
+}
+
+.japan-help-text-columns {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 8px;
+}
+
+.japan-help-text-columns article {
+  border: 1px solid var(--jh-line);
+  background: linear-gradient(145deg, #ffffff, #f7faff);
+  padding: clamp(18px, 2.2vw, 28px);
+}
+
+.japan-help-text-columns h3 {
+  margin: 0 0 12px;
+  color: var(--jh-ink);
+  font-size: clamp(1.15rem, 1.6vw, 1.45rem);
+  line-height: 1.22;
+}
+
+.japan-help-text-columns p {
+  margin: 0;
+  color: var(--jh-soft);
+  font-size: 1rem;
+  line-height: 1.78;
+}
+
+.japan-help-text-columns p + p {
+  margin-top: 14px;
 }
 
 .japan-help-info-wall {
@@ -569,6 +600,7 @@
   .japan-help-scope-grid,
   .japan-help-info-wall,
   .japan-help-process-grid,
+  .japan-help-text-columns,
   .japan-help-detail-stack,
   .japan-help-gallery {
     grid-template-columns: 1fr;

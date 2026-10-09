@@ -194,6 +194,77 @@ function JapanHelpDeskPage() {
         </div>
       </section>
 
+      <section className="japan-help-text-section">
+        <div className="japan-help-section-heading">
+          <span>Service Detail</span>
+          <h2>In-depth information for {activeService.title}</h2>
+        </div>
+        <div className="japan-help-text-columns">
+          <article>
+            <h3>Business context</h3>
+            <p>
+              {activeService.title} is designed for organizations that need
+              dependable Japan-linked support without losing time in fragmented
+              coordination. Many cross-border initiatives slow down because
+              business teams, HR teams, technical stakeholders, vendors, and
+              local contacts are working from different assumptions. TALME
+              brings these moving parts into one managed workflow so the
+              requirement can be understood, organized, tracked, and completed
+              with clearer ownership.
+            </p>
+            <p>
+              The service is especially useful when a company needs practical
+              execution support instead of only high-level advice. TALME helps
+              convert the requirement into action items, confirms what
+              information is needed, aligns the right stakeholders, and keeps
+              the engagement focused on business outcomes such as speed,
+              clarity, compliance discipline, communication quality, and
+              readiness for the next decision.
+            </p>
+          </article>
+          <article>
+            <h3>How the work is handled</h3>
+            <p>
+              The engagement begins with a review of the business objective,
+              timeline, decision makers, dependencies, current gaps, and the
+              practical result expected from the work. Based on that review,
+              TALME creates a structured plan covering the required information,
+              coordination steps, documentation, communication rhythm, and
+              follow-up process. This makes the service easier for management
+              teams to monitor and easier for operating teams to execute.
+            </p>
+            <p>
+              During delivery, TALME supports activities connected to{" "}
+              {activeService.capabilities.join(", ")}. Each activity is handled
+              with attention to accuracy, stakeholder communication, and
+              operational usefulness. The goal is not only to complete tasks,
+              but to give the client a clearer view of status, risks, pending
+              inputs, and the next practical step.
+            </p>
+          </article>
+          <article>
+            <h3>What clients can expect</h3>
+            <p>
+              Clients can expect working outputs such as{" "}
+              {activeService.deliverables.join(", ")}. These outputs help teams
+              avoid scattered information, repeated follow-ups, unclear
+              responsibilities, and slow decision cycles. TALME keeps the
+              service grounded in usable documentation and structured
+              communication so the work can continue smoothly even when several
+              parties are involved.
+            </p>
+            <p>
+              The expected value includes {activeService.outcomes.join(", ")}.
+              For TALME, a successful engagement means the client has a better
+              operating view, fewer coordination gaps, stronger follow-through,
+              and enough information to move confidently into the next stage of
+              market entry, hiring, compliance, sourcing, travel, interpretation,
+              or business development.
+            </p>
+          </article>
+        </div>
+      </section>
+
       <section className="japan-help-detail-stack">
         <article className="japan-help-detail-card japan-help-detail-card-wide">
           <span>How TALME Supports</span>
