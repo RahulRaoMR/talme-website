@@ -93,6 +93,33 @@ function JapanHelpDeskPage() {
         </article>
       </section>
 
+      <section className="japan-help-expanded-scope">
+        <div className="japan-help-section-heading">
+          <span>Detailed Scope</span>
+          <h2>More information about {activeService.title}</h2>
+          <p>
+            This section explains how the service is handled in practical
+            business terms, so teams can understand what TALME coordinates,
+            what gets tracked, and how the engagement moves forward.
+          </p>
+        </div>
+        <div className="japan-help-scope-grid">
+          {activeService.capabilities.map((item, index) => (
+            <article key={item}>
+              <span>{String(index + 1).padStart(2, "0")}</span>
+              <h3>{item}</h3>
+              <p>
+                TALME treats this as a structured workstream with clear inputs,
+                responsible owners, practical checkpoints, and documentation
+                support. The objective is to reduce confusion, keep stakeholder
+                communication clear, and move the requirement from discussion to
+                execution with measurable progress.
+              </p>
+            </article>
+          ))}
+        </div>
+      </section>
+
       <section className="japan-help-info-wall">
         <article>
           <span>Execution Model</span>
@@ -120,6 +147,51 @@ function JapanHelpDeskPage() {
             without building every process from scratch.
           </p>
         </article>
+      </section>
+
+      <section className="japan-help-process">
+        <div className="japan-help-section-heading">
+          <span>Delivery Flow</span>
+          <h2>How TALME moves the work from request to completion</h2>
+        </div>
+        <div className="japan-help-process-grid">
+          <article>
+            <strong>01</strong>
+            <h3>Requirement Review</h3>
+            <p>
+              TALME confirms the business objective, stakeholders, geography,
+              timeline, expected output, and any Japan-specific coordination
+              needs before execution starts.
+            </p>
+          </article>
+          <article>
+            <strong>02</strong>
+            <h3>Plan and Documentation</h3>
+            <p>
+              The team prepares checklists, required documents, meeting notes,
+              role definitions, vendor inputs, or travel information depending
+              on the selected service.
+            </p>
+          </article>
+          <article>
+            <strong>03</strong>
+            <h3>Coordination and Tracking</h3>
+            <p>
+              Progress is managed through updates, follow-ups, owner mapping,
+              issue tracking, and clear communication between TALME, clients,
+              partners, candidates, vendors, or visiting teams.
+            </p>
+          </article>
+          <article>
+            <strong>04</strong>
+            <h3>Closure and Next Actions</h3>
+            <p>
+              TALME closes the work with a summary of actions completed,
+              pending decisions, recommended next steps, and practical handover
+              notes for continued execution.
+            </p>
+          </article>
+        </div>
       </section>
 
       <section className="japan-help-detail-stack">
