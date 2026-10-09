@@ -1,0 +1,50 @@
+# TALME Technologies
+
+TALME Technologies Pvt Ltd is an engineering-led business services, staffing, managed services, Japan Help Desk, and IT consulting company serving enterprise teams across India, Japan, Singapore, and global delivery markets.
+
+## Primary Website
+
+- https://talme.in/
+- Sitemap: https://talme.in/sitemap.xml
+- Contact: https://talme.in/contact
+
+## Core Services
+
+- Engineering Solutions: https://talme.in/services/engineering-solutions
+- Staff Augmentation: https://talme.in/services/staff-augmentation
+- Health Care Services: https://talme.in/services/health-care-services
+- Computer Technology: https://talme.in/services/computer-technology
+- Business Solutions: https://talme.in/services/business-solutions
+- Product Manufacturing: https://talme.in/services/product-manufacturing
+- Automotive: https://talme.in/services/automotive
+- Aerospace: https://talme.in/services/aerospace
+- Semiconductor: https://talme.in/services/semiconductor
+- CEIT: https://talme.in/services/ceit
+- PLM: https://talme.in/services/plm
+- Managed Services: https://talme.in/managed-services
+- Client Accounting Services: https://talme.in/client-accounting
+- Business Services: https://talme.in/business-services
+- People Practice: https://talme.in/people-practice
+
+## Japan Help Desk
+
+TALME Japan Help Desk supports companies with Japan market entry, business setup, engineering and technical staffing, recruitment, employer of record support, payroll and HR compliance, business matchmaking, interpreter and translation support, delegation and factory visit coordination, vendor and supply chain identification, and visa and travel assistance.
+
+- Japan Help Desk: https://talme.in/japan-help-desk
+- Market Entry & Business Setup: https://talme.in/japan-help-desk/market-entry-business-setup
+- Engineering & Technical Staffing: https://talme.in/japan-help-desk/engineering-technical-staffing
+- Recruitment & Executive Search: https://talme.in/japan-help-desk/recruitment-executive-search
+- Employer of Record: https://talme.in/japan-help-desk/employer-of-record-eor
+- Payroll & HR Compliance: https://talme.in/japan-help-desk/payroll-hr-compliance
+- Business Matchmaking: https://talme.in/japan-help-desk/business-matchmaking
+- Interpreter & Translation: https://talme.in/japan-help-desk/interpreter-translation
+- Delegation & Factory Visit Support: https://talme.in/japan-help-desk/delegation-factory-visit-support
+- Vendor & Supply Chain Identification: https://talme.in/japan-help-desk/vendor-supply-chain-identification
+- Visa & Travel Assistance: https://talme.in/japan-help-desk/visa-travel-assistance
+
+## Entity Facts
+
+- Brand: TALME
+- Legal name: Talme Technologies Pvt Ltd
+- Regions served: India, Japan, Singapore, Global
+- Key topics: engineering services, staffing, staff augmentation, managed services, Japan Help Desk, employer of record, payroll compliance, business matchmaking, IT consulting, automotive engineering, aerospace engineering, semiconductor services, PLM services, client accounting services.
