@@ -17,9 +17,9 @@
   position: absolute;
   inset: 0;
   background:
+    linear-gradient(90deg, rgba(248, 251, 255, 0.96) 0%, rgba(248, 251, 255, 0.88) 33%, rgba(237, 246, 255, 0.62) 55%, rgba(6, 34, 82, 0.18) 100%),
     radial-gradient(circle at 15% 18%, rgba(0, 92, 222, 0.12), transparent 28%),
-    linear-gradient(90deg, rgba(248, 251, 255, 0.9) 0%, rgba(242, 248, 255, 0.68) 38%, rgba(4, 23, 63, 0.1) 100%),
-    linear-gradient(180deg, rgba(255, 255, 255, 0), rgba(226, 239, 255, 0.18));
+    linear-gradient(180deg, rgba(255, 255, 255, 0.18), rgba(226, 239, 255, 0.36));
   pointer-events: none;
   z-index: 1;
 }
@@ -36,9 +36,20 @@
   position: absolute;
   inset: 0;
   background:
-    radial-gradient(circle at 76% 36%, rgba(0, 91, 224, 0.24), transparent 34%),
-    linear-gradient(135deg, #f8fbff 0%, #dcecff 42%, #083477 100%);
+    radial-gradient(circle at 72% 34%, rgba(0, 91, 224, 0.26), transparent 31%),
+    linear-gradient(90deg, rgba(249, 252, 255, 0.88) 0%, rgba(237, 246, 255, 0.46) 46%, rgba(4, 24, 67, 0.24) 100%);
   transform: scale(1.02);
+  z-index: 1;
+}
+
+.hero-video-bg::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background:
+    linear-gradient(115deg, rgba(255, 255, 255, 0.14), transparent 34%),
+    linear-gradient(180deg, transparent 0%, rgba(230, 241, 255, 0.42) 100%);
+  z-index: 1;
 }
 
 .hero-bg-video {
@@ -47,20 +58,21 @@
   width: 100%;
   height: 100%;
   object-fit: cover;
-  object-position: center center;
-  opacity: 0.98;
-  filter: saturate(1.1) contrast(1.08) brightness(1.04);
+  object-position: 58% center;
+  opacity: 0.72;
+  filter: saturate(1.04) contrast(1.02) brightness(1.08);
 }
 
 .hero-workspace-motion {
   position: absolute;
-  right: clamp(230px, 28vw, 410px);
+  right: clamp(-80px, 4vw, 80px);
   bottom: clamp(14px, 4vw, 62px);
-  width: min(62vw, 820px);
-  height: min(42vw, 500px);
-  opacity: 1;
+  width: min(44vw, 540px);
+  height: min(30vw, 340px);
+  opacity: 0.18;
   transform: perspective(900px) rotateY(-8deg);
-  z-index: 1;
+  z-index: 0;
+  filter: blur(0.3px);
 }
 
 .workspace-screen,
