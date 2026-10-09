@@ -41,7 +41,8 @@ function JapanHelpDeskPage() {
             to={`/japan-help-desk/${service.slug}`}
             className={service.slug === activeService.slug ? "active" : ""}
           >
-            {service.title}
+            <strong>{service.title}</strong>
+            <small>{service.summary}</small>
           </Link>
         ))}
       </nav>

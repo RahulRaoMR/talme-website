@@ -4,7 +4,7 @@
   --jh-soft: #536b91;
   --jh-line: rgba(31, 68, 119, 0.14);
   width: min(1240px, calc(100% - 32px));
-  margin: 18px auto 42px;
+  margin: 12px auto 34px;
   color: var(--jh-ink);
 }
 
@@ -134,22 +134,43 @@
   display: grid;
   grid-template-columns: repeat(5, minmax(0, 1fr));
   gap: 1px;
-  margin-top: 18px;
+  margin-top: 10px;
   border: 1px solid var(--jh-line);
   background: var(--jh-line);
 }
 
 .japan-help-service-strip a {
-  min-height: 58px;
+  min-height: 112px;
   display: flex;
+  flex-direction: column;
+  justify-content: center;
   align-items: center;
-  padding: 12px 14px;
+  gap: 8px;
+  padding: 14px;
   background: #ffffff;
   color: #3d5a84;
   text-decoration: none;
+  text-align: left;
+}
+
+.japan-help-service-strip strong,
+.japan-help-service-strip small {
+  width: 100%;
+  display: block;
+}
+
+.japan-help-service-strip strong {
+  color: inherit;
   font-size: 0.84rem;
-  font-weight: 800;
-  line-height: 1.25;
+  font-weight: 900;
+  line-height: 1.18;
+}
+
+.japan-help-service-strip small {
+  color: #667da2;
+  font-size: 0.72rem;
+  font-weight: 700;
+  line-height: 1.35;
 }
 
 .japan-help-service-strip a:hover,
@@ -158,11 +179,16 @@
   color: #ffffff;
 }
 
+.japan-help-service-strip a:hover small,
+.japan-help-service-strip a.active small {
+  color: rgba(255, 255, 255, 0.82);
+}
+
 .japan-help-overview {
   display: grid;
   grid-template-columns: minmax(0, 1.35fr) minmax(300px, 0.65fr);
-  gap: 18px;
-  margin-top: 18px;
+  gap: 10px;
+  margin-top: 10px;
 }
 
 .japan-help-panel,
@@ -237,15 +263,15 @@
 .japan-help-content-grid {
   display: grid;
   grid-template-columns: repeat(2, minmax(0, 1fr));
-  gap: 18px;
-  margin-top: 18px;
+  gap: 10px;
+  margin-top: 10px;
 }
 
 .japan-help-detail-stack {
   display: grid;
   grid-template-columns: minmax(0, 1.25fr) minmax(280px, 0.75fr);
-  gap: 18px;
-  margin-top: 18px;
+  gap: 10px;
+  margin-top: 10px;
 }
 
 .japan-help-detail-card {
@@ -368,8 +394,8 @@
 .japan-help-gallery {
   display: grid;
   grid-template-columns: minmax(0, 0.95fr) minmax(0, 1.05fr);
-  margin-top: 18px;
-  min-height: 330px;
+  margin-top: 10px;
+  min-height: 260px;
   overflow: hidden;
 }
 
@@ -444,7 +470,7 @@
   }
 
   .japan-help-service-strip a {
-    min-height: 46px;
+    min-height: auto;
   }
 
   .japan-help-actions {
