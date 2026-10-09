@@ -10,8 +10,8 @@
 
 .japan-help-hero {
   display: grid;
-  grid-template-columns: minmax(0, 1.12fr) minmax(330px, 0.88fr);
-  min-height: 460px;
+  grid-template-columns: minmax(0, 1.2fr) minmax(320px, 0.8fr);
+  min-height: 0;
   border: 1px solid var(--jh-line);
   background: #ffffff;
   box-shadow: 0 28px 70px rgba(12, 33, 67, 0.12);
@@ -19,7 +19,7 @@
 }
 
 .japan-help-hero-copy {
-  padding: clamp(28px, 4.4vw, 56px);
+  padding: clamp(24px, 3.6vw, 44px);
   display: flex;
   flex-direction: column;
   justify-content: center;
@@ -39,13 +39,13 @@
   margin: 0;
   max-width: 720px;
   color: var(--jh-ink);
-  font-size: clamp(2.35rem, 4.2vw, 4.45rem);
+  font-size: clamp(2.25rem, 3.6vw, 3.95rem);
   line-height: 1;
   font-weight: 800;
 }
 
 .japan-help-hero-copy > p:not(.japan-help-kicker) {
-  margin: 24px 0 0;
+  margin: 18px 0 0;
   max-width: 660px;
   color: var(--jh-soft);
   font-size: clamp(1rem, 1.5vw, 1.22rem);
@@ -54,20 +54,20 @@
 
 .japan-help-hero-points {
   display: grid;
-  grid-template-columns: repeat(3, minmax(0, 1fr));
-  gap: 10px;
-  margin-top: 26px;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 8px;
+  margin-top: 18px;
   max-width: 760px;
 }
 
 .japan-help-hero-points span {
   position: relative;
-  min-height: 72px;
-  padding: 14px 14px 14px 34px;
+  min-height: 0;
+  padding: 11px 12px 11px 30px;
   border: 1px solid rgba(36, 79, 145, 0.14);
   background: linear-gradient(145deg, #ffffff, #f5f9ff);
   color: #254a7f;
-  font-size: 0.86rem;
+  font-size: 0.8rem;
   font-weight: 800;
   line-height: 1.36;
   box-shadow: 0 14px 28px rgba(12, 33, 67, 0.07);
@@ -77,7 +77,7 @@
   content: "";
   position: absolute;
   left: 15px;
-  top: 20px;
+  top: 17px;
   width: 7px;
   height: 7px;
   background: #244f91;
@@ -87,7 +87,7 @@
   display: flex;
   flex-wrap: wrap;
   gap: 12px;
-  margin-top: 26px;
+  margin-top: 18px;
 }
 
 .japan-help-primary,
@@ -114,7 +114,8 @@
 }
 
 .japan-help-hero-media {
-  min-height: 360px;
+  min-height: 0;
+  max-height: 430px;
   background: #dce6f3;
 }
 
@@ -187,8 +188,8 @@
 .japan-help-overview {
   display: grid;
   grid-template-columns: minmax(0, 1.35fr) minmax(300px, 0.65fr);
-  gap: 10px;
-  margin-top: 10px;
+  gap: 8px;
+  margin-top: 8px;
 }
 
 .japan-help-panel,
@@ -203,7 +204,7 @@
 .japan-help-panel,
 .japan-help-snapshot,
 .japan-help-content-grid article {
-  padding: clamp(22px, 3vw, 34px);
+  padding: clamp(18px, 2.4vw, 28px);
 }
 
 .japan-help-panel h2,
@@ -263,15 +264,57 @@
 .japan-help-content-grid {
   display: grid;
   grid-template-columns: repeat(2, minmax(0, 1fr));
-  gap: 10px;
+  gap: 8px;
+  margin-top: 8px;
+}
+
+.japan-help-info-wall {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 8px;
+  margin-top: 8px;
+}
+
+.japan-help-info-wall article {
+  border: 1px solid var(--jh-line);
+  background: #ffffff;
+  padding: clamp(18px, 2.2vw, 28px);
+  box-shadow: 0 18px 42px rgba(12, 33, 67, 0.08);
+}
+
+.japan-help-info-wall span {
+  display: block;
+  margin-bottom: 10px;
+  color: #1f56a4;
+  font-size: 0.72rem;
+  font-weight: 900;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+}
+
+.japan-help-info-wall h2 {
+  margin: 0 0 12px;
+  color: var(--jh-ink);
+  font-size: clamp(1.2rem, 1.9vw, 1.65rem);
+  line-height: 1.18;
+}
+
+.japan-help-info-wall p {
+  margin: 0;
+  color: var(--jh-soft);
+  font-size: 0.98rem;
+  line-height: 1.68;
+}
+
+.japan-help-info-wall p + p {
   margin-top: 10px;
 }
 
 .japan-help-detail-stack {
   display: grid;
   grid-template-columns: minmax(0, 1.25fr) minmax(280px, 0.75fr);
-  gap: 10px;
-  margin-top: 10px;
+  gap: 8px;
+  margin-top: 8px;
 }
 
 .japan-help-detail-card {
@@ -281,7 +324,7 @@
   background:
     linear-gradient(135deg, rgba(255, 255, 255, 0.96), rgba(247, 250, 255, 0.96)),
     #ffffff;
-  padding: clamp(22px, 3vw, 34px);
+  padding: clamp(18px, 2.4vw, 28px);
   box-shadow: 0 18px 42px rgba(12, 33, 67, 0.08);
 }
 
@@ -393,18 +436,48 @@
 
 .japan-help-gallery {
   display: grid;
-  grid-template-columns: minmax(0, 0.95fr) minmax(0, 1.05fr);
-  margin-top: 10px;
-  min-height: 260px;
+  grid-template-columns: minmax(0, 0.82fr) minmax(0, 1.18fr);
+  margin-top: 8px;
+  min-height: 0;
   overflow: hidden;
 }
 
 .japan-help-gallery div {
-  padding: clamp(24px, 4vw, 48px);
+  padding: clamp(18px, 3vw, 34px);
   display: flex;
   flex-direction: column;
   justify-content: center;
   background: #f7faff;
+}
+
+.japan-help-gallery ul {
+  list-style: none;
+  margin: 18px 0 0;
+  padding: 0;
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 8px;
+}
+
+.japan-help-gallery li {
+  position: relative;
+  padding: 10px 10px 10px 28px;
+  background: #ffffff;
+  border: 1px solid var(--jh-line);
+  color: #3d5a84;
+  font-size: 0.84rem;
+  font-weight: 800;
+  line-height: 1.35;
+}
+
+.japan-help-gallery li::before {
+  content: "";
+  position: absolute;
+  left: 12px;
+  top: 16px;
+  width: 7px;
+  height: 7px;
+  background: #244f91;
 }
 
 @media (max-width: 980px) {
@@ -415,6 +488,7 @@
   .japan-help-hero,
   .japan-help-overview,
   .japan-help-content-grid,
+  .japan-help-info-wall,
   .japan-help-detail-stack,
   .japan-help-gallery {
     grid-template-columns: 1fr;
@@ -429,11 +503,15 @@
   }
 
   .japan-help-hero-media {
-    min-height: 260px;
+    min-height: 220px;
     order: -1;
   }
 
   .japan-help-hero-points {
+    grid-template-columns: 1fr;
+  }
+
+  .japan-help-gallery ul {
     grid-template-columns: 1fr;
   }
 
@@ -462,7 +540,7 @@
   }
 
   .japan-help-hero-media {
-    min-height: 190px;
+    min-height: 180px;
   }
 
   .japan-help-service-strip {

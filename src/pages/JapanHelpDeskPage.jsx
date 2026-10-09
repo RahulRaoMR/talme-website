@@ -20,7 +20,7 @@ function JapanHelpDeskPage() {
           <h1>{activeService.title}</h1>
           <p>{activeService.summary}</p>
           <div className="japan-help-hero-points">
-            {activeService.deliverables.slice(0, 3).map((item) => (
+            {[...activeService.deliverables, ...activeService.capabilities].slice(0, 6).map((item) => (
               <span key={item}>{item}</span>
             ))}
           </div>
@@ -93,6 +93,35 @@ function JapanHelpDeskPage() {
         </article>
       </section>
 
+      <section className="japan-help-info-wall">
+        <article>
+          <span>Execution Model</span>
+          <h2>What the engagement covers</h2>
+          <p>{activeService.approach[0]}</p>
+          <p>{activeService.approach[1]}</p>
+        </article>
+        <article>
+          <span>Operating Control</span>
+          <h2>How progress is managed</h2>
+          <p>{activeService.approach[2]}</p>
+          <p>
+            TALME keeps communication structured through clear ownership,
+            practical timelines, review points, and follow-up actions for every
+            Japan-linked requirement.
+          </p>
+        </article>
+        <article>
+          <span>Business Fit</span>
+          <h2>Where this creates value</h2>
+          <p>{activeService.idealFor}</p>
+          <p>
+            The service is useful when teams need local coordination, stronger
+            documentation, dependable communication, and senior visibility
+            without building every process from scratch.
+          </p>
+        </article>
+      </section>
+
       <section className="japan-help-detail-stack">
         <article className="japan-help-detail-card japan-help-detail-card-wide">
           <span>How TALME Supports</span>
@@ -127,6 +156,11 @@ function JapanHelpDeskPage() {
             TALME combines business advisory, people operations, technical staffing,
             language support, and visit coordination into one dependable Japan Help Desk.
           </p>
+          <ul>
+            {[...activeService.outcomes, ...activeService.deliverables].slice(0, 5).map((item) => (
+              <li key={item}>{item}</li>
+            ))}
+          </ul>
         </div>
       </section>
     </main>
