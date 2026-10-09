@@ -265,6 +265,18 @@ function JapanHelpDeskPage() {
         </div>
       </section>
 
+      <section className="japan-help-topic-info">
+        <div className="japan-help-section-heading">
+          <span>Topic Information</span>
+          <h2>More about {activeService.title}</h2>
+        </div>
+        <div className="japan-help-topic-copy">
+          {activeService.additionalInfo.map((paragraph) => (
+            <p key={paragraph}>{paragraph}</p>
+          ))}
+        </div>
+      </section>
+
       <section className="japan-help-detail-stack">
         <article className="japan-help-detail-card japan-help-detail-card-wide">
           <span>How TALME Supports</span>

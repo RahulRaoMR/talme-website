@@ -21,7 +21,12 @@ export const japanHelpDeskServices = [
       "Local partner and service-provider coordination plan",
       "Launch readiness tracker for senior review"
     ],
-    idealFor: "Companies validating Japan demand, opening a Japan-linked delivery model, or building a structured market presence without losing control of execution detail."
+    idealFor: "Companies validating Japan demand, opening a Japan-linked delivery model, or building a structured market presence without losing control of execution detail.",
+    additionalInfo: [
+      "Market entry into Japan requires more than a sales intention or registration checklist. Companies often need to understand customer expectations, local communication practices, documentation discipline, commercial readiness, partner dependency, hiring requirements, and the pace at which local decisions are made. TALME helps convert these early questions into a structured operating plan so leadership can see what must happen before launch and what can be phased after the first stage of entry.",
+      "The support is useful when a company wants to test Japan opportunities while keeping investment controlled. TALME helps identify the right sequence for market validation, local representation, business meetings, office or operating support, vendor conversations, and people planning. This reduces the risk of entering the market with incomplete information or depending on disconnected service providers.",
+      "For companies expanding from India or Singapore into Japan-linked work, TALME provides coordination across business, HR, compliance, and local execution needs. The focus is on building a practical base for operations: clear responsibilities, accessible records, documented next steps, and a launch plan that management can review with confidence."
+    ]
   },
   {
     slug: "engineering-technical-staffing",
@@ -45,7 +50,12 @@ export const japanHelpDeskServices = [
       "Interview coordination and feedback tracking",
       "Deployment and onboarding support plan"
     ],
-    idealFor: "Engineering firms, manufacturers, technology teams, and project owners that need dependable technical talent for niche or time-sensitive requirements."
+    idealFor: "Engineering firms, manufacturers, technology teams, and project owners that need dependable technical talent for niche or time-sensitive requirements.",
+    additionalInfo: [
+      "Engineering and technical staffing requires careful understanding of the role, not only a job title. TALME reviews the tools, domain experience, project environment, communication expectations, deployment location, and reporting structure before candidate mapping begins. This helps reduce mismatches between client expectations and candidate capability.",
+      "The service is valuable for roles connected to manufacturing, embedded systems, mechanical design, automotive, aerospace, semiconductor, software engineering, quality, production support, and technical project delivery. TALME helps clients define must-have skills, preferred exposure, interview focus areas, and availability requirements so the shortlist is more relevant from the beginning.",
+      "For Japan-facing teams, reliability and communication discipline are as important as technical skill. TALME supports screening, coordination, document readiness, joining follow-up, and deployment tracking so project teams can scale without losing delivery continuity."
+    ]
   },
   {
     slug: "recruitment-executive-search",
@@ -69,7 +79,12 @@ export const japanHelpDeskServices = [
       "Interview schedule, feedback tracker, and decision notes",
       "Offer-stage and joining coordination support"
     ],
-    idealFor: "Companies hiring senior leaders, country managers, technical heads, functional specialists, or confidential replacement roles."
+    idealFor: "Companies hiring senior leaders, country managers, technical heads, functional specialists, or confidential replacement roles.",
+    additionalInfo: [
+      "Recruitment and executive search for Japan-linked roles needs a disciplined search process because the right candidate must match business responsibility, stakeholder maturity, compensation expectations, communication ability, and long-term fit. TALME helps convert broad hiring needs into a precise search brief that can guide sourcing and evaluation.",
+      "For leadership hiring, TALME focuses on quality of alignment rather than only resume volume. Candidate conversations are shaped around role purpose, market exposure, leadership style, reporting expectations, and practical joining conditions. This gives decision makers a clearer view of whether the candidate can succeed in the actual operating environment.",
+      "The service also supports interview governance, feedback collection, offer-stage coordination, and candidate engagement. This helps avoid delays between interviews, unclear decision ownership, and offer-stage drop-offs that often affect senior or specialist hiring."
+    ]
   },
   {
     slug: "employer-of-record-eor",
@@ -93,7 +108,12 @@ export const japanHelpDeskServices = [
       "Monthly payroll and HR administration tracker",
       "Compliance support calendar and escalation process"
     ],
-    idealFor: "Businesses testing the Japan market, employing small local teams, or engaging project talent before setting up a full entity."
+    idealFor: "Businesses testing the Japan market, employing small local teams, or engaging project talent before setting up a full entity.",
+    additionalInfo: [
+      "Employer of Record support is useful when a company needs to engage talent in a compliant and organized way without immediately building a full local employment infrastructure. TALME helps clarify whether the EOR model fits the business need, assignment duration, reporting structure, compensation approach, and expected HR responsibilities.",
+      "The service helps companies move faster while still keeping employment administration controlled. TALME coordinates onboarding documents, HR records, payroll inputs, employee communication, leave tracking, and recurring administration so the business team can focus on performance and delivery.",
+      "EOR is particularly helpful for market testing, pilot teams, project-based assignments, early-stage Japan expansion, and situations where local talent is needed before entity setup is complete. TALME keeps the process structured so leadership can track obligations, costs, and employee administration clearly."
+    ]
   },
   {
     slug: "payroll-hr-compliance",
@@ -117,7 +137,12 @@ export const japanHelpDeskServices = [
       "Compliance reminder matrix",
       "Monthly exception and closure report"
     ],
-    idealFor: "Distributed teams, Japan-linked operations, and growing businesses that need payroll discipline without building a large internal HR operations layer."
+    idealFor: "Distributed teams, Japan-linked operations, and growing businesses that need payroll discipline without building a large internal HR operations layer.",
+    additionalInfo: [
+      "Payroll and HR compliance support gives companies a dependable rhythm for people operations. TALME helps organize monthly payroll inputs, employee changes, attendance data, reimbursements, approvals, employee records, and compliance reminders so payroll is not handled in a last-minute or informal way.",
+      "The service is especially useful for companies with distributed employees, Japan-linked teams, or growing operations where HR administration is becoming more complex. TALME helps maintain cleaner documentation, better visibility on employee status, and clearer escalation paths for payroll or HR queries.",
+      "By keeping calendars, records, approvals, and exception tracking organized, TALME helps reduce compliance gaps and improves the employee experience. Management receives a clearer view of what has been completed, what is pending, and where decisions are required."
+    ]
   },
   {
     slug: "business-matchmaking",
@@ -141,7 +166,12 @@ export const japanHelpDeskServices = [
       "Meeting agenda and briefing material",
       "Follow-up tracker with next actions"
     ],
-    idealFor: "Companies seeking Japan customers, channel partners, suppliers, distributors, technology collaborators, or strategic business introductions."
+    idealFor: "Companies seeking Japan customers, channel partners, suppliers, distributors, technology collaborators, or strategic business introductions.",
+    additionalInfo: [
+      "Business matchmaking is most effective when introductions are based on a clear commercial objective. TALME helps define the target profile, industry fit, decision-maker type, technical need, partnership model, and desired outcome before outreach begins.",
+      "Instead of creating generic networking lists, TALME focuses on relevant business connections that can lead to meaningful conversations. This may include potential customers, channel partners, distributors, suppliers, technology collaborators, service partners, or local business networks depending on the client's goal.",
+      "TALME also supports preparation before meetings and follow-up after introductions. This includes briefing notes, meeting agendas, discussion summaries, action tracking, and next-step planning so the business pipeline remains organized."
+    ]
   },
   {
     slug: "interpreter-translation",
@@ -165,7 +195,12 @@ export const japanHelpDeskServices = [
       "Document translation and summary support",
       "Post-meeting action and clarification notes"
     ],
-    idealFor: "Business reviews, supplier discussions, technical meetings, audits, executive visits, interviews, negotiations, and training sessions."
+    idealFor: "Business reviews, supplier discussions, technical meetings, audits, executive visits, interviews, negotiations, and training sessions.",
+    additionalInfo: [
+      "Interpreter and translation support is important when the cost of misunderstanding is high. TALME helps teams prepare for Japanese-English communication by understanding the business context, meeting agenda, technical vocabulary, participant roles, and expected decisions before the session.",
+      "The service supports business meetings, technical discussions, supplier reviews, audits, training sessions, executive visits, interviews, and negotiation settings. By preparing terminology and context in advance, TALME helps preserve not just language accuracy but also tone, intent, and decision clarity.",
+      "For documents, TALME supports translation and summary work that keeps the business purpose in view. The goal is to help both sides understand the message clearly, reduce repeated clarification, and improve confidence during cross-border communication."
+    ]
   },
   {
     slug: "delegation-factory-visit-support",
@@ -189,7 +224,12 @@ export const japanHelpDeskServices = [
       "On-ground coordination and interpretation support",
       "Post-visit action tracker and summary"
     ],
-    idealFor: "Executive delegations, supplier audits, factory visits, partner tours, customer meetings, and Japan-India business development programs."
+    idealFor: "Executive delegations, supplier audits, factory visits, partner tours, customer meetings, and Japan-India business development programs.",
+    additionalInfo: [
+      "Delegation and factory visit support helps visiting teams use their time productively. TALME helps structure the visit around the business purpose, participant seniority, host availability, technical agenda, travel route, interpretation needs, and the expected outcome from each meeting.",
+      "The service covers practical planning such as visit agenda design, host coordination, briefing notes, logistics, local movement, interpretation, meeting preparation, and day-wise coordination. This helps executives and technical teams focus on business conversations instead of operational details.",
+      "After the visit, TALME supports follow-up summaries and action tracking. This is important because many visits create useful discussions but lose momentum when responsibilities, notes, vendor responses, and next steps are not documented clearly."
+    ]
   },
   {
     slug: "vendor-supply-chain-identification",
@@ -213,7 +253,12 @@ export const japanHelpDeskServices = [
       "Initial capability and fit assessment",
       "Meeting, RFQ, and comparison tracker"
     ],
-    idealFor: "Procurement teams, manufacturers, engineering companies, and business units looking for Japan-linked sourcing or supplier alternatives."
+    idealFor: "Procurement teams, manufacturers, engineering companies, and business units looking for Japan-linked sourcing or supplier alternatives.",
+    additionalInfo: [
+      "Vendor and supply chain identification starts with understanding the exact sourcing requirement. TALME helps clarify specifications, quality expectations, location preferences, certifications, production capability, commercial range, delivery timelines, and any technical constraints before supplier mapping begins.",
+      "The service helps procurement and business teams move from broad market uncertainty to a more organized supplier view. TALME prepares longlists, shortlists, initial fit notes, qualification inputs, and meeting coordination so teams can compare options more confidently.",
+      "For Japan-linked sourcing, disciplined communication and documentation are essential. TALME supports RFQ coordination, clarification rounds, vendor conversations, and comparison tracking so the client can make better sourcing decisions with less confusion."
+    ]
   },
   {
     slug: "visa-travel-assistance",
@@ -237,7 +282,12 @@ export const japanHelpDeskServices = [
       "Hotel, local movement, and coordination notes",
       "Traveller briefing and contact sheet"
     ],
-    idealFor: "Executives, technical teams, HR leaders, supplier-audit teams, and business delegations travelling between India, Japan, and nearby markets."
+    idealFor: "Executives, technical teams, HR leaders, supplier-audit teams, and business delegations travelling between India, Japan, and nearby markets.",
+    additionalInfo: [
+      "Visa and travel assistance supports business teams that need organized travel readiness for Japan visits. TALME helps coordinate required documents, business purpose notes, meeting schedules, itinerary details, hotel planning, local movement, and briefing information before the trip begins.",
+      "The service is useful for executives, technical teams, HR leaders, supplier-audit groups, candidates, and delegations that cannot afford confusion during travel. TALME helps align meeting timings, location plans, interpretation needs, emergency contacts, and local coordination requirements.",
+      "A well-managed visit allows teams to focus on business outcomes rather than travel friction. TALME supports preparation and coordination so meetings are more punctual, documents are easier to manage, and visitors understand the schedule, expectations, and practical details of the trip."
+    ]
   }
 ];
 

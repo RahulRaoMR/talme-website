@@ -270,7 +270,8 @@
 
 .japan-help-expanded-scope,
 .japan-help-process,
-.japan-help-text-section {
+.japan-help-text-section,
+.japan-help-topic-info {
   margin-top: 8px;
   border: 1px solid var(--jh-line);
   background: #ffffff;
@@ -375,6 +376,19 @@
 
 .japan-help-text-columns p + p {
   margin-top: 14px;
+}
+
+.japan-help-topic-copy {
+  columns: 2 360px;
+  column-gap: 34px;
+}
+
+.japan-help-topic-copy p {
+  break-inside: avoid;
+  margin: 0 0 16px;
+  color: var(--jh-soft);
+  font-size: 1.03rem;
+  line-height: 1.82;
 }
 
 .japan-help-info-wall {
