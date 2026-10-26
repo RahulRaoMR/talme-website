@@ -28,7 +28,7 @@ function Footer() {
       </div>
 
       <div className="footer-social">
-        <a href="https://wa.me/918048795189" target="_blank" rel="noreferrer">
+        <a href="https://wa.me/18005695959" target="_blank" rel="noreferrer">
           <FaWhatsapp />
         </a>
 
