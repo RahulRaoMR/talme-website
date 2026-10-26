@@ -1,0 +1,5 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 220" role="img" aria-label="Yokogawa">
+  <rect width="320" height="220" fill="none"/>
+  <path d="M160 18 248 106c-39 16-72 49-88 88-16-39-49-72-88-88l88-88Z" fill="#ffec00"/>
+  <text x="160" y="190" text-anchor="middle" fill="#050505" font-family="Arial Black, Arial, Helvetica, sans-serif" font-size="40" letter-spacing="-3">YOKOGAWA</text>
+</svg>

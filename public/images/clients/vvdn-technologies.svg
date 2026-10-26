@@ -1,0 +1,24 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 640 230" role="img" aria-label="VVDN Technologies">
+  <defs>
+    <linearGradient id="vvdnA" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#65c8ec"/>
+      <stop offset="0.55" stop-color="#34b8de"/>
+      <stop offset="1" stop-color="#0c76b4"/>
+    </linearGradient>
+    <linearGradient id="vvdnB" x1="0" y1="1" x2="1" y2="0">
+      <stop offset="0" stop-color="#0b6fa9"/>
+      <stop offset="0.45" stop-color="#60c6ed"/>
+      <stop offset="1" stop-color="#1684be"/>
+    </linearGradient>
+  </defs>
+  <rect width="640" height="230" fill="none"/>
+  <g transform="translate(38 38)">
+    <path d="M23 22 86 0c28 38 70 48 114 39l29 55c-71 29-145-3-206-72Z" fill="url(#vvdnA)"/>
+    <path d="M0 120c29-28 45-60 39-99 48 49 102 72 164 54l27 53c-74 26-154 3-230-8Z" fill="url(#vvdnB)" transform="rotate(-24 115 76)" opacity=".92"/>
+    <path d="M20 143c37-18 62-45 75-83 44 11 80 31 108 67l-75 43c-22-25-55-37-108-27Z" fill="url(#vvdnA)" opacity=".9"/>
+  </g>
+  <g fill="#202124" font-family="Arial, Helvetica, sans-serif" font-weight="800">
+    <text x="260" y="112" font-size="82" letter-spacing="2">VVDN</text>
+  </g>
+  <text x="260" y="164" fill="#0076ae" font-family="Arial, Helvetica, sans-serif" font-size="38" letter-spacing="12">TECHNOLOGIES</text>
+</svg>

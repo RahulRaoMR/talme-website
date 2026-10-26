@@ -2,3 +2,4 @@ User-agent: *
 Allow: /
 
 Sitemap: https://talme.in/sitemap.xml
+Host: https://talme.in

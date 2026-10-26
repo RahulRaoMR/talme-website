@@ -1,0 +1,6 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 420 150" role="img" aria-label="Edwards">
+  <rect width="420" height="150" fill="none"/>
+  <path d="M29 124C24 83 28 37 48 17c12-12 23 3 30 42" fill="none" stroke="#cb1f33" stroke-width="8" stroke-linecap="round"/>
+  <path d="M61 58c12-15 26-25 42-29-12 14-22 29-30 47l-12-18Z" fill="#1f1f1f"/>
+  <text x="68" y="104" fill="#cb1f33" font-family="Arial Black, Arial, Helvetica, sans-serif" font-size="60" font-style="italic" letter-spacing="-5">EDWARDS</text>
+</svg>

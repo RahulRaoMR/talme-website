@@ -26,6 +26,7 @@ const remoteStorageToken =
 const storageKey = process.env.SITE_DATA_STORAGE_KEY || "talme:website-data";
 const databaseStorageUrl =
   process.env.SITE_DATABASE_URL ||
+  process.env.NEWS_DATABASE_URL ||
   process.env.DATABASE_URL ||
   process.env.POSTGRES_URL ||
   process.env.POSTGRES_PRISMA_URL ||
@@ -64,6 +65,7 @@ const emptySiteData = {
   contacts: [],
   careers: [],
   chatMessages: [],
+  leadership: [],
   updatedAt: "",
 };
 
@@ -170,7 +172,7 @@ function getStorageSetupMessage() {
 
 function setCorsHeaders(res) {
   res.setHeader("Access-Control-Allow-Origin", "*");
-  res.setHeader("Access-Control-Allow-Methods", "GET,POST,OPTIONS");
+  res.setHeader("Access-Control-Allow-Methods", "GET,POST,PUT,DELETE,OPTIONS");
   res.setHeader("Access-Control-Allow-Headers", "Content-Type,x-admin-key");
   res.setHeader("Access-Control-Expose-Headers", "X-Website-Storage-Mode");
   res.setHeader("X-Website-Storage-Mode", getStorageMode());
@@ -196,16 +198,19 @@ function getHeader(req, name) {
   return headers[name] || headers[name.toLowerCase()] || "";
 }
 
+function getConfiguredAdminKeys() {
+  return [
+    process.env.LEADERSHIP_ADMIN_KEY,
+    process.env.SITE_ADMIN_KEY,
+    process.env.NEWS_ADMIN_KEY,
+  ].filter(Boolean);
+}
+
 function requireAdmin(req, res) {
-  const configuredKey = process.env.SITE_ADMIN_KEY || process.env.NEWS_ADMIN_KEY;
+  const configuredKeys = getConfiguredAdminKeys();
   const requestKey = getHeader(req, "x-admin-key");
 
-  if (!configuredKey) {
-    sendJson(res, 500, { error: "Website admin key is not configured." });
-    return false;
-  }
-
-  if (requestKey !== configuredKey) {
+  if (!configuredKeys.includes(requestKey)) {
     sendJson(res, 401, { error: "Invalid admin key." });
     return false;
   }
@@ -224,6 +229,7 @@ function normalizeSiteData(value) {
     contacts: Array.isArray(value?.contacts) ? value.contacts : [],
     careers: Array.isArray(value?.careers) ? value.careers : [],
     chatMessages: Array.isArray(value?.chatMessages) ? value.chatMessages : [],
+    leadership: Array.isArray(value?.leadership) ? value.leadership : [],
   };
 }
 
@@ -418,12 +424,12 @@ async function readRequestBody(req, maxSize = MAX_BODY_SIZE) {
   return Buffer.concat(chunks);
 }
 
-async function readJsonPayload(req) {
+async function readJsonPayload(req, maxSize = 1024 * 1024) {
   if (req.body && !Buffer.isBuffer(req.body) && typeof req.body === "object") {
     return req.body;
   }
 
-  const bodyBuffer = await readRequestBody(req, 1024 * 1024);
+  const bodyBuffer = await readRequestBody(req, maxSize);
   const bodyText = bodyBuffer.toString("utf8");
   return bodyText ? JSON.parse(bodyText) : {};
 }
@@ -533,25 +539,48 @@ async function sendContactEmail({ name, companyName, email, message }) {
   return true;
 }
 
+function getEmailDeliveryErrorMessage(error) {
+  const message = error instanceof Error ? error.message : String(error || "");
+  const code = error && typeof error === "object" ? error.code : "";
+
+  if (code === "ETIMEDOUT" || message.includes("ETIMEDOUT")) {
+    return "Could not connect to the SMTP mail server. Check SMTP_HOST, SMTP_PORT, SMTP_SECURE, SMTP_USER, and SMTP_PASS on the live hosting environment.";
+  }
+
+  if (code === "EAUTH" || message.toLowerCase().includes("auth")) {
+    return "SMTP login failed. Check SMTP_USER and SMTP_PASS on the live hosting environment.";
+  }
+
+  if (code === "ENOTFOUND" || message.includes("ENOTFOUND")) {
+    return "SMTP_HOST could not be found. Set a valid mail server host on the live hosting environment.";
+  }
+
+  return message || "Unable to send career email.";
+}
+
 async function sendCareerEmail({ fields, file }) {
-  if (!process.env.SMTP_HOST || !process.env.CAREERS_EMAIL_TO) {
+  if (!process.env.SMTP_HOST) {
     return false;
   }
 
+  const recipient = process.env.CAREERS_EMAIL_TO || "hr@talme.in";
   const mailFrom =
     process.env.CAREERS_EMAIL_FROM || process.env.SMTP_USER || "no-reply@talme.in";
 
   await transporter.sendMail({
     from: mailFrom,
-    to: process.env.CAREERS_EMAIL_TO,
+    to: recipient,
     replyTo: fields.email,
     subject: `Career application: ${fields.fullName} - ${fields.role}`,
     text: [
+      "New career application from TALME website.",
+      "",
       `Full name: ${fields.fullName}`,
       `Email: ${fields.email}`,
-      `Phone: ${fields.phone}`,
-      `Role: ${fields.role}`,
-      `Message: ${fields.message || "N/A"}`,
+      `Phone number: ${fields.phone}`,
+      `Role applying for: ${fields.role}`,
+      `Short note: ${fields.message || "N/A"}`,
+      `CV attachment: ${file.filename}`,
     ].join("\n"),
     attachments: [
       {
@@ -711,24 +740,27 @@ async function handleCareers(req, res) {
   try {
     emailed = await sendCareerEmail({ fields, file });
   } catch (error) {
-    emailError = error instanceof Error ? error.message : "Unable to send career email.";
+    emailError = getEmailDeliveryErrorMessage(error);
   }
 
-  if (!stored && !emailed) {
+  if (!emailed) {
     sendJson(res, 503, {
-      error: "Careers backend is not configured for storage or email delivery.",
-      details: storageError || emailError,
+      error: "Application could not be emailed to HR.",
+      details:
+        emailError ||
+        "SMTP email delivery is not configured on this server. Add SMTP_HOST, SMTP_USER, SMTP_PASS, and CAREERS_EMAIL_TO, then redeploy.",
+      id: record.id,
+      stored,
+      storageError,
+      emailed,
     });
     return;
   }
 
   sendJson(res, 200, {
-    message:
-      stored && emailed
-        ? "Application stored and sent successfully."
-        : emailed
-          ? "Application sent successfully."
-          : "Application stored successfully.",
+    message: stored
+      ? "Application sent to HR and stored successfully."
+      : "Application sent to HR successfully.",
     id: record.id,
     emailed,
     stored,
@@ -787,6 +819,130 @@ async function handleChat(req, res) {
   });
 }
 
+function getLeaderId(req) {
+  const url = new URL(req.url || "/api/leadership", "http://localhost");
+  const queryId = url.searchParams.get("id");
+
+  if (queryId) {
+    return queryId;
+  }
+
+  const [, itemId] = url.pathname.match(/^\/api\/leadership\/([^/]+)$/) || [];
+  return itemId ? decodeURIComponent(itemId) : "";
+}
+
+function normalizeLeaderPayload(payload) {
+  return {
+    id: String(payload.id || createRecordId("leader")),
+    name: String(payload.name || "").trim(),
+    role: String(payload.role || "").trim(),
+    linkedinUrl: String(payload.linkedinUrl || "").trim(),
+    imageUrl: String(payload.imageUrl || "").trim(),
+  };
+}
+
+function validateLeader(leader, res) {
+  if (!leader.name || !leader.role || !leader.imageUrl) {
+    sendJson(res, 400, { error: "Name, role, and photo are required." });
+    return false;
+  }
+
+  return true;
+}
+
+async function handleLeadership(req, res) {
+  if (req.method === "GET") {
+    if (getHeader(req, "x-admin-key") && !requireAdmin(req, res)) {
+      return;
+    }
+
+    const data = await readSiteData();
+    sendJson(res, 200, data.leadership);
+    return;
+  }
+
+  if (!requireAdmin(req, res)) {
+    return;
+  }
+
+  if (req.method === "POST") {
+    const payload = await readJsonPayload(req, MAX_BODY_SIZE);
+    const nextLeader = normalizeLeaderPayload(payload);
+
+    if (!validateLeader(nextLeader, res)) {
+      return;
+    }
+
+    const data = await readSiteData();
+    const existingLeaders = data.leadership.filter(
+      (leader) => String(leader.id) !== String(nextLeader.id)
+    );
+    await writeSiteData({
+      ...data,
+      leadership: [...existingLeaders, nextLeader],
+    });
+
+    sendJson(res, 201, nextLeader);
+    return;
+  }
+
+  if (req.method === "PUT") {
+    const leaderId = getLeaderId(req);
+
+    if (!leaderId) {
+      sendJson(res, 400, { error: "Leader id is required." });
+      return;
+    }
+
+    const payload = await readJsonPayload(req, MAX_BODY_SIZE);
+    const nextLeader = normalizeLeaderPayload({ ...payload, id: leaderId });
+
+    if (!validateLeader(nextLeader, res)) {
+      return;
+    }
+
+    const data = await readSiteData();
+    const leaderIndex = data.leadership.findIndex(
+      (leader) => String(leader.id) === String(leaderId)
+    );
+
+    if (leaderIndex === -1) {
+      sendJson(res, 404, { error: "Leader not found." });
+      return;
+    }
+
+    const nextLeadership = [...data.leadership];
+    nextLeadership[leaderIndex] = nextLeader;
+    await writeSiteData({ ...data, leadership: nextLeadership });
+    sendJson(res, 200, nextLeader);
+    return;
+  }
+
+  if (req.method === "DELETE") {
+    const leaderId = getLeaderId(req);
+
+    if (!leaderId) {
+      sendJson(res, 400, { error: "Leader id is required." });
+      return;
+    }
+
+    const data = await readSiteData();
+    const nextLeadership = data.leadership.filter(
+      (leader) => String(leader.id) !== String(leaderId)
+    );
+
+    if (nextLeadership.length === data.leadership.length) {
+      sendJson(res, 404, { error: "Leader not found." });
+      return;
+    }
+
+    await writeSiteData({ ...data, leadership: nextLeadership });
+    sendJson(res, 200, { message: "Leader deleted successfully." });
+    return;
+  }
+
+  sendJson(res, 405, { error: "Method not allowed." });
+}
 async function handleData(req, res) {
   if (req.method !== "GET") {
     sendJson(res, 405, { error: "Method not allowed." });
@@ -830,6 +986,11 @@ export default async function websiteBackend(req, res) {
 
     if (route === "chat") {
       await handleChat(req, res);
+      return;
+    }
+
+    if (route === "leadership") {
+      await handleLeadership(req, res);
       return;
     }
 

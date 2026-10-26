@@ -1,21 +1,34 @@
-import { useMemo, useState } from "react";
-import { Link, useNavigate } from "react-router-dom";
+import { useEffect, useMemo, useRef, useState } from "react";
+import { FiBriefcase, FiGlobe, FiLock, FiMenu, FiSearch, FiUsers } from "react-icons/fi";
+import { Link, useLocation, useNavigate } from "react-router-dom";
 import { japanHelpDeskServices } from "../data/japanHelpDeskData";
 import "./Navbar.css";
 
 function Navbar() {
   const navigate = useNavigate();
+  const location = useLocation();
   const [isSearchOpen, setIsSearchOpen] = useState(false);
   const [searchQuery, setSearchQuery] = useState("");
   const [isGlobalOpen, setIsGlobalOpen] = useState(false);
   const [isServicesOpen, setIsServicesOpen] = useState(false);
   const [isJapanHelpOpen, setIsJapanHelpOpen] = useState(false);
+  const [isMobileServicesOpen, setIsMobileServicesOpen] = useState(false);
+  const desktopDropdownCloseTimer = useRef(null);
+
+  useEffect(() => {
+    setIsSearchOpen(false);
+    setSearchQuery("");
+    setIsGlobalOpen(false);
+    setIsServicesOpen(false);
+    setIsJapanHelpOpen(false);
+    setIsMobileServicesOpen(false);
+  }, [location.pathname]);
 
   const searchItems = [
     { label: "Home", to: "/" },
     { label: "News & Events", to: "/news-events" },
     { label: "About Us", to: "/about" },
-    { label: "Leadership", to: "/leadership" },
+    { label: "Family", to: "/family" },
     { label: "Insights", to: "/insights" },
     { label: "Our Clients", to: "/our-clients" },
     { label: "Careers", to: "/careers" },
@@ -52,8 +65,14 @@ function Navbar() {
     { label: "Computer Technology", to: "/services/computer-technology" },
     { label: "Business Solutions", to: "/services/business-solutions" },
     { label: "Product Manufacturing", to: "/services/product-manufacturing" },
+    { label: "Automotive", to: "/services/automotive" },
+    { label: "Aerospace", to: "/services/aerospace" },
+    { label: "Semiconductor", to: "/services/semiconductor" },
+    { label: "CEIT", to: "/services/ceit" },
+    { label: "PLM", to: "/services/plm" },
     { label: "India Contact", to: "/contact/india" },
     { label: "Singapore Contact", to: "/contact/singapore" },
+    { label: "Japan Contact", to: "/contact/japan" },
   ];
 
   const globalLocations = [
@@ -69,27 +88,167 @@ function Navbar() {
       flagIcon: "https://flagcdn.com/w40/sg.png",
       to: "/contact/singapore",
     },
+    {
+      label: "Japan",
+      flag: "JP",
+      flagIcon: "https://flagcdn.com/w40/jp.png",
+      to: "/contact/japan",
+    },
   ];
+
+  const translationLanguages = [
+    { label: "English", code: "en" },
+    { label: "Japanese", code: "ja" },
+    { label: "Hindi", code: "hi" },
+    { label: "Kannada", code: "kn" },
+    { label: "Chinese", code: "zh-CN" },
+  ];
+
+  const getStoredLanguage = () => {
+    if (typeof window === "undefined") return "en";
+    return window.localStorage.getItem("talme-language") || "en";
+  };
+
+  const [selectedLanguage, setSelectedLanguage] = useState(getStoredLanguage);
+
+  useEffect(() => {
+    if (typeof window === "undefined") return undefined;
+
+    window.googleTranslateElementInit = () => {
+      if (!window.google?.translate || document.querySelector("#google_translate_element select")) return;
+      new window.google.translate.TranslateElement(
+        {
+          pageLanguage: "en",
+          includedLanguages: "en,ja,hi,kn,zh-CN",
+          autoDisplay: false,
+        },
+        "google_translate_element"
+      );
+    };
+
+    if (!document.querySelector('script[src*="translate.google.com/translate_a/element.js"]')) {
+      const script = document.createElement("script");
+      script.src = "https://translate.google.com/translate_a/element.js?cb=googleTranslateElementInit";
+      script.async = true;
+      document.body.appendChild(script);
+    } else if (window.google?.translate) {
+      window.googleTranslateElementInit();
+    }
+
+    return undefined;
+  }, []);
+
+  const setTranslateCookie = (languageCode) => {
+    const value = languageCode === "en" ? "" : `/en/${languageCode}`;
+    const expires = languageCode === "en" ? "Thu, 01 Jan 1970 00:00:00 GMT" : "Fri, 31 Dec 9999 23:59:59 GMT";
+    const hostParts = window.location.hostname.split(".");
+    const domains = [window.location.hostname];
+
+    if (hostParts.length > 1) {
+      domains.push(`.${hostParts.slice(-2).join(".")}`);
+    }
+
+    domains.forEach((domain) => {
+      document.cookie = `googtrans=${value}; expires=${expires}; path=/; domain=${domain}`;
+    });
+    document.cookie = `googtrans=${value}; expires=${expires}; path=/`;
+  };
+
+  const handleLanguageChange = (event) => {
+    const languageCode = event.target.value;
+    setSelectedLanguage(languageCode);
+    window.localStorage.setItem("talme-language", languageCode);
+    setTranslateCookie(languageCode);
+    window.location.reload();
+  };
+
+  const closeSearch = () => {
+    setIsSearchOpen(false);
+    setSearchQuery("");
+  };
+
+  const closeAllMenus = () => {
+    closeSearch();
+    setIsGlobalOpen(false);
+    setIsServicesOpen(false);
+    setIsJapanHelpOpen(false);
+    setIsMobileServicesOpen(false);
+  };
+
+  const handleMobileMenuToggle = () => {
+    closeSearch();
+    setIsGlobalOpen(false);
+    setIsServicesOpen(false);
+    setIsJapanHelpOpen(false);
+    setIsMobileServicesOpen((prev) => !prev);
+  };
 
   const handleSearchToggle = (event) => {
     event.preventDefault();
     setIsSearchOpen((prev) => {
-      if (prev) setSearchQuery("");
-      return !prev;
+      const nextIsOpen = !prev;
+      if (nextIsOpen) {
+        setIsGlobalOpen(false);
+        setIsServicesOpen(false);
+        setIsJapanHelpOpen(false);
+      } else {
+        setSearchQuery("");
+      }
+      return nextIsOpen;
     });
   };
 
   const handleGlobalToggle = (event) => {
     event.preventDefault();
-    setIsGlobalOpen((prev) => !prev);
+    setIsGlobalOpen((prev) => {
+      const nextIsOpen = !prev;
+      if (nextIsOpen) {
+        closeSearch();
+        setIsServicesOpen(false);
+        setIsJapanHelpOpen(false);
+      }
+      return nextIsOpen;
+    });
   };
 
   const handleServicesToggle = () => {
-    setIsServicesOpen((prev) => !prev);
+    setIsServicesOpen((prev) => {
+      const nextIsOpen = !prev;
+      if (nextIsOpen) {
+        closeSearch();
+        setIsGlobalOpen(false);
+        setIsJapanHelpOpen(false);
+      }
+      return nextIsOpen;
+    });
   };
 
   const handleJapanHelpToggle = () => {
-    setIsJapanHelpOpen((prev) => !prev);
+    setIsJapanHelpOpen((prev) => {
+      const nextIsOpen = !prev;
+      if (nextIsOpen) {
+        closeSearch();
+        setIsGlobalOpen(false);
+        setIsServicesOpen(false);
+      }
+      return nextIsOpen;
+    });
+  };
+
+  const cancelDesktopDropdownClose = () => {
+    if (desktopDropdownCloseTimer.current) {
+      window.clearTimeout(desktopDropdownCloseTimer.current);
+      desktopDropdownCloseTimer.current = null;
+    }
+  };
+
+  const handleDesktopDropdownLeave = (closeDropdown) => (event) => {
+    if (event.pointerType !== "mouse") return;
+    cancelDesktopDropdownClose();
+    desktopDropdownCloseTimer.current = window.setTimeout(() => {
+      closeDropdown(false);
+      desktopDropdownCloseTimer.current = null;
+    }, 350);
   };
 
   const filteredSearchItems = useMemo(() => {
@@ -106,24 +265,56 @@ function Navbar() {
     setIsSearchOpen(false);
   };
 
+
   return (
-    <header className="navbar-shell">
+    <header className="navbar-shell notranslate" translate="no">
+      <div id="google_translate_element" aria-hidden="true" />
       <div className="navbar-top-row">
+        <button
+          type="button"
+          className="mobile-menu-toggle"
+          aria-label="Toggle service menu"
+          aria-expanded={isMobileServicesOpen}
+          onClick={handleMobileMenuToggle}
+        >
+          <FiMenu aria-hidden="true" />
+        </button>
+
         <Link to="/" className="brand-link" aria-label="Talme Home">
           <img src="/logo.png" alt="Talme Logo" className="brand-logo" />
         </Link>
 
+        <Link to="/contact" className="mobile-contact-cta" onClick={closeAllMenus}>
+          Contact Us
+        </Link>
+        <label className="language-label mobile-language-label notranslate" htmlFor="mobile-site-language" translate="no">
+          <FiGlobe aria-hidden="true" />
+          <select
+            id="mobile-site-language"
+            value={selectedLanguage}
+            onChange={handleLanguageChange}
+            aria-label="Translate website"
+            className="notranslate"
+            translate="no"
+          >
+            {translationLanguages.map((language) => (
+              <option key={language.code} value={language.code} className="notranslate" translate="no">
+                {language.label}
+              </option>
+            ))}
+          </select>
+        </label>
+
         <nav className="navbar-top" aria-label="Top navigation">
           <ul className="top-links">
-            <li><Link to="/">Home</Link></li>
-            <li><Link to="/news-events">News &amp; Events</Link></li>
-            <li><Link to="/about">About Us</Link></li>
-            <li><Link to="/leadership">Leadership</Link></li>
-            <li><Link to="/insights">Insights</Link></li>
-            <li><Link to="/our-clients">Our Clients</Link></li>
-            <li><Link to="/careers">Careers</Link></li>
-            <li><Link to="/contact">Contact Us</Link></li>
-            <li className="search-link">
+            <li><a href="/">Home</a></li>
+            <li><Link to="/news-events" onClick={closeAllMenus}>News &amp; Events</Link></li>
+            <li><Link to="/about" onClick={closeAllMenus}>About Us</Link></li>
+            <li><Link to="/family" onClick={closeAllMenus}>Family</Link></li>
+            <li><Link to="/insights" onClick={closeAllMenus}>Insights</Link></li>
+            <li><Link to="/our-clients" onClick={closeAllMenus}><FiUsers className="mobile-link-icon" aria-hidden="true" />Our Clients</Link></li>
+            <li><Link to="/careers" onClick={closeAllMenus}><FiBriefcase className="mobile-link-icon" aria-hidden="true" />Careers</Link></li>
+            <li className="mobile-primary-extra">
               <button
                 type="button"
                 className="search-toggle"
@@ -131,101 +322,127 @@ function Navbar() {
                 aria-expanded={isSearchOpen}
                 onClick={handleSearchToggle}
               >
-                Search
+                <FiSearch className="mobile-link-icon" aria-hidden="true" />Search
               </button>
-              {isSearchOpen && (
-                <div className="search-box">
-                  <input
-                    type="search"
-                    className="search-input"
-                    placeholder="Search pages and services..."
-                    aria-label="Search input"
-                    autoFocus
-                    value={searchQuery}
-                    onChange={(event) => setSearchQuery(event.target.value)}
-                    onKeyDown={(event) => {
-                      if (event.key === "Enter" && filteredSearchItems.length > 0) {
-                        navigateToSearchResult(filteredSearchItems[0].to);
-                      }
-                    }}
-                  />
-                  {searchQuery.trim() && (
-                    <ul className="search-results">
-                      {filteredSearchItems.length > 0 ? (
-                        filteredSearchItems.map((item) => (
-                          <li key={item.to}>
-                            <button
-                              type="button"
-                              onClick={() => navigateToSearchResult(item.to)}
-                            >
-                              {item.label}
-                            </button>
-                          </li>
-                        ))
-                      ) : (
-                        <li className="search-no-result">No matching pages found</li>
-                      )}
-                    </ul>
-                  )}
-                </div>
-              )}
             </li>
-            <li className="global-link">
-              <button
-                type="button"
-                className="global-toggle"
-                aria-label="Toggle global locations"
-                aria-expanded={isGlobalOpen}
-                onClick={handleGlobalToggle}
-              >
-                GLOBAL <span className="arrow">&#9662;</span>
-              </button>
-              {isGlobalOpen && (
-                <ul className="global-menu">
-                  {globalLocations.map((location) => (
-                    <li key={location.flag}>
-                      <Link to={location.to} onClick={() => setIsGlobalOpen(false)}>
-                        <img
-                          className="global-flag"
-                          src={location.flagIcon}
-                          alt={`${location.label} flag`}
-                        />
-                        <span className="global-location-label">{location.label}</span>
-                        <span className="global-location-code">{location.flag}</span>
-                      </Link>
-                    </li>
-                  ))}
-                </ul>
-              )}
-            </li>
-            <li>
-              <a href="https://hrms.talme.in/" target="_blank" rel="noreferrer">
-                INTRANET
+            <li className="mobile-primary-extra">
+              <a href="https://iplant.talme.in/" target="_blank" rel="noreferrer">
+                IPLANT
               </a>
             </li>
+            <li className="mobile-primary-extra">
+              <a href="https://hrms.talme.in/" target="_blank" rel="noreferrer">
+                <FiLock className="mobile-link-icon" aria-hidden="true" />INTRANET
+              </a>
+            </li>
+            <li className="contact-top-link"><Link to="/contact" onClick={closeAllMenus}>Contact Us</Link></li>
           </ul>
         </nav>
+
+        <label className="language-label desktop-language-label notranslate" htmlFor="site-language" translate="no">
+          <FiGlobe aria-hidden="true" />
+          <select
+            id="site-language"
+            value={selectedLanguage}
+            onChange={handleLanguageChange}
+            aria-label="Translate website"
+            className="notranslate"
+            translate="no"
+          >
+            {translationLanguages.map((language) => (
+              <option key={language.code} value={language.code} className="notranslate" translate="no">
+                {language.label}
+              </option>
+            ))}
+          </select>
+        </label>
       </div>
+
+      {isSearchOpen && (
+        <div className="mobile-search-panel">
+          <input
+            type="search"
+            className="search-input"
+            placeholder="Search pages and services..."
+            aria-label="Search input"
+            autoFocus
+            value={searchQuery}
+            onChange={(event) => setSearchQuery(event.target.value)}
+            onKeyDown={(event) => {
+              if (event.key === "Enter" && filteredSearchItems.length > 0) {
+                navigateToSearchResult(filteredSearchItems[0].to);
+              }
+            }}
+          />
+          {searchQuery.trim() && (
+            <ul className="search-results">
+              {filteredSearchItems.length > 0 ? (
+                filteredSearchItems.map((item) => (
+                  <li key={item.to}>
+                    <button type="button" onClick={() => navigateToSearchResult(item.to)}>
+                      {item.label}
+                    </button>
+                  </li>
+                ))
+              ) : (
+                <li className="search-no-result">No matching pages found</li>
+              )}
+            </ul>
+          )}
+        </div>
+      )}
+
+      {isGlobalOpen && (
+        <ul className="mobile-global-panel global-menu">
+          {globalLocations.map((globalLocation) => (
+            <li key={globalLocation.flag}>
+              <Link to={globalLocation.to} onClick={closeAllMenus}>
+                <img
+                  className="global-flag"
+                  src={globalLocation.flagIcon}
+                  alt={`${globalLocation.label} flag`}
+                />
+                <span className="global-location-label">{globalLocation.label}</span>
+                <span className="global-location-code">{globalLocation.flag}</span>
+              </Link>
+            </li>
+          ))}
+        </ul>
+      )}
 
       <div className="navbar-divider" />
 
-      <nav className="navbar-bottom" aria-label="Service navigation">
+      <nav
+        className={`navbar-bottom ${isMobileServicesOpen ? "mobile-services-open" : ""}`}
+        aria-label="Service navigation"
+        onPointerEnter={cancelDesktopDropdownClose}
+        onPointerLeave={(event) => {
+          if (event.pointerType !== "mouse") return;
+          cancelDesktopDropdownClose();
+          desktopDropdownCloseTimer.current = window.setTimeout(() => {
+            setIsServicesOpen(false);
+            setIsJapanHelpOpen(false);
+            setIsGlobalOpen(false);
+            setIsSearchOpen(false);
+            desktopDropdownCloseTimer.current = null;
+          }, 350);
+        }}
+      >
         <ul className="service-links">
-          <li className={`japan-dropdown ${isJapanHelpOpen ? "open" : ""}`}>
+          <li className={`japan-dropdown ${isJapanHelpOpen ? "open" : ""}`} onPointerEnter={cancelDesktopDropdownClose} onPointerLeave={handleDesktopDropdownLeave(setIsJapanHelpOpen)}>
             <button
               type="button"
               className="japan-toggle"
               aria-expanded={isJapanHelpOpen}
               onClick={handleJapanHelpToggle}
             >
-              JAPAN HELP DESK <span className="arrow-up">&#94;</span>
+              JAPAN HELP DESK <span className="arrow-up">&#9662;</span>
             </button>
             <ul className="japan-menu">
               {japanHelpDeskServices.map((service) => (
                 <li key={service.slug}>
                   <Link
-                    to={`/japan-help-desk/${service.slug}`}
-                    onClick={() => setIsJapanHelpOpen(false)}
+                    to={`/japan-help-desk/${service.slug}`} onClick={closeAllMenus}
                   >
                     {service.title.toUpperCase()}
                   </Link>
@@ -233,28 +450,129 @@ function Navbar() {
               ))}
             </ul>
           </li>
-          <li><Link to="/managed-services">MANAGED SERVICES</Link></li>
-          <li><Link to="/assurance">ASSURANCE</Link></li>
-          <li className={`services-dropdown ${isServicesOpen ? "open" : ""}`}>
+          <li className={`services-dropdown ${isServicesOpen ? "open" : ""}`} onPointerEnter={cancelDesktopDropdownClose} onPointerLeave={handleDesktopDropdownLeave(setIsServicesOpen)}>
             <button
               type="button"
               className="services-toggle"
               aria-expanded={isServicesOpen}
               onClick={handleServicesToggle}
             >
-              SERVICES <span className="arrow-up">&#94;</span>
+              SERVICES <span className="arrow-up">&#9662;</span>
             </button>
-            <ul className="services-menu">
-              <li><Link to="/services/engineering-solutions" onClick={() => setIsServicesOpen(false)}>ENGINEERING SOLUTIONS</Link></li>
-              <li><Link to="/services/staff-augmentation" onClick={() => setIsServicesOpen(false)}>STAFF AUGMENTATION</Link></li>
-              <li><Link to="/services/health-care-services" onClick={() => setIsServicesOpen(false)}>HEALTH CARE SERVICES</Link></li>
-              <li><Link to="/services/computer-technology" onClick={() => setIsServicesOpen(false)}>COMPUTER TECHNOLOGY</Link></li>
-              <li><Link to="/services/business-solutions" onClick={() => setIsServicesOpen(false)}>BUSINESS SOLUTIONS</Link></li>
-              <li><Link to="/services/product-manufacturing" onClick={() => setIsServicesOpen(false)}>PRODUCT MANUFACTURING</Link></li>
+            <ul
+              className="services-menu"
+              onPointerEnter={cancelDesktopDropdownClose}
+              onPointerLeave={handleDesktopDropdownLeave(setIsServicesOpen)}
+            >
+              <li><Link to="/services/engineering-solutions" onClick={closeAllMenus}>ENGINEERING SOLUTIONS</Link></li>
+              <li><Link to="/services/staff-augmentation" onClick={closeAllMenus}>STAFF AUGMENTATION</Link></li>
+              <li><Link to="/services/health-care-services" onClick={closeAllMenus}>HEALTH CARE SERVICES</Link></li>
+              <li><Link to="/services/computer-technology" onClick={closeAllMenus}>COMPUTER TECHNOLOGY</Link></li>
+              <li><Link to="/services/business-solutions" onClick={closeAllMenus}>BUSINESS SOLUTIONS</Link></li>
+              <li><Link to="/services/product-manufacturing" onClick={closeAllMenus}>PRODUCT MANUFACTURING</Link></li>
+              <li><Link to="/services/automotive" onClick={closeAllMenus}>AUTOMOTIVE</Link></li>
+              <li><Link to="/services/aerospace" onClick={closeAllMenus}>AEROSPACE</Link></li>
+              <li><Link to="/services/semiconductor" onClick={closeAllMenus}>SEMICONDUCTOR</Link></li>
+              <li><Link to="/services/ceit" onClick={closeAllMenus}>CEIT</Link></li>
+              <li><Link to="/services/plm" onClick={closeAllMenus}>PLM</Link></li>
             </ul>
           </li>
-          <li><Link to="/service-hub/financial-advisory">CONSULTING</Link></li>
-          <li><Link to="/service-hub/digital-enablement">DIGITAL</Link></li>
+          <li className="lower-iplant-link">
+            <a href="https://iplant.talme.in/" target="_blank" rel="noreferrer">
+              IPLANT
+            </a>
+          </li>
+          <li className="search-link lower-search-link" onPointerEnter={cancelDesktopDropdownClose} onPointerLeave={handleDesktopDropdownLeave(setIsSearchOpen)}>
+            <button
+              type="button"
+              className="search-toggle"
+              aria-label="Toggle search"
+              aria-expanded={isSearchOpen}
+              onClick={handleSearchToggle}
+            >
+              <FiSearch className="mobile-link-icon" aria-hidden="true" />Search
+            </button>
+            {isSearchOpen && (
+              <div
+                className="search-box desktop-search-box"
+                onPointerEnter={cancelDesktopDropdownClose}
+                onPointerLeave={handleDesktopDropdownLeave(setIsSearchOpen)}
+              >
+                <input
+                  type="search"
+                  className="search-input"
+                  placeholder="Search pages and services..."
+                  aria-label="Search input"
+                  autoFocus
+                  value={searchQuery}
+                  onChange={(event) => setSearchQuery(event.target.value)}
+                  onKeyDown={(event) => {
+                    if (event.key === "Enter" && filteredSearchItems.length > 0) {
+                      navigateToSearchResult(filteredSearchItems[0].to);
+                    }
+                  }}
+                />
+                {searchQuery.trim() && (
+                  <ul className="search-results">
+                    {filteredSearchItems.length > 0 ? (
+                      filteredSearchItems.map((item) => (
+                        <li key={item.to}>
+                          <button
+                            type="button"
+                            onClick={() => navigateToSearchResult(item.to)}
+                          >
+                            {item.label}
+                          </button>
+                        </li>
+                      ))
+                    ) : (
+                      <li className="search-no-result">No matching pages found</li>
+                    )}
+                  </ul>
+                )}
+              </div>
+            )}
+          </li>
+          <li className="global-link" onPointerEnter={cancelDesktopDropdownClose} onPointerLeave={handleDesktopDropdownLeave(setIsGlobalOpen)}>
+            <button
+              type="button"
+              className="global-toggle"
+              aria-label="Toggle global locations"
+              aria-expanded={isGlobalOpen}
+              onClick={handleGlobalToggle}
+            >
+              <FiGlobe className="mobile-link-icon" aria-hidden="true" />GLOBAL <span className="arrow">&#9662;</span>
+            </button>
+            {isGlobalOpen && (
+              <ul
+                className="global-menu desktop-global-menu"
+                onPointerEnter={cancelDesktopDropdownClose}
+                onPointerLeave={handleDesktopDropdownLeave(setIsGlobalOpen)}
+              >
+                {globalLocations.map((globalLocation) => (
+                  <li key={globalLocation.flag}>
+                    <Link
+                      to={globalLocation.to}
+                      onClick={closeAllMenus}
+                    >
+                      <img
+                        className="global-flag"
+                        src={globalLocation.flagIcon}
+                        alt={`${globalLocation.label} flag`}
+                      />
+                      <span className="global-location-label">{globalLocation.label}</span>
+                      <span className="global-location-code">{globalLocation.flag}</span>
+                    </Link>
+                  </li>
+                ))}
+              </ul>
+            )}
+          </li>
+          <li className="lower-intranet-link">
+            <a href="https://hrms.talme.in/" target="_blank" rel="noreferrer">
+              <FiLock className="mobile-link-icon" aria-hidden="true" />INTRANET
+            </a>
+          </li>
         </ul>
       </nav>
     </header>

@@ -21,6 +21,18 @@ const officeLocations = [
     ],
   },
   {
+    country: "Japan",
+    offices: [
+      {
+        label: "Tokyo Office",
+        address:
+          "Pacific Century Place Marunouchi, 8\u968E, 13\u968E, 1 Chome-11-1 Marunouchi, Chiyoda City, Tokyo 100-6208, Japan.",
+        directions:
+          "https://www.google.com/maps/search/?api=1&query=Pacific+Century+Place+Marunouchi+Tokyo",
+      },
+    ],
+  },
+  {
     country: "Singapore",
     offices: [
       {

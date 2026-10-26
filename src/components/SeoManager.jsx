@@ -1,6 +1,7 @@
 import { useEffect } from "react";
 import { useLocation } from "react-router-dom";
 import { insightsData } from "../data/insightsData";
+import { getJapanHelpDeskService } from "../data/japanHelpDeskData";
 import { servicePagesData } from "../data/servicePagesData";
 import { serviceHubDetails } from "../data/serviceHubData";
 
@@ -8,17 +9,18 @@ const SITE_URL = "https://talme.in";
 const DEFAULT_IMAGE = `${SITE_URL}/logo.png`;
 
 const defaultMeta = {
-  title: "Talme | Engineering Services",
+  title: "TALME | Engineering, Staffing, Japan Help Desk and Business Services",
   description:
-    "Talme Technologies provides engineering services, IT consulting, and staffing solutions for global enterprises.",
+    "TALME Technologies provides engineering services, staffing, managed services, Japan Help Desk support, IT consulting, and business operations solutions for global enterprises.",
   keywords:
-    "Talme Technologies, engineering services, IT consulting, staffing solutions, automotive engineering, digital transformation, aerospace data services, oil and gas data services, client accounting services",
+    "TALME, Talme Technologies, engineering services, staff augmentation, Japan Help Desk, Japan market entry, employer of record, business matchmaking Japan, IT consulting, managed services, automotive engineering, aerospace engineering, semiconductor services, PLM services, client accounting services",
   image: DEFAULT_IMAGE,
 };
 
 const canonicalRouteMap = {
   "/services": "/",
   "/about-us": "/about",
+  "/leadership": "/family",
   "/clients": "/our-clients",
   "/contact-us": "/contact",
   "/business-solutions": "/services/business-solutions",
@@ -30,10 +32,10 @@ const canonicalRouteMap = {
   "/product-manufacturing": "/services/product-manufacturing",
   "/oem-data": "/services/product-manufacturing",
   "/oem-engineering-data": "/services/product-manufacturing",
-  "/automotive-data": "/services/engineering-solutions",
-  "/automotive-engineering-services": "/services/engineering-solutions",
-  "/aerospace-data": "/services/engineering-solutions",
-  "/aerospace-engineering-services": "/services/engineering-solutions",
+  "/automotive-data": "/services/automotive",
+  "/automotive-engineering-services": "/services/automotive",
+  "/aerospace-data": "/services/aerospace",
+  "/aerospace-engineering-services": "/services/aerospace",
   "/oil-gas-data": "/services/engineering-solutions",
   "/oil-and-gas-data": "/services/engineering-solutions",
   "/electrical-data": "/services/engineering-solutions",
@@ -47,9 +49,9 @@ const canonicalRouteMap = {
 
 const staticRouteMeta = {
   "/": {
-    title: "Talme | Engineering Services",
+    title: "TALME | Engineering, Staffing, Japan Help Desk and Business Services",
     description:
-      "Talme Technologies provides engineering services, IT consulting, staffing solutions, client accounting services, and industry-focused data support.",
+      "TALME Technologies provides engineering services, staffing, managed services, Japan Help Desk support, IT consulting, and business operations solutions for enterprise teams.",
   },
   "/services": {
     title: "Services | Talme Technologies",
@@ -171,6 +173,11 @@ const staticRouteMeta = {
     description:
       "Talme Technologies managed services improve process reliability, visibility, and scalable business delivery.",
   },
+  "/japan-help-desk": {
+    title: "Japan Help Desk | TALME Technologies",
+    description:
+      "TALME Japan Help Desk supports market entry, business setup, technical staffing, recruitment, EOR, payroll, matchmaking, interpretation, factory visits, vendors, and Japan travel assistance.",
+  },
   "/assurance": {
     title: "Assurance Services | Talme Technologies",
     description:
@@ -190,6 +197,16 @@ const staticRouteMeta = {
     title: "About TALME | Talme Technologies",
     description:
       "Learn about Talme Technologies, our engineering-led recruitment services, and our global delivery capabilities.",
+  },
+  "/family": {
+    title: "Family | Talme Technologies",
+    description:
+      "Meet the Talme Technologies family guiding delivery with industry experience, discipline, and client focus.",
+  },
+  "/leadership": {
+    title: "Family | Talme Technologies",
+    description:
+      "Meet the Talme Technologies family guiding delivery with industry experience, discipline, and client focus.",
   },
   "/client-accounting": {
     title: "Client Accounting Services | Talme Technologies",
@@ -278,6 +295,13 @@ function setJsonLd(id, payload) {
   element.textContent = JSON.stringify(payload);
 }
 
+function removeJsonLd(id) {
+  const element = document.head.querySelector(`script[data-seo-jsonld="${id}"]`);
+  if (element) {
+    element.remove();
+  }
+}
+
 function getCanonicalPath(pathname) {
   return canonicalRouteMap[pathname] || pathname;
 }
@@ -353,6 +377,19 @@ function getDynamicRouteMeta(pathname) {
     }
   }
 
+  if (pathname.startsWith("/japan-help-desk/")) {
+    const slug = pathname.replace("/japan-help-desk/", "");
+    const service = getJapanHelpDeskService(slug);
+    if (service) {
+      return {
+        title: `${service.title} | TALME Japan Help Desk`,
+        description: `${service.summary} TALME supports ${service.capabilities.join(", ").toLowerCase()} for Japan-linked business operations.`,
+        image: service.image || DEFAULT_IMAGE,
+        service,
+      };
+    }
+  }
+
   if (pathname.startsWith("/contact/")) {
     return {
       title: "Contact Location | Talme Technologies",
@@ -363,6 +400,122 @@ function getDynamicRouteMeta(pathname) {
   }
 
   return null;
+}
+
+function getRouteServiceSchema(pathname, routeMeta, canonicalUrl) {
+  if (pathname.startsWith("/services/")) {
+    const slug = pathname.replace("/services/", "");
+    const service = servicePagesData[slug];
+    if (!service) return null;
+    return {
+      "@context": "https://schema.org",
+      "@type": "Service",
+      name: service.title,
+      description: service.intro,
+      serviceType: service.title,
+      provider: {
+        "@type": "Organization",
+        name: "Talme Technologies Pvt Ltd",
+        url: SITE_URL,
+      },
+      areaServed: ["India", "Japan", "Singapore", "Global"],
+      url: canonicalUrl,
+    };
+  }
+
+  if (pathname.startsWith("/service-hub/")) {
+    const slug = pathname.replace("/service-hub/", "");
+    const service = serviceHubDetails[slug];
+    if (!service) return null;
+    return {
+      "@context": "https://schema.org",
+      "@type": "Service",
+      name: service.title,
+      description: service.summary,
+      serviceType: service.title,
+      provider: {
+        "@type": "Organization",
+        name: "Talme Technologies Pvt Ltd",
+        url: SITE_URL,
+      },
+      areaServed: ["India", "Japan", "Singapore", "Global"],
+      url: canonicalUrl,
+    };
+  }
+
+  if (pathname === "/japan-help-desk" || pathname.startsWith("/japan-help-desk/")) {
+    const service = routeMeta.service;
+    return {
+      "@context": "https://schema.org",
+      "@type": "Service",
+      name: service ? service.title : "Japan Help Desk",
+      description: service ? service.summary : staticRouteMeta["/japan-help-desk"].description,
+      serviceType: service ? service.title : "Japan Help Desk services",
+      provider: {
+        "@type": "Organization",
+        name: "Talme Technologies Pvt Ltd",
+        url: SITE_URL,
+      },
+      areaServed: ["Japan", "India", "Singapore"],
+      audience: {
+        "@type": "BusinessAudience",
+        audienceType: "Enterprises, HR leaders, engineering firms, visiting delegations, procurement teams, and Japan expansion teams",
+      },
+      hasOfferCatalog: service
+        ? {
+            "@type": "OfferCatalog",
+            name: `${service.title} capabilities`,
+            itemListElement: service.capabilities.map((capability) => ({
+              "@type": "Offer",
+              itemOffered: {
+                "@type": "Service",
+                name: capability,
+              },
+            })),
+          }
+        : undefined,
+      url: canonicalUrl,
+    };
+  }
+
+  return null;
+}
+
+function getFAQSchema(pathname, routeMeta, canonicalUrl) {
+  const service = routeMeta.service;
+  if (!service || !pathname.startsWith("/japan-help-desk/")) return null;
+
+  return {
+    "@context": "https://schema.org",
+    "@type": "FAQPage",
+    mainEntity: [
+      {
+        "@type": "Question",
+        name: `What is ${service.title}?`,
+        acceptedAnswer: {
+          "@type": "Answer",
+          text: service.summary,
+        },
+      },
+      {
+        "@type": "Question",
+        name: `What does TALME provide for ${service.title}?`,
+        acceptedAnswer: {
+          "@type": "Answer",
+          text: `TALME provides ${service.capabilities.join(", ")} with deliverables such as ${service.deliverables.join(", ")}.`,
+        },
+      },
+      {
+        "@type": "Question",
+        name: `Who is ${service.title} best for?`,
+        acceptedAnswer: {
+          "@type": "Answer",
+          text: service.idealFor,
+        },
+      },
+    ],
+    url: canonicalUrl,
+  };
 }
 
 function normalizePathname(pathname) {
@@ -396,6 +549,16 @@ function SeoManager() {
     setMetaAttribute('meta[name="keywords"]', "content", defaultMeta.keywords);
     setMetaAttribute('meta[name="robots"]', "name", "robots");
     setMetaAttribute('meta[name="robots"]', "content", robots);
+    setMetaAttribute('meta[name="author"]', "name", "author");
+    setMetaAttribute('meta[name="author"]', "content", "Talme Technologies Pvt Ltd");
+    setMetaAttribute('meta[name="publisher"]', "name", "publisher");
+    setMetaAttribute('meta[name="publisher"]', "content", "Talme Technologies Pvt Ltd");
+    setMetaAttribute('meta[name="classification"]', "name", "classification");
+    setMetaAttribute(
+      'meta[name="classification"]',
+      "content",
+      "Engineering services, staffing, Japan Help Desk, managed services, IT consulting, business operations"
+    );
 
     setMetaAttribute('meta[property="og:title"]', "property", "og:title");
     setMetaAttribute('meta[property="og:title"]', "content", title);
@@ -450,6 +613,11 @@ function SeoManager() {
           height: 281,
         },
       },
+      potentialAction: {
+        "@type": "SearchAction",
+        target: `${SITE_URL}/?search={search_term_string}`,
+        "query-input": "required name=search_term_string",
+      },
     });
 
     setJsonLd("organization", {
@@ -468,6 +636,25 @@ function SeoManager() {
       sameAs: [
         "https://www.linkedin.com/company/talme-technologies",
         "https://www.instagram.com/talme_tech",
+      ],
+      foundingLocation: {
+        "@type": "Place",
+        name: "India",
+      },
+      areaServed: ["India", "Japan", "Singapore", "Global"],
+      knowsAbout: [
+        "Engineering services",
+        "Staff augmentation",
+        "Japan market entry",
+        "Employer of record",
+        "Payroll and HR compliance",
+        "Business matchmaking",
+        "Interpreter and translation",
+        "Automotive engineering",
+        "Aerospace engineering",
+        "Semiconductor services",
+        "PLM services",
+        "Managed services",
       ],
     });
 
@@ -492,6 +679,20 @@ function SeoManager() {
         itemListElement: getBreadcrumbItems(canonicalPath === "/" ? "/" : canonicalPath, title),
       },
     });
+
+    const serviceSchema = getRouteServiceSchema(pathname, routeMeta, canonicalUrl);
+    if (serviceSchema) {
+      setJsonLd("service", serviceSchema);
+    } else {
+      removeJsonLd("service");
+    }
+
+    const faqSchema = getFAQSchema(pathname, routeMeta, canonicalUrl);
+    if (faqSchema) {
+      setJsonLd("faq", faqSchema);
+    } else {
+      removeJsonLd("faq");
+    }
   }, [location.pathname]);
 
   return null;

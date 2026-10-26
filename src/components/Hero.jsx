@@ -4,6 +4,45 @@ import "./Hero.css";
 function Hero() {
   return (
     <section className="hero">
+      <div className="hero-video-bg" aria-hidden="true">
+        <video
+          className="hero-bg-video"
+          autoPlay
+          muted
+          loop
+          playsInline
+          preload="auto"
+        >
+          <source
+            src="https://videos.pexels.com/video-files/7165703/7165703-hd_1920_1080_50fps.mp4"
+            type="video/mp4"
+          />
+        </video>
+        <div className="hero-workspace-motion">
+          <span className="workspace-glow" />
+          <span className="workspace-floor" />
+          <span className="workspace-screen screen-one" />
+          <span className="workspace-screen screen-two" />
+          <span className="workspace-screen screen-three" />
+          <span className="workspace-screen screen-four" />
+          <span className="workspace-holo-ring ring-one" />
+          <span className="workspace-holo-ring ring-two" />
+          <span className="workspace-data-column data-one" />
+          <span className="workspace-data-column data-two" />
+          <span className="workspace-person person-one" />
+          <span className="workspace-person person-two" />
+          <span className="workspace-person person-three" />
+          <span className="workspace-desk" />
+        </div>
+        <div className="hero-video-sky" />
+        <div className="hero-video-building">
+          {Array.from({ length: 30 }).map((_, index) => (
+            <span key={index} />
+          ))}
+        </div>
+        <div className="hero-video-lines" />
+        <div className="hero-video-wordmark">TALME</div>
+      </div>
       <div className="hero-inner">
         <div className="hero-content">
           <span className="hero-kicker">Engineering. Talent. Transformation.</span>

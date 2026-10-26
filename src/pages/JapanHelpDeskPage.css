@@ -4,14 +4,14 @@
   --jh-soft: #536b91;
   --jh-line: rgba(31, 68, 119, 0.14);
   width: min(1240px, calc(100% - 32px));
-  margin: 18px auto 42px;
+  margin: 12px auto 34px;
   color: var(--jh-ink);
 }
 
 .japan-help-hero {
   display: grid;
-  grid-template-columns: minmax(0, 0.95fr) minmax(380px, 1.05fr);
-  min-height: 520px;
+  grid-template-columns: minmax(0, 1.2fr) minmax(320px, 0.8fr);
+  min-height: 0;
   border: 1px solid var(--jh-line);
   background: #ffffff;
   box-shadow: 0 28px 70px rgba(12, 33, 67, 0.12);
@@ -19,7 +19,7 @@
 }
 
 .japan-help-hero-copy {
-  padding: clamp(30px, 5vw, 64px);
+  padding: clamp(24px, 3.6vw, 44px);
   display: flex;
   flex-direction: column;
   justify-content: center;
@@ -37,26 +37,57 @@
 
 .japan-help-hero h1 {
   margin: 0;
-  max-width: 680px;
+  max-width: 720px;
   color: var(--jh-ink);
-  font-size: clamp(2.4rem, 5vw, 5rem);
-  line-height: 0.98;
+  font-size: clamp(2.25rem, 3.6vw, 3.95rem);
+  line-height: 1;
   font-weight: 800;
 }
 
 .japan-help-hero-copy > p:not(.japan-help-kicker) {
-  margin: 24px 0 0;
-  max-width: 590px;
+  margin: 18px 0 0;
+  max-width: 660px;
   color: var(--jh-soft);
   font-size: clamp(1rem, 1.5vw, 1.22rem);
   line-height: 1.75;
+}
+
+.japan-help-hero-points {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 8px;
+  margin-top: 18px;
+  max-width: 760px;
+}
+
+.japan-help-hero-points span {
+  position: relative;
+  min-height: 0;
+  padding: 11px 12px 11px 30px;
+  border: 1px solid rgba(36, 79, 145, 0.14);
+  background: linear-gradient(145deg, #ffffff, #f5f9ff);
+  color: #254a7f;
+  font-size: 0.8rem;
+  font-weight: 800;
+  line-height: 1.36;
+  box-shadow: 0 14px 28px rgba(12, 33, 67, 0.07);
+}
+
+.japan-help-hero-points span::before {
+  content: "";
+  position: absolute;
+  left: 15px;
+  top: 17px;
+  width: 7px;
+  height: 7px;
+  background: #244f91;
 }
 
 .japan-help-actions {
   display: flex;
   flex-wrap: wrap;
   gap: 12px;
-  margin-top: 30px;
+  margin-top: 18px;
 }
 
 .japan-help-primary,
@@ -83,8 +114,13 @@
 }
 
 .japan-help-hero-media {
-  min-height: 420px;
+  min-height: 0;
+  max-height: 430px;
   background: #dce6f3;
+}
+
+.japan-help-hero-media img {
+  aspect-ratio: 4 / 3;
 }
 
 .japan-help-hero-media img,
@@ -99,22 +135,43 @@
   display: grid;
   grid-template-columns: repeat(5, minmax(0, 1fr));
   gap: 1px;
-  margin-top: 18px;
+  margin-top: 10px;
   border: 1px solid var(--jh-line);
   background: var(--jh-line);
 }
 
 .japan-help-service-strip a {
-  min-height: 58px;
+  min-height: 112px;
   display: flex;
+  flex-direction: column;
+  justify-content: center;
   align-items: center;
-  padding: 12px 14px;
+  gap: 8px;
+  padding: 14px;
   background: #ffffff;
   color: #3d5a84;
   text-decoration: none;
+  text-align: left;
+}
+
+.japan-help-service-strip strong,
+.japan-help-service-strip small {
+  width: 100%;
+  display: block;
+}
+
+.japan-help-service-strip strong {
+  color: inherit;
   font-size: 0.84rem;
-  font-weight: 800;
-  line-height: 1.25;
+  font-weight: 900;
+  line-height: 1.18;
+}
+
+.japan-help-service-strip small {
+  color: #667da2;
+  font-size: 0.72rem;
+  font-weight: 700;
+  line-height: 1.35;
 }
 
 .japan-help-service-strip a:hover,
@@ -123,11 +180,16 @@
   color: #ffffff;
 }
 
+.japan-help-service-strip a:hover small,
+.japan-help-service-strip a.active small {
+  color: rgba(255, 255, 255, 0.82);
+}
+
 .japan-help-overview {
   display: grid;
   grid-template-columns: minmax(0, 1.35fr) minmax(300px, 0.65fr);
-  gap: 18px;
-  margin-top: 18px;
+  gap: 8px;
+  margin-top: 8px;
 }
 
 .japan-help-panel,
@@ -142,7 +204,7 @@
 .japan-help-panel,
 .japan-help-snapshot,
 .japan-help-content-grid article {
-  padding: clamp(22px, 3vw, 34px);
+  padding: clamp(18px, 2.4vw, 28px);
 }
 
 .japan-help-panel h2,
@@ -202,8 +264,240 @@
 .japan-help-content-grid {
   display: grid;
   grid-template-columns: repeat(2, minmax(0, 1fr));
-  gap: 18px;
-  margin-top: 18px;
+  gap: 8px;
+  margin-top: 8px;
+}
+
+.japan-help-expanded-scope,
+.japan-help-process,
+.japan-help-text-section,
+.japan-help-topic-info {
+  margin-top: 8px;
+  border: 1px solid var(--jh-line);
+  background: #ffffff;
+  padding: clamp(18px, 2.4vw, 28px);
+  box-shadow: 0 18px 42px rgba(12, 33, 67, 0.08);
+}
+
+.japan-help-section-heading {
+  max-width: 860px;
+  margin-bottom: 18px;
+}
+
+.japan-help-section-heading span {
+  display: block;
+  margin-bottom: 10px;
+  color: #1f56a4;
+  font-size: 0.72rem;
+  font-weight: 900;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+}
+
+.japan-help-section-heading h2 {
+  margin: 0;
+  color: var(--jh-ink);
+  font-size: clamp(1.45rem, 2.4vw, 2.2rem);
+  line-height: 1.12;
+}
+
+.japan-help-section-heading p {
+  margin: 12px 0 0;
+  color: var(--jh-soft);
+  font-size: 1rem;
+  line-height: 1.68;
+}
+
+.japan-help-scope-grid,
+.japan-help-process-grid {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 8px;
+}
+
+.japan-help-scope-grid article,
+.japan-help-process-grid article {
+  border: 1px solid var(--jh-line);
+  background: linear-gradient(145deg, #ffffff, #f6f9ff);
+  padding: 18px;
+}
+
+.japan-help-scope-grid span,
+.japan-help-process-grid strong {
+  display: inline-flex;
+  margin-bottom: 12px;
+  color: #1f56a4;
+  font-size: 0.82rem;
+  font-weight: 900;
+  letter-spacing: 0.12em;
+}
+
+.japan-help-scope-grid h3,
+.japan-help-process-grid h3 {
+  margin: 0 0 10px;
+  color: var(--jh-ink);
+  font-size: 1rem;
+  line-height: 1.25;
+}
+
+.japan-help-scope-grid p,
+.japan-help-process-grid p {
+  margin: 0;
+  color: var(--jh-soft);
+  font-size: 0.9rem;
+  line-height: 1.6;
+}
+
+.japan-help-text-columns {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 8px;
+}
+
+.japan-help-text-columns article {
+  border: 1px solid var(--jh-line);
+  background: linear-gradient(145deg, #ffffff, #f7faff);
+  padding: clamp(18px, 2.2vw, 28px);
+}
+
+.japan-help-text-columns h3 {
+  margin: 0 0 12px;
+  color: var(--jh-ink);
+  font-size: clamp(1.15rem, 1.6vw, 1.45rem);
+  line-height: 1.22;
+}
+
+.japan-help-text-columns p {
+  margin: 0;
+  color: var(--jh-soft);
+  font-size: 1rem;
+  line-height: 1.78;
+}
+
+.japan-help-text-columns p + p {
+  margin-top: 14px;
+}
+
+.japan-help-topic-copy {
+  columns: 2 360px;
+  column-gap: 34px;
+}
+
+.japan-help-topic-copy p {
+  break-inside: avoid;
+  margin: 0 0 16px;
+  color: var(--jh-soft);
+  font-size: 1.03rem;
+  line-height: 1.82;
+}
+
+.japan-help-info-wall {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 8px;
+  margin-top: 8px;
+}
+
+.japan-help-info-wall article {
+  border: 1px solid var(--jh-line);
+  background: #ffffff;
+  padding: clamp(18px, 2.2vw, 28px);
+  box-shadow: 0 18px 42px rgba(12, 33, 67, 0.08);
+}
+
+.japan-help-info-wall span {
+  display: block;
+  margin-bottom: 10px;
+  color: #1f56a4;
+  font-size: 0.72rem;
+  font-weight: 900;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+}
+
+.japan-help-info-wall h2 {
+  margin: 0 0 12px;
+  color: var(--jh-ink);
+  font-size: clamp(1.2rem, 1.9vw, 1.65rem);
+  line-height: 1.18;
+}
+
+.japan-help-info-wall p {
+  margin: 0;
+  color: var(--jh-soft);
+  font-size: 0.98rem;
+  line-height: 1.68;
+}
+
+.japan-help-info-wall p + p {
+  margin-top: 10px;
+}
+
+.japan-help-detail-stack {
+  display: grid;
+  grid-template-columns: minmax(0, 1.25fr) minmax(280px, 0.75fr);
+  gap: 8px;
+  margin-top: 8px;
+}
+
+.japan-help-detail-card {
+  position: relative;
+  overflow: hidden;
+  border: 1px solid var(--jh-line);
+  background:
+    linear-gradient(135deg, rgba(255, 255, 255, 0.96), rgba(247, 250, 255, 0.96)),
+    #ffffff;
+  padding: clamp(18px, 2.4vw, 28px);
+  box-shadow: 0 18px 42px rgba(12, 33, 67, 0.08);
+}
+
+.japan-help-detail-card::before {
+  content: "";
+  position: absolute;
+  right: -72px;
+  top: -72px;
+  width: 170px;
+  height: 170px;
+  border-radius: 50%;
+  background: rgba(36, 79, 145, 0.08);
+}
+
+.japan-help-detail-card-wide {
+  grid-row: span 2;
+  background:
+    radial-gradient(circle at 88% 12%, rgba(36, 79, 145, 0.12), transparent 26%),
+    linear-gradient(135deg, #ffffff, #f6f9ff);
+}
+
+.japan-help-detail-card span {
+  position: relative;
+  display: inline-flex;
+  margin-bottom: 14px;
+  color: #1f56a4;
+  font-size: 0.78rem;
+  font-weight: 900;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+}
+
+.japan-help-detail-card h2 {
+  position: relative;
+  margin: 0 0 16px;
+  color: var(--jh-ink);
+  font-size: clamp(1.35rem, 2.2vw, 2rem);
+  line-height: 1.16;
+}
+
+.japan-help-detail-card p {
+  position: relative;
+  margin: 0;
+  color: var(--jh-soft);
+  font-size: 1rem;
+  line-height: 1.76;
+}
+
+.japan-help-detail-card p + p {
+  margin-top: 13px;
 }
 
 .japan-help-content-grid ul {
@@ -212,7 +506,15 @@
   padding: 0;
 }
 
-.japan-help-content-grid li {
+.japan-help-detail-card ul {
+  position: relative;
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+
+.japan-help-content-grid li,
+.japan-help-detail-card li {
   position: relative;
   padding: 13px 0 13px 24px;
   border-top: 1px solid var(--jh-line);
@@ -221,7 +523,8 @@
   line-height: 1.5;
 }
 
-.japan-help-content-grid li::before {
+.japan-help-content-grid li::before,
+.japan-help-detail-card li::before {
   content: "";
   position: absolute;
   left: 0;
@@ -231,20 +534,73 @@
   background: #244f91;
 }
 
+.japan-help-fit-card {
+  background:
+    linear-gradient(145deg, rgba(8, 31, 69, 0.96), rgba(36, 79, 145, 0.96)),
+    #244f91;
+}
+
+.japan-help-fit-card::before {
+  background: rgba(255, 255, 255, 0.09);
+}
+
+.japan-help-fit-card span {
+  color: #f0c980;
+}
+
+.japan-help-fit-card h2,
+.japan-help-fit-card p {
+  color: #ffffff;
+}
+
+.japan-help-fit-card p {
+  color: rgba(255, 255, 255, 0.82);
+}
+
 .japan-help-gallery {
   display: grid;
-  grid-template-columns: minmax(0, 0.95fr) minmax(0, 1.05fr);
-  margin-top: 18px;
-  min-height: 330px;
+  grid-template-columns: minmax(0, 0.82fr) minmax(0, 1.18fr);
+  margin-top: 8px;
+  min-height: 0;
   overflow: hidden;
 }
 
 .japan-help-gallery div {
-  padding: clamp(24px, 4vw, 48px);
+  padding: clamp(18px, 3vw, 34px);
   display: flex;
   flex-direction: column;
   justify-content: center;
   background: #f7faff;
+}
+
+.japan-help-gallery ul {
+  list-style: none;
+  margin: 18px 0 0;
+  padding: 0;
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 8px;
+}
+
+.japan-help-gallery li {
+  position: relative;
+  padding: 10px 10px 10px 28px;
+  background: #ffffff;
+  border: 1px solid var(--jh-line);
+  color: #3d5a84;
+  font-size: 0.84rem;
+  font-weight: 800;
+  line-height: 1.35;
+}
+
+.japan-help-gallery li::before {
+  content: "";
+  position: absolute;
+  left: 12px;
+  top: 16px;
+  width: 7px;
+  height: 7px;
+  background: #244f91;
 }
 
 @media (max-width: 980px) {
@@ -255,8 +611,17 @@
   .japan-help-hero,
   .japan-help-overview,
   .japan-help-content-grid,
+  .japan-help-scope-grid,
+  .japan-help-info-wall,
+  .japan-help-process-grid,
+  .japan-help-text-columns,
+  .japan-help-detail-stack,
   .japan-help-gallery {
     grid-template-columns: 1fr;
+  }
+
+  .japan-help-detail-card-wide {
+    grid-row: auto;
   }
 
   .japan-help-hero {
@@ -264,8 +629,20 @@
   }
 
   .japan-help-hero-media {
-    min-height: 300px;
+    min-height: 220px;
     order: -1;
+  }
+
+  .japan-help-hero-points {
+    grid-template-columns: 1fr;
+  }
+
+  .japan-help-gallery ul {
+    grid-template-columns: 1fr;
+  }
+
+  .japan-help-hero-points span {
+    min-height: auto;
   }
 
   .japan-help-service-strip {
@@ -289,7 +666,7 @@
   }
 
   .japan-help-hero-media {
-    min-height: 220px;
+    min-height: 180px;
   }
 
   .japan-help-service-strip {
@@ -297,7 +674,7 @@
   }
 
   .japan-help-service-strip a {
-    min-height: 46px;
+    min-height: auto;
   }
 
   .japan-help-actions {

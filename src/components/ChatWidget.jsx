@@ -114,10 +114,6 @@ function ChatWidget() {
                     Let me know if you have any questions!
                   </p>
                 </article>
-                <article className="chat-history-item muted">
-                  <p className="chat-history-title">Talme Technologies</p>
-                  <p className="chat-history-text">hi</p>
-                </article>
               </section>
 
               <div className="chat-action-row">
@@ -132,38 +128,41 @@ function ChatWidget() {
             </>
           ) : (
             <section className="chat-form-wrap">
-              <div className="chat-bubble">hi</div>
-              <p className="chat-meta">Now</p>
-
-              <form className="chat-form-card" onSubmit={handleSubmit}>
-                <p>We just need some more information from you to proceed:</p>
-                <label htmlFor="chat-name">Name</label>
-                <input
-                  id="chat-name"
-                  name="name"
-                  type="text"
-                  value={formData.name}
-                  onChange={handleInputChange}
-                  required
-                />
-                <label htmlFor="chat-message">Message</label>
-                <textarea
-                  id="chat-message"
-                  name="message"
-                  rows="3"
-                  value={formData.message}
-                  onChange={handleInputChange}
-                  required
-                />
-                <button type="submit" className="chat-primary-btn">
-                  {submitState.status === "sending" ? "Sending..." : "Send"}
-                </button>
-                {submitState.status !== "idle" && (
-                  <p className={`chat-submit-note ${submitState.status}`}>
-                    {submitState.message}
-                  </p>
-                )}
-              </form>
+              {submitState.status === "success" ? (
+                <div className="chat-form-card chat-success-card">
+                  <p className="chat-submit-note success">{submitState.message}</p>
+                </div>
+              ) : (
+                <form className="chat-form-card" onSubmit={handleSubmit}>
+                  <p>We just need some more information from you to proceed:</p>
+                  <label htmlFor="chat-name">Name</label>
+                  <input
+                    id="chat-name"
+                    name="name"
+                    type="text"
+                    value={formData.name}
+                    onChange={handleInputChange}
+                    required
+                  />
+                  <label htmlFor="chat-message">Message</label>
+                  <textarea
+                    id="chat-message"
+                    name="message"
+                    rows="3"
+                    value={formData.message}
+                    onChange={handleInputChange}
+                    required
+                  />
+                  {submitState.status !== "idle" && (
+                    <p className={`chat-submit-note ${submitState.status}`}>
+                      {submitState.message}
+                    </p>
+                  )}
+                  <button type="submit" className="chat-primary-btn">
+                    {submitState.status === "sending" ? "Sending..." : "Send"}
+                  </button>
+                </form>
+              )}
             </section>
           )}
         </aside>

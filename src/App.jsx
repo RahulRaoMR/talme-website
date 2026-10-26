@@ -22,7 +22,6 @@ import ServiceHubPage from "./pages/ServiceHubPage";
 import ChatWidget from "./components/ChatWidget";
 import OurClientsPage from "./pages/OurClientsPage";
 import NewsEventsPage from "./pages/NewsEventsPage";
-import SiteMapPage from "./pages/SiteMapPage";
 import LeadershipPage from "./pages/LeadershipPage";
 import JapanHelpDeskPage from "./pages/JapanHelpDeskPage";
 
@@ -32,8 +31,8 @@ function HomePage() {
   return (
     <>
       <Hero />
-      <Engagement />
       <Services />
+      <Engagement />
     </>
   );
 }
@@ -75,6 +74,26 @@ function App() {
           element={<Navigate to="/services/product-manufacturing" replace />}
         />
         <Route
+          path="/automotive"
+          element={<Navigate to="/services/automotive" replace />}
+        />
+        <Route
+          path="/aerospace"
+          element={<Navigate to="/services/aerospace" replace />}
+        />
+        <Route
+          path="/semiconductor"
+          element={<Navigate to="/services/semiconductor" replace />}
+        />
+        <Route
+          path="/ceit"
+          element={<Navigate to="/services/ceit" replace />}
+        />
+        <Route
+          path="/plm"
+          element={<Navigate to="/services/plm" replace />}
+        />
+        <Route
           path="/oem-data"
           element={<Navigate to="/services/product-manufacturing" replace />}
         />
@@ -84,19 +103,19 @@ function App() {
         />
         <Route
           path="/automotive-data"
-          element={<Navigate to="/services/engineering-solutions" replace />}
+          element={<Navigate to="/services/automotive" replace />}
         />
         <Route
           path="/automotive-engineering-services"
-          element={<Navigate to="/services/engineering-solutions" replace />}
+          element={<Navigate to="/services/automotive" replace />}
         />
         <Route
           path="/aerospace-data"
-          element={<Navigate to="/services/engineering-solutions" replace />}
+          element={<Navigate to="/services/aerospace" replace />}
         />
         <Route
           path="/aerospace-engineering-services"
-          element={<Navigate to="/services/engineering-solutions" replace />}
+          element={<Navigate to="/services/aerospace" replace />}
         />
         <Route
           path="/oil-gas-data"
@@ -128,6 +147,7 @@ function App() {
 
         <Route path="/about" element={<About />} />
         <Route path="/about-us" element={<Navigate to="/about" replace />} />
+        <Route path="/family" element={<LeadershipPage />} />
         <Route path="/leadership" element={<LeadershipPage />} />
         <Route path="/client-accounting" element={<ClientAccountingServices />} />
         <Route
@@ -144,7 +164,6 @@ function App() {
         <Route path="/insights" element={<InsightsPage />} />
         <Route path="/news-events" element={<NewsEventsPage />} />
         <Route path="/news-admin" element={<NewsEventsPage adminMode />} />
-        <Route path="/site-map" element={<SiteMapPage />} />
         <Route path="/insights/:slug" element={<InsightDetailPage />} />
         <Route path="/our-clients" element={<OurClientsPage />} />
         <Route path="/clients" element={<Navigate to="/our-clients" replace />} />

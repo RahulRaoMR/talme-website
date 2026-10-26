@@ -108,7 +108,7 @@ function CareersPage() {
         );
       }
 
-      setStatusMessage("Application submitted successfully. Our HR team will review your profile.");
+      setStatusMessage(result.message || "Application sent to HR successfully. Our HR team will review your profile.");
       setFormData(initialFormState);
       setResumeFile(null);
       if (fileInputRef.current) {
@@ -253,7 +253,7 @@ function CareersPage() {
               </article>
               <article>
                 <h3>Phone</h3>
-                <a href="tel:+18005695959">+91 18005695959</a>
+               <a href="tel:18005695959">18005695959</a>
               </article>
               <article>
                 <h3>Location</h3>
