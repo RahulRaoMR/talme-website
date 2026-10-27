@@ -234,6 +234,7 @@ function ContactPage() {
                   solutions that can make a difference.
                 </p>
                 <a href="mailto:info@talme.in">info@talme.in</a>
+                <a href="mailto:hr@talme.in">hr@talme.in</a>
               </div>
             </div>
           </section>
