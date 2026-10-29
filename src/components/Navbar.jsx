@@ -1,5 +1,5 @@
 import { useEffect, useMemo, useRef, useState } from "react";
-import { FiBriefcase, FiGlobe, FiLock, FiMenu, FiSearch, FiUsers } from "react-icons/fi";
+import { FiBriefcase, FiGlobe, FiGrid, FiLock, FiMenu, FiSearch, FiUsers } from "react-icons/fi";
 import { Link, useLocation, useNavigate } from "react-router-dom";
 import { japanHelpDeskServices } from "../data/japanHelpDeskData";
 import "./Navbar.css";
@@ -327,6 +327,7 @@ function Navbar() {
             </li>
             <li className="mobile-primary-extra">
               <a href="https://iplant.talme.in/" target="_blank" rel="noreferrer">
+                <FiGrid className="mobile-link-icon" aria-hidden="true" />
                 IPLANT
               </a>
             </li>
