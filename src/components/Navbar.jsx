@@ -2,6 +2,7 @@ import { useEffect, useMemo, useRef, useState } from "react";
 import { FiBriefcase, FiGlobe, FiGrid, FiLock, FiMenu, FiSearch, FiUsers } from "react-icons/fi";
 import { Link, useLocation, useNavigate } from "react-router-dom";
 import { japanHelpDeskServices } from "../data/japanHelpDeskData";
+import { prefetchLeadershipData } from "../data/leadershipCache";
 import "./Navbar.css";
 
 function Navbar() {
@@ -310,7 +311,16 @@ function Navbar() {
             <li><a href="/">Home</a></li>
             <li><Link to="/news-events" onClick={closeAllMenus}>News &amp; Events</Link></li>
             <li><Link to="/about" onClick={closeAllMenus}>About Us</Link></li>
-            <li><Link to="/family" onClick={closeAllMenus}>Family</Link></li>
+            <li>
+              <Link
+                to="/family"
+                onClick={closeAllMenus}
+                onPointerEnter={prefetchLeadershipData}
+                onFocus={prefetchLeadershipData}
+              >
+                Family
+              </Link>
+            </li>
             <li><Link to="/insights" onClick={closeAllMenus}>Insights</Link></li>
             <li><Link to="/our-clients" onClick={closeAllMenus}><FiUsers className="mobile-link-icon" aria-hidden="true" />Our Clients</Link></li>
             <li><Link to="/careers" onClick={closeAllMenus}><FiBriefcase className="mobile-link-icon" aria-hidden="true" />Careers</Link></li>

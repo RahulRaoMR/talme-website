@@ -1,5 +1,6 @@
 import { useEffect, useState } from "react";
 import { FaLinkedinIn } from "react-icons/fa";
+import { fetchLeadershipData, readCachedLeaders } from "../data/leadershipCache";
 import "./LeadershipPage.css";
 
 const ADMIN_STORAGE_KEY = "talme-leadership-admin-key";
@@ -117,7 +118,8 @@ async function migrateLegacyLeaders(leaders, adminKey) {
 }
 
 function LeadershipPage() {
-  const [leaders, setLeaders] = useState(seedLeaders);
+  const [cachedLeaders] = useState(readCachedLeaders);
+  const [leaders, setLeaders] = useState(() => cachedLeaders ?? seedLeaders);
   const [adminKey, setAdminKey] = useState(
     () => window.localStorage.getItem(ADMIN_STORAGE_KEY) || ""
   );
@@ -125,7 +127,7 @@ function LeadershipPage() {
   const [form, setForm] = useState(EMPTY_FORM);
   const [editingId, setEditingId] = useState("");
   const [message, setMessage] = useState("");
-  const [isLoading, setIsLoading] = useState(true);
+  const [isLoading, setIsLoading] = useState(() => cachedLeaders === null);
   const [isSaving, setIsSaving] = useState(false);
   const [isAdminPanelOpen, setIsAdminPanelOpen] = useState(false);
   const isAdmin = Boolean(adminKey);
@@ -134,18 +136,11 @@ function LeadershipPage() {
     let isActive = true;
 
     async function loadLeaders() {
-      setIsLoading(true);
+      if (cachedLeaders === null) setIsLoading(true);
       setMessage("");
 
       try {
-        const response = await fetch(LEADERSHIP_API_URL);
-        const result = await readJsonResponse(response, "Unable to load shared leadership.");
-
-        if (!response.ok || !Array.isArray(result)) {
-          throw new Error(result.error || "Unable to load shared leadership.");
-        }
-
-        let nextLeaders = result;
+        let nextLeaders = await fetchLeadershipData();
         const legacyLeaders = readLegacyStoredLeaders();
         let nextMessage = "";
 
@@ -172,20 +167,22 @@ function LeadershipPage() {
             setAdminKey("");
           }
 
-          if (legacyLeaders.length > 0) {
+          if (legacyLeaders.length > 0 && cachedLeaders === null) {
             setLeaders(legacyLeaders);
             setMessage(
               isAdminAuthError(error)
                 ? "Your saved admin session is no longer valid. Log in with the shared admin key to publish this leader for all devices."
                 : "Shared leadership data is temporarily unavailable. Showing leaders saved on this device."
             );
-          } else {
+          } else if (cachedLeaders === null) {
             setLeaders(seedLeaders);
             setMessage(
               error instanceof Error
                 ? error.message
                 : "Unable to load shared leadership."
             );
+          } else {
+            setMessage("Showing saved family data while shared data reconnects.");
           }
         }
       } finally {
@@ -200,7 +197,7 @@ function LeadershipPage() {
     return () => {
       isActive = false;
     };
-  }, [adminKey]);
+  }, [adminKey, cachedLeaders]);
 
   function resetForm() {
     setForm(EMPTY_FORM);
@@ -447,7 +444,7 @@ function LeadershipPage() {
           const hasLinkedin = Boolean(leader.linkedinUrl);
           const photoContent = (
             <>
-              <img src={leader.imageUrl} alt={leader.name} />
+              <img src={leader.imageUrl} alt={leader.name} loading="lazy" decoding="async" />
               <span className="leader-hover-panel">
                 <strong>{leader.name}</strong>
                 <small>{leader.role}</small>

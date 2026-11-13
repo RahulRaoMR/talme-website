@@ -179,9 +179,12 @@ function setCorsHeaders(res) {
   res.setHeader("Cache-Control", "no-store, max-age=0");
 }
 
-function sendJson(res, statusCode, payload) {
+function sendJson(res, statusCode, payload, cacheControl = "") {
   if (typeof res.setHeader === "function") {
     setCorsHeaders(res);
+    if (cacheControl) {
+      res.setHeader("Cache-Control", cacheControl);
+    }
   }
 
   if (typeof res.status === "function") {
@@ -857,7 +860,10 @@ async function handleLeadership(req, res) {
     }
 
     const data = await readSiteData();
-    sendJson(res, 200, data.leadership);
+    const cacheControl = getHeader(req, "x-admin-key")
+      ? ""
+      : "public, max-age=0, s-maxage=30, stale-while-revalidate=120";
+    sendJson(res, 200, data.leadership, cacheControl);
     return;
   }
 
