@@ -127,7 +127,9 @@ function LeadershipPage() {
   const [form, setForm] = useState(EMPTY_FORM);
   const [editingId, setEditingId] = useState("");
   const [message, setMessage] = useState("");
-  const [isLoading, setIsLoading] = useState(() => cachedLeaders === null);
+  const [isLoading, setIsLoading] = useState(
+    () => cachedLeaders === null || cachedLeaders.length === 0
+  );
   const [isSaving, setIsSaving] = useState(false);
   const [isAdminPanelOpen, setIsAdminPanelOpen] = useState(false);
   const isAdmin = Boolean(adminKey);
@@ -136,7 +138,7 @@ function LeadershipPage() {
     let isActive = true;
 
     async function loadLeaders() {
-      if (cachedLeaders === null) setIsLoading(true);
+      if (cachedLeaders === null || cachedLeaders.length === 0) setIsLoading(true);
       setMessage("");
 
       try {
@@ -440,6 +442,9 @@ function LeadershipPage() {
 
       <section className="leadership-grid" aria-label="Family team">
         {isLoading ? <p className="leadership-message">Loading family...</p> : null}
+        {!isLoading && leaders.length === 0 && !message ? (
+          <p className="leadership-empty">No family profiles are available right now.</p>
+        ) : null}
         {!isLoading && leaders.map((leader) => {
           const hasLinkedin = Boolean(leader.linkedinUrl);
           const photoContent = (
