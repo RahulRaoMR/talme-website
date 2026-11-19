@@ -226,7 +226,7 @@ function ContactPage() {
             <div className="coordinates-grid">
               <div>
                 <p>We can definitely help you.</p>
-                <a href="tel:9481838000">9481838000</a>
+                <a href="tel:9449838000">9449838000</a>
               </div>
               <div>
                 <p>
