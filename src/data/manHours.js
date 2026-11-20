@@ -7,7 +7,7 @@ const WORK_DAY_MS = WORK_END_MS - WORK_START_MS;
 
 // This shared checkpoint keeps the total consistent across visits and devices.
 // To rebase the counter, update both the total and its corresponding IST time.
-export const MAN_HOURS_BASE_TOTAL = 25000;
+export const MAN_HOURS_BASE_TOTAL = 66000;
 export const MAN_HOURS_BASELINE_TIMESTAMP = Date.parse(
   "2026-11-20T12:04:17+05:30"
 );
