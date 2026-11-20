@@ -1,5 +1,6 @@
 import { createElement } from "react";
 import CountUp from "react-countup";
+import LiveManHours from "./LiveManHours";
 import "./Services.css";
 import {
   FaBoxOpen,
@@ -68,6 +69,13 @@ function Services() {
             +
           </h3>
           <p>Employees</p>
+        </div>
+
+        <div className="stat-box stat-box-manhours">
+          <h3>
+            <LiveManHours />
+          </h3>
+          <p>MANHOUR&apos;S</p>
         </div>
       </div>
 
